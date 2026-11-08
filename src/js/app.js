@@ -2,16 +2,17 @@ import { CURRICULA, DISABILITY_PROFILES, GRADES, SUBJECTS } from '../data/curric
 
 // Application State
 const state = {
+  theme: localStorage.getItem('edubridge_theme') || 'light', // 'light' or 'dark'
   curriculum: 'CBSE',
   disability: 'ADHD',
   grade: 2,
   subject: 'Math',
   topic: 'math_addition',
   isDyslexic: false,
-  isHighContrast: false,
   isProjectorMode: false,
-  activeStageTab: 'interactive',
-  scores: { teamA: 0, teamB: 0 }
+  activeTab: 'interactive',
+  scores: { teamA: 0, teamB: 0 },
+  selectedVoice: null
 };
 
 // DOM References
@@ -21,23 +22,26 @@ const elements = {
   selGrade: document.getElementById('selGrade'),
   selSubject: document.getElementById('selSubject'),
   selTopic: document.getElementById('selTopic'),
-  adaptationBadge: document.getElementById('adaptationBadge'),
+  
   adaptationTitle: document.getElementById('adaptationTitle'),
   adaptationText: document.getElementById('adaptationText'),
-  projectorStage: document.getElementById('projectorStage'),
+  
+  btnThemeToggle: document.getElementById('btnThemeToggle'),
+  themeIcon: document.getElementById('themeIcon'),
+  themeText: document.getElementById('themeText'),
+  
   btnDyslexia: document.getElementById('btnDyslexia'),
-  btnContrast: document.getElementById('btnContrast'),
   btnProjector: document.getElementById('btnProjector'),
   btnTts: document.getElementById('btnTts'),
   currentPathBreadcrumb: document.getElementById('currentPathBreadcrumb'),
   
-  // Interactive Task Elements
+  // Interactive Task
   taskPrompt: document.getElementById('taskPrompt'),
   taskContainer: document.getElementById('taskContainer'),
   taskOptions: document.getElementById('taskOptions'),
   taskFeedback: document.getElementById('taskFeedback'),
 
-  // Game Elements
+  // Game
   gameTitle: document.getElementById('gameTitle'),
   gameInstruction: document.getElementById('gameInstruction'),
   gameCardLeft: document.getElementById('gameCardLeft'),
@@ -45,18 +49,91 @@ const elements = {
   scoreTeamA: document.getElementById('scoreTeamA'),
   scoreTeamB: document.getElementById('scoreTeamB'),
 
-  // Video Elements
+  // Video
   videoTitle: document.getElementById('videoTitle'),
   videoSubtitle: document.getElementById('videoSubtitle')
 };
 
-// Initialize Application
+// Application Initialization
 function initialize() {
+  applyTheme(state.theme);
+  initializeSpeechVoices();
   populateDropdowns();
   setupEventListeners();
   updateUI();
 }
 
+// ----------------------------------------------------
+// Theme Management (Black & White Minimalist System)
+// ----------------------------------------------------
+function applyTheme(theme) {
+  state.theme = theme;
+  localStorage.setItem('edubridge_theme', theme);
+
+  if (theme === 'dark') {
+    document.body.classList.remove('light-theme');
+    document.body.classList.add('dark-theme');
+    elements.themeIcon.className = 'fa-solid fa-sun';
+    elements.themeText.innerText = 'Light';
+  } else {
+    document.body.classList.remove('dark-theme');
+    document.body.classList.add('light-theme');
+    elements.themeIcon.className = 'fa-solid fa-moon';
+    elements.themeText.innerText = 'Dark';
+  }
+}
+
+function toggleTheme() {
+  const newTheme = state.theme === 'light' ? 'dark' : 'light';
+  applyTheme(newTheme);
+}
+
+// ----------------------------------------------------
+// Natural Speech Synthesis Engine
+// ----------------------------------------------------
+function initializeSpeechVoices() {
+  if (!('speechSynthesis' in window)) return;
+
+  function loadVoices() {
+    const voices = window.speechSynthesis.getVoices();
+    if (!voices || voices.length === 0) return;
+
+    // Priority filter for natural/neural sounding voices
+    state.selectedVoice = voices.find(v => 
+      (v.lang === 'en-IN' && (v.name.includes('Natural') || v.name.includes('Neural') || v.name.includes('Heera') || v.name.includes('Neerja')))
+    ) || voices.find(v => 
+      (v.lang.startsWith('en') && (v.name.includes('Natural') || v.name.includes('Neural') || v.name.includes('Google') || v.name.includes('Jenny') || v.name.includes('Aria') || v.name.includes('Samantha') || v.name.includes('Zira')))
+    ) || voices.find(v => v.lang === 'en-IN')
+      || voices.find(v => v.lang.startsWith('en'))
+      || voices[0];
+  }
+
+  loadVoices();
+  if (window.speechSynthesis.onvoiceschanged !== undefined) {
+    window.speechSynthesis.onvoiceschanged = loadVoices;
+  }
+}
+
+function speakText(text) {
+  if (!('speechSynthesis' in window)) return;
+  window.speechSynthesis.cancel(); // Stop any pending speech
+
+  const utterance = new SpeechSynthesisUtterance(text);
+  if (state.selectedVoice) {
+    utterance.voice = state.selectedVoice;
+  }
+  
+  // Slower, clearer educational cadence (0.88x)
+  utterance.rate = state.disability === 'ID' || state.disability === 'ASD' ? 0.82 : 0.88;
+  utterance.pitch = 1.0;
+  utterance.volume = 1.0;
+
+  window.speechSynthesis.speak(utterance);
+}
+
+// ----------------------------------------------------
+// UI Navigation & Dropdown Handlers
+// ----------------------------------------------------
 function populateDropdowns() {
   elements.selCurriculum.innerHTML = CURRICULA.map(c => 
     `<option value="${c.id}" ${c.id === state.curriculum ? 'selected' : ''}>${c.name}</option>`
@@ -116,12 +193,16 @@ function setupEventListeners() {
   });
 
   // Toolbar Actions
+  elements.btnThemeToggle.addEventListener('click', toggleTheme);
   elements.btnDyslexia.addEventListener('click', toggleDyslexia);
-  elements.btnContrast.addEventListener('click', toggleContrast);
   elements.btnProjector.addEventListener('click', toggleProjector);
-  elements.btnTts.addEventListener('click', speakCurrentScreen);
+  elements.btnTts.addEventListener('click', () => {
+    const subjObj = SUBJECTS.find(s => s.id === state.subject);
+    const topicObj = subjObj.topics.find(t => t.id === state.topic);
+    speakText(`Class prompt: ${topicObj.taskPrompt}`);
+  });
 
-  // Tabs
+  // Stage Mode Tabs
   document.querySelectorAll('.stage-tab-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
       setStageTab(e.currentTarget.dataset.tab);
@@ -135,34 +216,30 @@ function updateUI() {
   const subjObj = SUBJECTS.find(s => s.id === state.subject);
   const topicObj = subjObj.topics.find(t => t.id === state.topic) || subjObj.topics[0];
 
-  // 1. Update Breadcrumb
+  // 1. Breadcrumb
   elements.currentPathBreadcrumb.innerHTML = `
-    <span class="font-bold text-indigo-700">${currObj.name}</span> 
-    <i class="fa-solid fa-chevron-right text-[10px] text-slate-400"></i>
-    <span class="font-bold text-amber-600">${disObj.name}</span> 
-    <i class="fa-solid fa-chevron-right text-[10px] text-slate-400"></i>
+    <span class="font-medium">${currObj.name}</span> 
+    <i class="fa-solid fa-chevron-right text-[10px] opacity-40"></i>
+    <span class="font-medium">${disObj.name}</span> 
+    <i class="fa-solid fa-chevron-right text-[10px] opacity-40"></i>
     <span>Grade ${state.grade}</span> 
-    <i class="fa-solid fa-chevron-right text-[10px] text-slate-400"></i>
-    <span class="font-semibold text-slate-700">${subjObj.name}</span>
-    <i class="fa-solid fa-chevron-right text-[10px] text-slate-400"></i>
-    <span class="bg-indigo-100 text-indigo-800 px-2 py-0.5 rounded-md font-bold">${topicObj.title}</span>
+    <i class="fa-solid fa-chevron-right text-[10px] opacity-40"></i>
+    <span class="font-medium">${subjObj.name}</span>
+    <i class="fa-solid fa-chevron-right text-[10px] opacity-40"></i>
+    <span class="font-semibold underline decoration-zinc-400 underline-offset-4">${topicObj.title}</span>
   `;
 
-  // 2. Update Adaptation Strategy Banner
-  elements.adaptationTitle.innerHTML = `<i class="fa-solid ${disObj.icon} mr-1.5" style="color: ${disObj.accentColor}"></i> Strategy for ${disObj.name}:`;
+  // 2. Pedagogical Strategy Indicator
+  elements.adaptationTitle.innerHTML = `<i class="fa-solid ${disObj.icon} mr-1.5 opacity-70"></i> ${disObj.name} Strategy:`;
   elements.adaptationText.innerText = disObj.strategy;
 
-  // 3. Update Stage Titles
+  // 3. Stage Headers
   document.getElementById('stageHeaderTitle').innerText = topicObj.title;
-  document.getElementById('stageHeaderSub').innerText = `${topicObj.description} • Calibrated for ${disObj.name}`;
+  document.getElementById('stageHeaderSub').innerText = `${topicObj.description} • Adapted for classroom projection`;
 
-  // 4. Render Active Interactive Task
+  // 4. Render Active Content
   renderInteractiveTask(topicObj);
-
-  // 5. Render Group Game
   renderGroupGame(topicObj);
-
-  // 6. Render Video Tab
   renderVideoTab(topicObj);
 }
 
@@ -170,16 +247,16 @@ function renderInteractiveTask(topicObj) {
   elements.taskPrompt.innerText = topicObj.taskPrompt;
   elements.taskFeedback.innerHTML = '';
 
-  // Render Visual Items
-  elements.taskContainer.innerHTML = topicObj.taskItems.map((item, idx) => `
-    <div class="px-5 py-3 bg-white border-2 border-indigo-200 text-indigo-900 rounded-2xl flex items-center justify-center text-3xl font-bold shadow-sm animate-bounce" style="animation-delay: ${idx * 0.1}s">
+  // Visual Tokens
+  elements.taskContainer.innerHTML = topicObj.taskItems.map(item => `
+    <div class="px-6 py-4 surface-card rounded-xl text-2xl font-bold tracking-tight shadow-sm flex items-center justify-center min-w-[100px]">
       ${item}
     </div>
   `).join('');
 
-  // Render Polling Options
+  // Options
   elements.taskOptions.innerHTML = topicObj.options.map(opt => `
-    <button onclick="handleAnswerChoice('${opt}')" class="py-4 px-6 bg-white hover:bg-indigo-50 border-2 border-indigo-200 rounded-2xl text-xl font-black text-indigo-700 shadow-sm transition transform hover:-translate-y-1 active:scale-95">
+    <button onclick="handleAnswerChoice('${opt}')" class="btn-secondary py-3.5 px-6 rounded-xl text-lg font-bold tracking-tight transition transform hover:-translate-y-0.5 active:scale-98">
       ${opt}
     </button>
   `).join('');
@@ -198,97 +275,74 @@ function renderVideoTab(topicObj) {
   elements.videoSubtitle.innerText = topicObj.videoSubtitle;
 }
 
-// Global Answer Checker
+// ----------------------------------------------------
+// Global Interaction Functions
+// ----------------------------------------------------
 window.handleAnswerChoice = function(chosen) {
   const subjObj = SUBJECTS.find(s => s.id === state.subject);
   const topicObj = subjObj.topics.find(t => t.id === state.topic);
   
-  const isMatch = String(chosen).toLowerCase().includes(String(topicObj.correctAnswer).toLowerCase());
+  const isMatch = String(chosen).trim().toLowerCase() === String(topicObj.correctAnswer).trim().toLowerCase();
 
   if (isMatch) {
     elements.taskFeedback.innerHTML = `
-      <div class="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-green-100 text-green-800 border-2 border-green-300 font-extrabold text-lg shadow-sm">
-        <i class="fa-solid fa-circle-check text-2xl text-green-600"></i>
+      <div class="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-xl surface-card border-l-4 border-l-emerald-500 font-semibold text-base shadow-sm">
+        <i class="fa-solid fa-check text-emerald-600"></i>
         <span>${topicObj.successMessage}</span>
       </div>
     `;
-    speakPaced(topicObj.successMessage);
+    speakText(topicObj.successMessage);
   } else {
     elements.taskFeedback.innerHTML = `
-      <div class="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-amber-100 text-amber-900 border-2 border-amber-300 font-extrabold text-lg shadow-sm">
-        <i class="fa-solid fa-rotate text-xl text-amber-600"></i>
-        <span>Let us look closely and try once more together!</span>
+      <div class="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-xl surface-card border-l-4 border-l-zinc-500 font-semibold text-base shadow-sm">
+        <i class="fa-solid fa-arrow-rotate-right text-zinc-500"></i>
+        <span>Let's count together and try one more time!</span>
       </div>
     `;
-    speakPaced("Let us look closely and try once more together!");
+    speakText("Let's count together and try one more time!");
   }
 };
 
-// Global Team Points
 window.awardTeamPoint = function(team) {
   if (team === 'A') state.scores.teamA++;
   if (team === 'B') state.scores.teamB++;
 
   elements.scoreTeamA.innerText = state.scores.teamA;
   elements.scoreTeamB.innerText = state.scores.teamB;
-  speakPaced(`Point awarded to Team ${team}! Outstanding teamwork!`);
+  speakText(`Point for Team ${team}. Well done!`);
 };
 
-// Accessibility Toggles
 function toggleDyslexia() {
   state.isDyslexic = !state.isDyslexic;
   document.body.classList.toggle('font-dyslexic', state.isDyslexic);
-  elements.btnDyslexia.classList.toggle('bg-amber-400', state.isDyslexic);
-  elements.btnDyslexia.classList.toggle('text-indigo-950', state.isDyslexic);
-}
-
-function toggleContrast() {
-  state.isHighContrast = !state.isHighContrast;
-  document.body.classList.toggle('high-contrast', state.isHighContrast);
-  elements.btnContrast.classList.toggle('bg-amber-400', state.isHighContrast);
-  elements.btnContrast.classList.toggle('text-indigo-950', state.isHighContrast);
+  elements.btnDyslexia.classList.toggle('btn-primary', state.isDyslexic);
+  elements.btnDyslexia.classList.toggle('btn-secondary', !state.isDyslexic);
 }
 
 function toggleProjector() {
   state.isProjectorMode = !state.isProjectorMode;
   document.body.classList.toggle('projector-fullscreen', state.isProjectorMode);
-  elements.btnProjector.classList.toggle('bg-amber-400', state.isProjectorMode);
-  elements.btnProjector.classList.toggle('text-slate-900', state.isProjectorMode);
-
+  
   const icon = elements.btnProjector.querySelector('i');
+  const span = elements.btnProjector.querySelector('span');
+
   if (state.isProjectorMode) {
     icon.className = 'fa-solid fa-compress';
-    elements.btnProjector.querySelector('span').innerText = 'Exit Fullscreen';
+    span.innerText = 'Exit Fullscreen';
   } else {
     icon.className = 'fa-solid fa-expand';
-    elements.btnProjector.querySelector('span').innerText = 'Projector Mode';
+    span.innerText = 'Projector Mode';
   }
 }
 
-function speakCurrentScreen() {
-  const subjObj = SUBJECTS.find(s => s.id === state.subject);
-  const topicObj = subjObj.topics.find(t => t.id === state.topic);
-  speakPaced(`Class prompt: ${topicObj.taskPrompt}`);
-}
-
-function speakPaced(text) {
-  if (!('speechSynthesis' in window)) return;
-  window.speechSynthesis.cancel();
-  
-  const u = new SpeechSynthesisUtterance(text);
-  u.rate = state.disability === 'ID' || state.disability === 'ASD' ? 0.8 : 0.88;
-  u.pitch = 1.05;
-  window.speechSynthesis.speak(u);
-}
-
 function setStageTab(tab) {
-  state.activeStageTab = tab;
+  state.activeTab = tab;
 
   document.querySelectorAll('.stage-tab-btn').forEach(btn => {
     const isTarget = btn.dataset.tab === tab;
-    btn.className = isTarget 
-      ? 'stage-tab-btn px-5 py-2.5 rounded-xl font-bold text-sm bg-indigo-600 text-white shadow-sm flex items-center space-x-2 transition'
-      : 'stage-tab-btn px-5 py-2.5 rounded-xl font-bold text-sm bg-slate-100 text-slate-700 hover:bg-slate-200 flex items-center space-x-2 transition';
+    btn.className = `stage-tab-btn px-4 py-2 rounded-lg text-xs font-semibold tracking-tight transition ${
+      isTarget ? 'tab-active' : 'tab-inactive'
+    }`;
   });
 
   document.getElementById('paneInteractive').classList.toggle('hidden', tab !== 'interactive');
@@ -296,5 +350,5 @@ function setStageTab(tab) {
   document.getElementById('paneVideo').classList.toggle('hidden', tab !== 'video');
 }
 
-// Run on load
+// Run on document ready
 document.addEventListener('DOMContentLoaded', initialize);

@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EduBridge — Inclusive Classroom Projection Platform | KSIT</title>
+  <title>EduBridge — Inclusive Classroom Projection Platform</title>
   
-  <!-- Favicon using EduBridge Logo -->
+  <!-- Favicon using Official Logo -->
   <link rel="icon" type="image/jpeg" href="src/assets/logo.jpg">
 
   <!-- Tailwind CSS CDN -->
@@ -15,39 +15,43 @@
   <!-- Custom Project Styles -->
   <link rel="stylesheet" href="src/css/style.css">
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col antialiased">
+<body class="light-theme min-h-screen flex flex-col antialiased">
 
-  <!-- Top Header / Teacher Control Bar -->
-  <header id="topNavbar" class="bg-indigo-700 text-white shadow-md sticky top-0 z-50 transition-colors">
+  <!-- Top Navbar -->
+  <header id="topNavbar" class="surface-card sticky top-0 z-50 transition-colors">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
       
-      <!-- Brand & Project Meta with Logo -->
-      <div class="flex items-center space-x-3">
-        <img src="src/assets/logo.jpg" alt="EduBridge Logo" class="h-11 w-auto rounded-lg object-contain bg-white p-0.5 shadow-sm border border-white/20">
+      <!-- Brand & Project Meta -->
+      <div class="flex items-center space-x-3.5">
+        <img src="src/assets/logo.jpg" alt="EduBridge Logo" class="h-10 w-auto rounded-lg object-contain border border-zinc-200 dark:border-zinc-700 p-0.5">
         <div>
-          <h1 class="text-xl font-extrabold tracking-tight">EduBridge</h1>
-          <p class="text-[11px] text-indigo-200">Teacher-Led Classroom Projection • KSIT CSE Community Project (25BCP308)</p>
+          <h1 class="text-lg font-bold tracking-tight">EduBridge</h1>
+          <p class="text-[11px] text-secondary">Teacher-Led Classroom Projection System • KSIT CSE</p>
         </div>
       </div>
 
-      <!-- Quick Accessibility Toolbar (WCAG 2.2 Ready) -->
+      <!-- Action Toolbar -->
       <div class="flex items-center space-x-2">
-        <button id="btnTts" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-xs font-semibold flex items-center space-x-1.5 transition" title="Read current slide out loud">
+        <!-- Read Aloud (Calibrated Natural Speech) -->
+        <button id="btnTts" class="btn-secondary px-3 py-1.5 rounded-lg text-xs font-medium flex items-center space-x-1.5 transition" title="Read task prompt aloud with natural speech">
           <i class="fa-solid fa-volume-high"></i>
           <span>Read Aloud</span>
         </button>
 
-        <button id="btnDyslexia" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-xs font-semibold flex items-center space-x-1.5 transition" title="Toggle high readability font spacing">
+        <!-- Dyslexia Font -->
+        <button id="btnDyslexia" class="btn-secondary px-3 py-1.5 rounded-lg text-xs font-medium flex items-center space-x-1.5 transition" title="Toggle dyslexia-friendly font spacing">
           <i class="fa-solid fa-font"></i>
           <span>Dyslexia Font</span>
         </button>
 
-        <button id="btnContrast" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-xs font-semibold flex items-center space-x-1.5 transition" title="High contrast yellow-on-black mode">
-          <i class="fa-solid fa-circle-half-stroke"></i>
-          <span>High Contrast</span>
+        <!-- Light / Dark Mode Toggle -->
+        <button id="btnThemeToggle" class="btn-secondary px-3 py-1.5 rounded-lg text-xs font-medium flex items-center space-x-1.5 transition" title="Toggle Light and Dark Mode">
+          <i id="themeIcon" class="fa-solid fa-moon"></i>
+          <span id="themeText">Dark</span>
         </button>
 
-        <button id="btnProjector" class="px-3.5 py-1.5 bg-amber-400 hover:bg-amber-300 text-indigo-950 font-bold rounded-lg text-xs flex items-center space-x-1.5 shadow-sm transition" title="Hide teacher setup and project full canvas">
+        <!-- Projector Mode -->
+        <button id="btnProjector" class="btn-primary px-3.5 py-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1.5 transition" title="Hide teacher setup and project fullscreen to classroom display">
           <i class="fa-solid fa-expand"></i>
           <span>Projector Mode</span>
         </button>
@@ -58,153 +62,150 @@
   <!-- Main Workspace -->
   <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 flex flex-col gap-6">
 
-    <!-- Step 1-5 Hierarchical Teacher Configuration Panel -->
-    <section id="teacherNavigationSection" class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 card-surface">
-      <div class="flex items-center justify-between mb-4">
-        <div class="flex items-center space-x-2 text-indigo-700 font-bold text-sm tracking-wide uppercase">
+    <!-- Teacher Configuration Panel -->
+    <section id="teacherNavigationSection" class="surface-card rounded-xl p-5 shadow-sm transition-colors">
+      <div class="flex items-center justify-between mb-3.5 pb-2.5 border-b border-zinc-200 dark:border-zinc-800">
+        <div class="flex items-center space-x-2 font-semibold text-xs tracking-wider uppercase opacity-80">
           <i class="fa-solid fa-sliders"></i>
-          <span>1. Curriculum & Support Need Configuration (Teacher Setup)</span>
+          <span>Teacher Setup & Curriculum Filter</span>
         </div>
-        <span class="text-xs text-slate-500 bg-slate-100 px-3 py-1 rounded-full font-medium">5-Tier Hierarchical Flow</span>
+        <span class="text-[11px] text-secondary font-medium">Standard NCERT / CBSE Alignment</span>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-5 gap-3">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
         <!-- 1. Curriculum -->
         <div>
-          <label class="block text-xs font-bold text-slate-600 mb-1">1. Curriculum</label>
-          <select id="selCurriculum" class="w-full text-sm rounded-xl border border-slate-300 p-2.5 bg-slate-50 font-medium focus:ring-2 focus:ring-indigo-500 outline-none"></select>
+          <label class="block text-[11px] font-semibold text-secondary uppercase tracking-wider mb-1">1. Curriculum</label>
+          <select id="selCurriculum" class="w-full text-xs rounded-lg p-2.5 font-medium transition"></select>
         </div>
 
-        <!-- 2. Disability / Support Need -->
+        <!-- 2. Disability / Support Profile -->
         <div>
-          <label class="block text-xs font-bold text-slate-600 mb-1">2. Support Focus</label>
-          <select id="selDisability" class="w-full text-sm rounded-xl border border-slate-300 p-2.5 bg-slate-50 font-medium focus:ring-2 focus:ring-indigo-500 outline-none"></select>
+          <label class="block text-[11px] font-semibold text-secondary uppercase tracking-wider mb-1">2. Support Focus</label>
+          <select id="selDisability" class="w-full text-xs rounded-lg p-2.5 font-medium transition"></select>
         </div>
 
         <!-- 3. Grade -->
         <div>
-          <label class="block text-xs font-bold text-slate-600 mb-1">3. Grade Level</label>
-          <select id="selGrade" class="w-full text-sm rounded-xl border border-slate-300 p-2.5 bg-slate-50 font-medium focus:ring-2 focus:ring-indigo-500 outline-none"></select>
+          <label class="block text-[11px] font-semibold text-secondary uppercase tracking-wider mb-1">3. Grade Level</label>
+          <select id="selGrade" class="w-full text-xs rounded-lg p-2.5 font-medium transition"></select>
         </div>
 
         <!-- 4. Subject -->
         <div>
-          <label class="block text-xs font-bold text-slate-600 mb-1">4. Subject</label>
-          <select id="selSubject" class="w-full text-sm rounded-xl border border-slate-300 p-2.5 bg-slate-50 font-medium focus:ring-2 focus:ring-indigo-500 outline-none"></select>
+          <label class="block text-[11px] font-semibold text-secondary uppercase tracking-wider mb-1">4. Subject</label>
+          <select id="selSubject" class="w-full text-xs rounded-lg p-2.5 font-medium transition"></select>
         </div>
 
         <!-- 5. Topic -->
         <div>
-          <label class="block text-xs font-bold text-slate-600 mb-1">5. Lesson Topic</label>
-          <select id="selTopic" class="w-full text-sm rounded-xl border border-slate-300 p-2.5 bg-indigo-50 text-indigo-900 font-semibold border-indigo-300 focus:ring-2 focus:ring-indigo-500 outline-none"></select>
+          <label class="block text-[11px] font-semibold text-secondary uppercase tracking-wider mb-1">5. Lesson Topic</label>
+          <select id="selTopic" class="w-full text-xs rounded-lg p-2.5 font-semibold transition"></select>
         </div>
       </div>
 
-      <!-- Real-Time Pedagogical Strategy Banner -->
-      <div id="adaptationBadge" class="mt-4 p-3.5 bg-amber-50 border border-amber-200 rounded-xl flex items-start sm:items-center space-x-3 text-xs text-amber-950">
-        <div class="mt-0.5 sm:mt-0 font-black text-amber-600 text-sm">
-          <i class="fa-solid fa-lightbulb"></i>
-        </div>
+      <!-- Pedagogical Strategy Callout -->
+      <div id="adaptationBadge" class="mt-3.5 p-3 surface-secondary rounded-lg flex items-start space-x-2.5 text-xs">
+        <i class="fa-solid fa-circle-info text-secondary mt-0.5"></i>
         <div class="flex-1">
-          <span id="adaptationTitle" class="font-bold">Active Adaptation Strategy: </span>
-          <span id="adaptationText" class="text-slate-700">Loading adaptation strategy...</span>
+          <span id="adaptationTitle" class="font-semibold">Support Strategy: </span>
+          <span id="adaptationText" class="text-secondary">Loading strategy details...</span>
         </div>
       </div>
     </section>
 
-    <!-- Active Presentation Stage (Projector Canvas) -->
-    <section id="projectorStage" class="bg-white rounded-3xl shadow-lg border border-slate-200 p-6 md:p-8 flex-1 flex flex-col card-surface transition-all">
+    <!-- Projector Classroom Canvas -->
+    <section id="projectorStage" class="surface-card rounded-2xl p-6 sm:p-8 flex-1 flex flex-col shadow-sm transition-colors">
       
-      <!-- Stage Header: Live Breadcrumb & Mode Tabs -->
-      <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-200 pb-5 mb-6 gap-4">
+      <!-- Stage Header & Segmented Tabs -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-zinc-200 dark:border-zinc-800 pb-5 mb-6 gap-4">
         <div>
-          <div id="currentPathBreadcrumb" class="flex flex-wrap items-center gap-1.5 text-xs text-slate-500 mb-2">
-            <!-- Dynamic Path -->
+          <div id="currentPathBreadcrumb" class="flex flex-wrap items-center gap-1.5 text-xs text-secondary mb-1.5">
+            <!-- Dynamic Breadcrumb -->
           </div>
-          <h2 id="stageHeaderTitle" class="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">Visual Addition & Counting</h2>
-          <p id="stageHeaderSub" class="text-xs text-slate-500 font-medium mt-1">Calibrated for whole-class engagement</p>
+          <h2 id="stageHeaderTitle" class="text-2xl sm:text-3xl font-extrabold tracking-tight">Visual Addition & Counting</h2>
+          <p id="stageHeaderSub" class="text-xs text-secondary mt-0.5">Adapted for classroom projection</p>
         </div>
 
-        <!-- Presentation Modes -->
-        <div class="flex items-center space-x-2">
-          <button data-tab="interactive" class="stage-tab-btn px-5 py-2.5 rounded-xl font-bold text-sm bg-indigo-600 text-white shadow-sm flex items-center space-x-2 transition">
-            <i class="fa-solid fa-puzzle-piece"></i>
-            <span>Interactive Visual Task</span>
+        <!-- Segmented Tab Controls -->
+        <div class="surface-secondary p-1 rounded-xl flex items-center space-x-1 self-start sm:self-auto">
+          <button data-tab="interactive" class="stage-tab-btn px-4 py-2 rounded-lg text-xs font-semibold tracking-tight transition tab-active">
+            <i class="fa-solid fa-shapes mr-1.5 opacity-80"></i>Interactive Task
           </button>
-          <button data-tab="game" class="stage-tab-btn px-5 py-2.5 rounded-xl font-bold text-sm bg-slate-100 text-slate-700 hover:bg-slate-200 flex items-center space-x-2 transition">
-            <i class="fa-solid fa-gamepad"></i>
-            <span>Group Game</span>
+          <button data-tab="game" class="stage-tab-btn px-4 py-2 rounded-lg text-xs font-semibold tracking-tight transition tab-inactive">
+            <i class="fa-solid fa-gamepad mr-1.5 opacity-80"></i>Classroom Game
           </button>
-          <button data-tab="video" class="stage-tab-btn px-5 py-2.5 rounded-xl font-bold text-sm bg-slate-100 text-slate-700 hover:bg-slate-200 flex items-center space-x-2 transition">
-            <i class="fa-solid fa-play"></i>
-            <span>Visual Concept Clip</span>
+          <button data-tab="video" class="stage-tab-btn px-4 py-2 rounded-lg text-xs font-semibold tracking-tight transition tab-inactive">
+            <i class="fa-solid fa-circle-play mr-1.5 opacity-80"></i>Concept Clip
           </button>
         </div>
       </div>
 
-      <!-- Tab 1: Interactive Visual Task -->
-      <div id="paneInteractive" class="flex-1 flex flex-col items-center justify-center py-6">
-        <div class="text-center max-w-xl mb-6">
-          <h3 id="taskPrompt" class="text-3xl md:text-4xl font-extrabold text-slate-800 mb-2 tracking-tight">
-            How many apples are in the basket?
+      <!-- Tab 1: Interactive Task -->
+      <div id="paneInteractive" class="flex-1 flex flex-col items-center justify-center py-6 text-center">
+        <div class="max-w-xl mb-6">
+          <h3 id="taskPrompt" class="text-2xl sm:text-3xl font-bold tracking-tight mb-2">
+            Count the apples on the screen. How many are there in total?
           </h3>
-          <p class="text-sm text-slate-500 font-medium">
-            Teacher prompt: Point to each item on screen and ask the students to count aloud together!
+          <p class="text-xs text-secondary">
+            Teacher prompt: Point to each item on the display and encourage the students to count aloud in unison.
           </p>
         </div>
 
         <!-- Dynamic Visual Items Container -->
-        <div id="taskContainer" class="flex flex-wrap items-center justify-center gap-6 p-8 bg-slate-50 rounded-2xl border-2 border-dashed border-slate-300 w-full max-w-2xl mb-8 min-h-[170px]">
-          <!-- Injected dynamically by app.js -->
+        <div id="taskContainer" class="flex flex-wrap items-center justify-center gap-4 p-6 surface-secondary rounded-2xl border border-dashed border-zinc-300 dark:border-zinc-700 w-full max-w-xl mb-6 min-h-[140px]">
+          <!-- Dynamic Items Injected by app.js -->
         </div>
 
-        <!-- Dynamic Class Response Choices -->
-        <div id="taskOptions" class="grid grid-cols-3 gap-4 w-full max-w-lg">
-          <!-- Injected dynamically by app.js -->
+        <!-- Dynamic Choices -->
+        <div id="taskOptions" class="grid grid-cols-3 gap-3 w-full max-w-md">
+          <!-- Dynamic Buttons Injected by app.js -->
         </div>
 
-        <div id="taskFeedback" class="mt-6 font-bold text-center min-h-[44px]"></div>
+        <div id="taskFeedback" class="mt-5 font-medium min-h-[40px] flex items-center justify-center"></div>
       </div>
 
       <!-- Tab 2: Whole-Class Group Challenge -->
       <div id="paneGame" class="hidden flex-1 flex flex-col items-center justify-center py-6 text-center">
-        <div class="w-16 h-16 bg-amber-100 text-amber-600 rounded-2xl flex items-center justify-center text-3xl mb-3">
+        <div class="w-12 h-12 surface-secondary rounded-xl flex items-center justify-center text-xl mb-3 text-secondary">
           <i class="fa-solid fa-trophy"></i>
         </div>
-        <h3 id="gameTitle" class="text-2xl font-bold mb-1">Classroom Collaboration Challenge</h3>
-        <p id="gameInstruction" class="text-slate-500 text-sm max-w-md mb-6">Divide the class into Team A and Team B. Teacher awards points when students shout out the correct answer together!</p>
+        <h3 id="gameTitle" class="text-xl font-bold tracking-tight mb-1">Classroom Collaboration Challenge</h3>
+        <p id="gameInstruction" class="text-secondary text-xs max-w-md mb-6">Divide the class into Row A and Row B. Teacher adds points when students shout out the correct answer together.</p>
         
-        <div class="grid grid-cols-2 gap-6 w-full max-w-md mb-6">
-          <div onclick="awardTeamPoint('A')" class="p-6 bg-indigo-50 border-2 border-indigo-200 hover:border-indigo-500 rounded-2xl cursor-pointer transition transform hover:scale-105">
-            <div class="text-xs font-bold uppercase tracking-wider text-indigo-500">Left Row</div>
-            <div class="text-xl font-black text-indigo-950 mt-1">Team A</div>
-            <div id="gameCardLeft" class="text-sm text-indigo-700 font-semibold my-2">Item A</div>
-            <div id="scoreTeamA" class="text-4xl font-extrabold text-indigo-700 my-1">0</div>
-            <div class="text-xs text-indigo-600 font-semibold bg-indigo-100/60 py-1 rounded-lg">+ Add Point</div>
+        <div class="grid grid-cols-2 gap-4 w-full max-w-md mb-6">
+          <!-- Team A Card -->
+          <div onclick="awardTeamPoint('A')" class="surface-secondary p-5 rounded-2xl cursor-pointer hover:border-zinc-400 dark:hover:border-zinc-600 transition transform hover:-translate-y-0.5">
+            <div class="text-[10px] font-bold uppercase tracking-wider text-secondary">Left Row</div>
+            <div class="text-lg font-bold tracking-tight mt-0.5">Team A</div>
+            <div id="gameCardLeft" class="text-xs text-secondary font-medium my-2">Option A</div>
+            <div id="scoreTeamA" class="text-4xl font-extrabold tracking-tight my-1">0</div>
+            <div class="text-[11px] text-secondary font-medium pt-1">+ 1 Point</div>
           </div>
 
-          <div onclick="awardTeamPoint('B')" class="p-6 bg-emerald-50 border-2 border-emerald-200 hover:border-emerald-500 rounded-2xl cursor-pointer transition transform hover:scale-105">
-            <div class="text-xs font-bold uppercase tracking-wider text-emerald-500">Right Row</div>
-            <div class="text-xl font-black text-emerald-950 mt-1">Team B</div>
-            <div id="gameCardRight" class="text-sm text-emerald-700 font-semibold my-2">Item B</div>
-            <div id="scoreTeamB" class="text-4xl font-extrabold text-emerald-700 my-1">0</div>
-            <div class="text-xs text-emerald-600 font-semibold bg-emerald-100/60 py-1 rounded-lg">+ Add Point</div>
+          <!-- Team B Card -->
+          <div onclick="awardTeamPoint('B')" class="surface-secondary p-5 rounded-2xl cursor-pointer hover:border-zinc-400 dark:hover:border-zinc-600 transition transform hover:-translate-y-0.5">
+            <div class="text-[10px] font-bold uppercase tracking-wider text-secondary">Right Row</div>
+            <div class="text-lg font-bold tracking-tight mt-0.5">Team B</div>
+            <div id="gameCardRight" class="text-xs text-secondary font-medium my-2">Option B</div>
+            <div id="scoreTeamB" class="text-4xl font-extrabold tracking-tight my-1">0</div>
+            <div class="text-[11px] text-secondary font-medium pt-1">+ 1 Point</div>
           </div>
         </div>
       </div>
 
       <!-- Tab 3: Visual Concept Clip -->
       <div id="paneVideo" class="hidden flex-1 flex flex-col items-center justify-center py-4 text-center">
-        <div class="w-full max-w-3xl aspect-video bg-slate-900 rounded-2xl overflow-hidden shadow-2xl relative flex flex-col items-center justify-center text-white p-6">
-          <div class="w-20 h-20 rounded-full bg-white/20 flex items-center justify-center text-3xl mb-4 backdrop-blur-sm cursor-pointer hover:bg-white/30 transition">
+        <div class="w-full max-w-2xl aspect-video surface-secondary rounded-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden shadow-sm relative flex flex-col items-center justify-center p-6">
+          <div class="w-16 h-16 rounded-full surface-card border border-zinc-300 dark:border-zinc-700 flex items-center justify-center text-xl mb-3 cursor-pointer hover:scale-105 transition">
             <i class="fa-solid fa-play ml-1"></i>
           </div>
-          <h4 id="videoTitle" class="text-xl font-bold mb-1">NCERT Visual Math: Counting Fruits & Vegetables</h4>
-          <p id="videoSubtitle" class="text-slate-400 text-xs">Paced at 0.85x speech rate with large clear subtitles</p>
-          <div class="absolute bottom-4 left-6 right-6 flex items-center justify-between text-xs text-slate-300 bg-black/50 backdrop-blur-sm px-4 py-2 rounded-xl">
+          <h4 id="videoTitle" class="text-base font-bold tracking-tight mb-1">Visual Concept Demo</h4>
+          <p id="videoSubtitle" class="text-secondary text-xs">Paced educational delivery with clear closed captions</p>
+          <div class="absolute bottom-3 left-4 right-4 flex items-center justify-between text-[11px] text-secondary surface-card px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700">
             <span>01:15 / 03:20</span>
-            <span>Subtitle: "Step-by-step visual learning with auditory captions."</span>
-            <span class="bg-indigo-600 text-white px-2 py-0.5 rounded font-bold text-[10px]">CC ON</span>
+            <span>Audio & visual pacing calibrated</span>
+            <span class="font-bold opacity-80">CC ACTIVE</span>
           </div>
         </div>
       </div>
@@ -213,10 +214,10 @@
 
   </main>
 
-  <!-- Project Footer -->
-  <footer class="bg-white border-t border-slate-200 py-3.5 px-6 text-center text-xs text-slate-500 flex flex-wrap justify-between items-center max-w-7xl mx-auto w-full">
+  <!-- Clean Minimalist Footer -->
+  <footer class="surface-card border-t border-zinc-200 dark:border-zinc-800 py-3.5 px-6 text-center text-xs text-secondary flex flex-wrap justify-between items-center max-w-7xl mx-auto w-full transition-colors">
     <span>Developed by Sanjay Srinivas M • CSE Department • KSIT Bengaluru</span>
-    <span class="font-medium text-indigo-700">Batch 02 • Community Project (25BCP308)</span>
+    <span class="font-medium">Batch 02 • Community Project (25BCP308)</span>
   </footer>
 
   <!-- Modular JavaScript Entry Point -->

@@ -1,160 +1,180 @@
-/* Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Comic+Neue:wght@400;700&display=swap');
+/* Modern, Human-Crafted Typography & Theming */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Comic+Neue:wght@400;700&display=swap');
 
 :root {
-  --font-main: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-main: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-dyslexic: 'Comic Neue', 'OpenDyslexic', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body {
   font-family: var(--font-main);
-  transition: background-color 0.25s ease, color 0.25s ease;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
-/* Accessibility: Dyslexia-Friendly Font Mode */
+/* Dyslexia Mode */
 body.font-dyslexic {
   font-family: var(--font-dyslexic) !important;
-  letter-spacing: 0.08em;
-  word-spacing: 0.16em;
-  line-height: 1.85;
+  letter-spacing: 0.07em !important;
+  word-spacing: 0.14em !important;
+  line-height: 1.8 !important;
 }
 
 /* ========================================================
-   Accessibility: High Contrast Mode (WCAG AAA Compliance)
-   Ensures 100% crystal-clear visibility on dark backgrounds
+   Black & White Theme Architecture
    ======================================================== */
-body.high-contrast {
-  background-color: #000000 !important;
-  color: #FFFF00 !important;
+
+/* Light Theme (Default) */
+body.light-theme {
+  background-color: #fafafa;
+  color: #18181b;
 }
 
-body.high-contrast header#topNavbar {
-  background-color: #0a0e17 !important;
-  border-bottom: 2px solid #FFFF00 !important;
+body.light-theme .surface-card {
+  background-color: #ffffff;
+  border: 1px solid #e4e4e7;
+  color: #18181b;
 }
 
-body.high-contrast .card-surface,
-body.high-contrast section {
-  background-color: #0d1117 !important;
-  border: 2px solid #FFFF00 !important;
-  color: #FFFFFF !important;
+body.light-theme .surface-secondary {
+  background-color: #f4f4f5;
+  border: 1px solid #e4e4e7;
 }
 
-/* All Headings & Primary Titles turn Bright High-Contrast Yellow */
-body.high-contrast h1,
-body.high-contrast h2,
-body.high-contrast h3,
-body.high-contrast h4,
-body.high-contrast #stageHeaderTitle,
-body.high-contrast #taskPrompt,
-body.high-contrast #gameTitle,
-body.high-contrast #videoTitle {
-  color: #FFFF00 !important;
+body.light-theme .text-secondary {
+  color: #71717a;
 }
 
-/* Subheadings, Prompts and Instructions turn Crisp Cyan */
-body.high-contrast p,
-body.high-contrast label,
-body.high-contrast #stageHeaderSub,
-body.high-contrast #gameInstruction,
-body.high-contrast #videoSubtitle,
-body.high-contrast .text-slate-500,
-body.high-contrast .text-slate-400,
-body.high-contrast .text-slate-600,
-body.high-contrast .text-slate-700 {
-  color: #00FFFF !important;
+body.light-theme .btn-primary {
+  background-color: #18181b;
+  color: #ffffff;
+  border: 1px solid #18181b;
+}
+body.light-theme .btn-primary:hover {
+  background-color: #27272a;
 }
 
-/* Dropdowns & Input Fields */
-body.high-contrast select {
-  background-color: #161b22 !important;
-  color: #FFFFFF !important;
-  border: 2px solid #FFFF00 !important;
+body.light-theme .btn-secondary {
+  background-color: #ffffff;
+  color: #18181b;
+  border: 1px solid #e4e4e7;
+}
+body.light-theme .btn-secondary:hover {
+  background-color: #f4f4f5;
+  border-color: #d4d4d8;
 }
 
-body.high-contrast option {
-  background-color: #161b22 !important;
-  color: #FFFFFF !important;
+body.light-theme .tab-active {
+  background-color: #18181b;
+  color: #ffffff;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+body.light-theme .tab-inactive {
+  background-color: transparent;
+  color: #71717a;
+}
+body.light-theme .tab-inactive:hover {
+  color: #18181b;
+  background-color: #f4f4f5;
 }
 
-/* Pedagogical Strategy Badge */
-body.high-contrast #adaptationBadge {
-  background-color: #161b22 !important;
-  border: 2px solid #FFFF00 !important;
+body.light-theme select {
+  background-color: #ffffff;
+  color: #18181b;
+  border: 1px solid #d4d4d8;
 }
-body.high-contrast #adaptationTitle {
-  color: #FFFF00 !important;
-}
-body.high-contrast #adaptationText {
-  color: #FFFFFF !important;
+body.light-theme select:focus {
+  border-color: #18181b;
+  outline: none;
 }
 
-/* Task Workspace & Visual Objects */
-body.high-contrast #taskContainer,
-body.high-contrast #appleContainer {
-  background-color: #161b22 !important;
-  border: 2px dashed #FFFF00 !important;
+/* ========================================================
+   Dark Theme (Sleek Obsidian & Pure White Text)
+   ======================================================== */
+body.dark-theme {
+  background-color: #09090b;
+  color: #f4f4f5;
 }
 
-/* Answer Choices */
-body.high-contrast #taskOptions button {
-  background-color: #161b22 !important;
-  color: #FFFF00 !important;
-  border: 2px solid #FFFF00 !important;
+body.dark-theme header#topNavbar {
+  background-color: #09090b;
+  border-bottom: 1px solid #27272a;
+  color: #f4f4f5;
 }
 
-body.high-contrast #taskOptions button:hover {
-  background-color: #FFFF00 !important;
-  color: #000000 !important;
+body.dark-theme .surface-card {
+  background-color: #121215;
+  border: 1px solid #27272a;
+  color: #f4f4f5;
 }
 
-/* Breadcrumb Navigation */
-body.high-contrast #currentPathBreadcrumb span,
-body.high-contrast #currentPathBreadcrumb i {
-  color: #00FFFF !important;
-}
-body.high-contrast #currentPathBreadcrumb .font-bold {
-  color: #FFFF00 !important;
-}
-body.high-contrast #currentPathBreadcrumb .bg-indigo-100 {
-  background-color: #1f2937 !important;
-  border: 1px solid #FFFF00 !important;
-  color: #FFFF00 !important;
+body.dark-theme .surface-secondary {
+  background-color: #18181b;
+  border: 1px solid #27272a;
 }
 
-/* Group Game Cards */
-body.high-contrast #paneGame .rounded-2xl {
-  background-color: #161b22 !important;
-  border: 2px solid #FFFF00 !important;
-}
-body.high-contrast #scoreTeamA,
-body.high-contrast #scoreTeamB {
-  color: #FFFF00 !important;
+body.dark-theme .text-secondary {
+  color: #a1a1aa;
 }
 
-/* Toolbar Buttons */
-body.high-contrast button {
-  border: 1px solid #FFFF00 !important;
+body.dark-theme .btn-primary {
+  background-color: #f4f4f5;
+  color: #09090b;
+  border: 1px solid #f4f4f5;
+}
+body.dark-theme .btn-primary:hover {
+  background-color: #ffffff;
 }
 
-/* Footer */
-body.high-contrast footer {
-  background-color: #0d1117 !important;
-  border-top: 2px solid #FFFF00 !important;
-  color: #00FFFF !important;
+body.dark-theme .btn-secondary {
+  background-color: #18181b;
+  color: #f4f4f5;
+  border: 1px solid #27272a;
+}
+body.dark-theme .btn-secondary:hover {
+  background-color: #27272a;
+  border-color: #3f3f46;
 }
 
-/* Projector Display Mode */
+body.dark-theme .tab-active {
+  background-color: #f4f4f5;
+  color: #09090b;
+}
+body.dark-theme .tab-inactive {
+  background-color: transparent;
+  color: #a1a1aa;
+}
+body.dark-theme .tab-inactive:hover {
+  color: #f4f4f5;
+  background-color: #18181b;
+}
+
+body.dark-theme select {
+  background-color: #18181b;
+  color: #f4f4f5;
+  border: 1px solid #27272a;
+}
+body.dark-theme select:focus {
+  border-color: #f4f4f5;
+  outline: none;
+}
+
+body.dark-theme footer {
+  background-color: #09090b;
+  border-top: 1px solid #27272a;
+  color: #71717a;
+}
+
+/* Projector Fullscreen Mode */
 body.projector-fullscreen #teacherNavigationSection {
   display: none !important;
 }
 
-body.projector-fullscreen #topNavbar {
-  background-color: #0f172a !important;
-}
-
 body.projector-fullscreen #projectorStage {
-  min-height: calc(100vh - 80px);
+  min-height: calc(100vh - 84px);
   border-radius: 0;
   border: none;
   box-shadow: none;

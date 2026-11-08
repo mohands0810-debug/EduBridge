@@ -1,12 +1,12 @@
 /**
  * EduBridge Curriculum & Adaptation Knowledge Base
- * Aligned with NCERT/CBSE inclusive primary school standards
+ * Developed for KSIT Community Project (25BCP308)
  */
 
 export const CURRICULA = [
-  { id: 'CBSE', name: 'CBSE (NCERT)', subtitle: 'National Curriculum Framework' },
-  { id: 'ICSE', name: 'ICSE / CISCE', subtitle: 'Council for Indian School Certificate' },
-  { id: 'State_Board', name: 'Karnataka State Board', subtitle: 'DSERT Curricular Guidelines' }
+  { id: 'CBSE', name: 'CBSE (NCERT)', subtitle: 'Central Board of Secondary Education' },
+  { id: 'ICSE', name: 'ICSE', subtitle: 'Indian Certificate of Secondary Education' },
+  { id: 'State_Board', name: 'Karnataka State Board', subtitle: 'DSERT Curricular Framework' }
 ];
 
 export const DISABILITY_PROFILES = [
@@ -14,45 +14,40 @@ export const DISABILITY_PROFILES = [
     id: 'ADHD',
     name: 'Attention Deficit (ADHD)',
     icon: 'fa-bolt',
-    accentColor: '#f59e0b',
-    strategy: 'Short 2-3 minute micro-tasks, high-contrast visual tokens, immediate reward feedback, and minimized background text to retain attention.'
+    strategy: 'Divide concepts into 2–3 minute micro-tasks. Use high visual contrast, immediate interactive confirmation, and eliminate background clutter to sustain student focus.'
   },
   {
     id: 'ASD',
     name: 'Autism Spectrum (ASD)',
     icon: 'fa-puzzle-piece',
-    accentColor: '#6366f1',
-    strategy: 'Predictable step routines, calm pastel palettes, zero sudden audio cues, literal visual representations, and clear beginning/end indicators.'
+    strategy: 'Maintain structured, predictable steps. Use clear visual references without sudden acoustic transitions or distracting animations.'
   },
   {
     id: 'Dyslexia',
-    name: 'Specific Learning Disability (Dyslexia)',
+    name: 'Dyslexia & Reading Difficulties',
     icon: 'fa-book-open-reader',
-    accentColor: '#10b981',
-    strategy: 'Enforced letter spacing, dual audio-visual text highlighting, colored background overlay, and phonetic word segmentation.'
+    strategy: 'Provide increased character and line spacing, synchronous audio narration, and distinct visual token separation.'
   },
   {
     id: 'ID',
-    name: 'Intellectual Disability (Mild/Moderate)',
+    name: 'Intellectual Disability (Mild / Moderate)',
     icon: 'fa-shapes',
-    accentColor: '#ec4899',
-    strategy: 'Concrete physical objects (apples, blocks, coins), repetitive reinforcement, single-step prompts, and real-life functional examples.'
+    strategy: 'Teach using concrete real-world objects (fruits, coins, blocks). Use single-step instructions and repeated positive reinforcement.'
   },
   {
     id: 'General',
-    name: 'Inclusive Mixed Classroom',
+    name: 'Inclusive Classroom (Whole Cohort)',
     icon: 'fa-users',
-    accentColor: '#0ea5e9',
-    strategy: 'Universal Design for Learning (UDL) balancing auditory narration, tactile on-screen manipulation, and collaborative peer learning.'
+    strategy: 'Combine visual projection, teacher-led verbal questioning, and whole-class participation exercises.'
   }
 ];
 
 export const GRADES = [
-  { id: 1, name: 'Grade 1', ageRange: 'Ages 6–7', stage: 'Foundational' },
-  { id: 2, name: 'Grade 2', ageRange: 'Ages 7–8', stage: 'Foundational' },
-  { id: 3, name: 'Grade 3', ageRange: 'Ages 8–9', stage: 'Preparatory' },
-  { id: 4, name: 'Grade 4', ageRange: 'Ages 9–10', stage: 'Preparatory' },
-  { id: 5, name: 'Grade 5', ageRange: 'Ages 10–11', stage: 'Preparatory' }
+  { id: 1, name: 'Grade 1', ageRange: 'Ages 6–7' },
+  { id: 2, name: 'Grade 2', ageRange: 'Ages 7–8' },
+  { id: 3, name: 'Grade 3', ageRange: 'Ages 8–9' },
+  { id: 4, name: 'Grade 4', ageRange: 'Ages 9–10' },
+  { id: 5, name: 'Grade 5', ageRange: 'Ages 10–11' }
 ];
 
 export const SUBJECTS = [
@@ -64,56 +59,56 @@ export const SUBJECTS = [
       {
         id: 'math_addition',
         title: 'Visual Addition (Sums to 10)',
-        description: 'Counting physical fruits and grouping quantities together.',
-        taskPrompt: 'How many apples are in the basket?',
+        description: 'Counting tangible fruit items and calculating sums.',
+        taskPrompt: 'Count the apples on the screen. How many are there in total?',
         taskItems: ['🍎', '🍎', '🍎', '🍎', '🍎'],
-        options: [3, 5, 7],
-        correctAnswer: 5,
-        successMessage: 'Great job! Exactly 5 apples in the basket!',
+        options: ['3', '5', '7'],
+        correctAnswer: '5',
+        successMessage: 'Correct! There are exactly 5 apples.',
         gameChallenge: {
-          title: 'Class Fruit Counting Match',
-          instruction: 'Which side has more fruits? Group A calls Left, Group B calls Right!',
+          title: 'Classroom Count Challenge',
+          instruction: 'Compare the two groups. Teacher calls on Row A or Row B to identify the larger quantity.',
           left: '🍎 🍎 🍎 (3)',
-          right: '🍌 🍌 🍌 🍌 🍌 (5)'
+          right: '🍎 🍎 🍎 🍎 🍎 (5)'
         },
-        videoTitle: 'Visual Addition with Real World Objects',
-        videoSubtitle: 'Counting one-by-one with clear contrast'
+        videoTitle: 'Visual Addition with Familiar Objects',
+        videoSubtitle: 'Step-by-step counting with clear audio captions'
       },
       {
         id: 'math_shapes',
         title: '2D Shapes Recognition',
-        description: 'Identifying circles, squares, triangles in everyday objects.',
-        taskPrompt: 'Which shape has 4 equal straight sides?',
-        taskItems: ['🟦 Square', '🔴 Circle', '🔺 Triangle'],
+        description: 'Identifying circles, squares, and triangles in everyday life.',
+        taskPrompt: 'Which shape has 4 straight sides of equal length?',
+        taskItems: ['Square', 'Circle', 'Triangle'],
         options: ['Square', 'Circle', 'Triangle'],
         correctAnswer: 'Square',
-        successMessage: 'Correct! A square has 4 equal straight sides and 4 corners!',
+        successMessage: 'Correct! A square has 4 equal straight sides.',
         gameChallenge: {
-          title: 'Class Shape Hunting Challenge',
-          instruction: 'Spot the circle in the classroom! Team with first spot gets the point.',
-          left: '🔴 Round Objects',
-          right: '🟦 Box Objects'
+          title: 'Classroom Shape Spotting',
+          instruction: 'Teacher points to a shape. Students raise hands to match it with an object in the room.',
+          left: 'Circle (Clock / Wheel)',
+          right: 'Square (Tile / Box)'
         },
-        videoTitle: 'Exploring Shapes Around Us',
-        videoSubtitle: 'Identifying circles, squares and triangles in real life'
+        videoTitle: 'Recognizing Geometric Shapes Around Us',
+        videoSubtitle: 'Visual properties of circles, squares, and triangles'
       },
       {
         id: 'math_patterns',
         title: 'Color & Pattern Sequences',
-        description: 'Sequential logical reasoning using visual color blocks.',
-        taskPrompt: 'What comes next in the pattern: Red ➔ Blue ➔ Red ➔ ?',
-        taskItems: ['🔴', '🔵', '🔴', '❓'],
-        options: ['🔵 Blue', '🔴 Red', '🟢 Green'],
-        correctAnswer: '🔵 Blue',
-        successMessage: 'Brilliant! The pattern repeats: Red then Blue!',
+        description: 'Logical pattern continuation using visual color markers.',
+        taskPrompt: 'What comes next in the sequence: Red ➔ Blue ➔ Red ➔ ?',
+        taskItems: ['🔴 Red', '🔵 Blue', '🔴 Red', '❓ Next'],
+        options: ['Blue', 'Red', 'Green'],
+        correctAnswer: 'Blue',
+        successMessage: 'Great work! The sequence continues with Blue.',
         gameChallenge: {
-          title: 'Rhythm Pattern Clapping Game',
-          instruction: 'Clap on Red, Stomp on Blue! Teacher leads the rhythm.',
+          title: 'Pattern Clapping Game',
+          instruction: 'Students clap on Red and tap desks on Blue as the teacher projects the rhythm.',
           left: 'Clap (Red)',
-          right: 'Stomp (Blue)'
+          right: 'Tap (Blue)'
         },
-        videoTitle: 'Learning Visual Patterns Step-by-Step',
-        videoSubtitle: 'Predicting colors and repeating shapes'
+        videoTitle: 'Understanding Repeating Patterns',
+        videoSubtitle: 'Identifying rhythmic and visual sequences'
       }
     ]
   },
@@ -125,38 +120,38 @@ export const SUBJECTS = [
       {
         id: 'evs_plants',
         title: 'Parts of a Plant',
-        description: 'Roots, stem, leaves, flower, and their primary functions.',
-        taskPrompt: 'Which part of the plant grows under the soil and drinks water?',
-        taskItems: ['🌱 Roots (Underground)', '🌿 Leaves (Green)', '🌸 Flower (Colorful)'],
+        description: 'Structure and functions of roots, stem, leaves, and flowers.',
+        taskPrompt: 'Which part of the plant anchors it underground and absorbs water?',
+        taskItems: ['Roots (Underground)', 'Leaves (Green)', 'Flower (Bloom)'],
         options: ['Roots', 'Leaves', 'Flower'],
         correctAnswer: 'Roots',
-        successMessage: 'Spot on! The roots anchor the plant and drink water from the soil!',
+        successMessage: 'Correct! Roots grow below the soil to absorb water and nutrients.',
         gameChallenge: {
-          title: 'Plant Parts Relay Challenge',
-          instruction: 'Call out the function: Team A names what drinks water, Team B names what catches sunlight!',
-          left: 'Roots (Water)',
-          right: 'Leaves (Sunlight)'
+          title: 'Plant Parts Relay',
+          instruction: 'Row A identifies what absorbs sunlight; Row B identifies what absorbs water from soil.',
+          left: 'Roots (Water & Soil)',
+          right: 'Leaves (Sunlight & Air)'
         },
-        videoTitle: 'How Plants Grow: Roots to Flowers',
-        videoSubtitle: 'A sensory visual journey through the garden'
+        videoTitle: 'The Life of a Plant: From Seed to Bloom',
+        videoSubtitle: 'An illustrated guide to plant anatomy'
       },
       {
         id: 'evs_animals',
         title: 'Domestic & Wild Animals',
-        description: 'Categorizing animals by sounds, habitats, and food habits.',
-        taskPrompt: 'Which animal is a domestic farm friend who gives milk?',
-        taskItems: ['🐄 Cow (Farm)', '🦁 Lion (Jungle)', '🐘 Elephant (Forest)'],
+        description: 'Classifying animals by their habitat, sound, and relation to humans.',
+        taskPrompt: 'Which of these is a domestic animal that lives on farms?',
+        taskItems: ['Cow (Farm)', 'Lion (Jungle)', 'Elephant (Forest)'],
         options: ['Cow', 'Lion', 'Elephant'],
         correctAnswer: 'Cow',
-        successMessage: 'Correct! The cow lives peacefully on farms and provides milk!',
+        successMessage: 'Correct! Cows are domestic farm animals.',
         gameChallenge: {
-          title: 'Animal Sound Mimic Challenge',
-          instruction: 'Team A makes farm sounds, Team B makes jungle sounds!',
-          left: 'Farm Friends (Moo/Baa)',
-          right: 'Jungle Kings (Roar/Trumpet)'
+          title: 'Animal Habitat Categorization',
+          instruction: 'Students identify whether the projected animal lives with humans or in the wild.',
+          left: 'Domestic (Farm & Home)',
+          right: 'Wild (Forest & Jungle)'
         },
-        videoTitle: 'Animals and Their Homes',
-        videoSubtitle: 'Exploring domestic friends and jungle wildlife'
+        videoTitle: 'Animal Habitats and Living Patterns',
+        videoSubtitle: 'Understanding wildlife and farm companions'
       }
     ]
   },
@@ -168,38 +163,38 @@ export const SUBJECTS = [
       {
         id: 'eng_phonics',
         title: 'Phonic Word Sounds',
-        description: 'Letter-sound matching with audio pronunciation.',
-        taskPrompt: 'Which word starts with the sound /b/ as in Ball?',
-        taskItems: ['⚽ Ball', '🐱 Cat', '🍎 Apple'],
+        description: 'Associating letter sounds with common words.',
+        taskPrompt: 'Which word begins with the sound /b/ as in Ball?',
+        taskItems: ['Ball', 'Cat', 'Apple'],
         options: ['Ball', 'Cat', 'Apple'],
         correctAnswer: 'Ball',
-        successMessage: 'Great listening! /b/ is for B-A-L-L!',
+        successMessage: 'Spot on! Ball begins with the letter B.',
         gameChallenge: {
-          title: 'Phonics Echo Challenge',
-          instruction: 'Teacher says sound, whole class repeats in chorus!',
-          left: '/b/ Sound',
-          right: '/c/ Sound'
+          title: 'Phonics Chorus Call',
+          instruction: 'Teacher pronounces the starting phoneme; the entire class responds in unison.',
+          left: '/b/ Sound (Ball, Bat)',
+          right: '/c/ Sound (Cat, Cup)'
         },
-        videoTitle: 'Phonics Fun: Exploring Letter Sounds',
-        videoSubtitle: 'Sing-along phonetic pronunciation'
+        videoTitle: 'Phonics & Pronunciation Practice',
+        videoSubtitle: 'Auditory and visual letter-sound association'
       },
       {
         id: 'eng_action_words',
         title: 'Action Words (Verbs)',
-        description: 'Associating action verbs with physical movements.',
-        taskPrompt: 'What action do your feet do when you leap into the air?',
-        taskItems: ['🦘 Jump', '😴 Sleep', '📖 Read'],
+        description: 'Connecting everyday movement verbs with physical demonstrations.',
+        taskPrompt: 'Which word describes pushing off the ground with your feet into the air?',
+        taskItems: ['Jump', 'Sleep', 'Read'],
         options: ['Jump', 'Sleep', 'Read'],
         correctAnswer: 'Jump',
-        successMessage: 'Awesome! Jumping uses your feet to spring into the air!',
+        successMessage: 'Correct! Jumping is an action verb.',
         gameChallenge: {
-          title: 'Simon Says Classroom Movement Game',
-          instruction: 'Simon says: Touch your toes! Simon says: Jump together!',
+          title: 'Classroom Action Simon Says',
+          instruction: 'Teacher projects the action word; students demonstrate the physical movement safely.',
           left: 'Clap Hands',
-          right: 'Stand Tall'
+          right: 'Stand Up'
         },
-        videoTitle: 'Action Words in Motion',
-        videoSubtitle: 'Connecting verbs to joyful classroom activities'
+        videoTitle: 'Verbs in Action: Learn Through Movement',
+        videoSubtitle: 'Demonstrating common physical actions'
       }
     ]
   }
