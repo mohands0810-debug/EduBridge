@@ -10,10 +10,11 @@ const state = {
   isDyslexic: false,
   isHighContrast: false,
   isProjectorMode: false,
-  activeStageTab: 'interactive' // 'interactive', 'game', 'video'
+  activeStageTab: 'interactive',
+  scores: { teamA: 0, teamB: 0 }
 };
 
-// DOM Elements
+// DOM References
 const elements = {
   selCurriculum: document.getElementById('selCurriculum'),
   selDisability: document.getElementById('selDisability'),
@@ -28,35 +29,66 @@ const elements = {
   btnContrast: document.getElementById('btnContrast'),
   btnProjector: document.getElementById('btnProjector'),
   btnTts: document.getElementById('btnTts'),
-  currentPathBreadcrumb: document.getElementById('currentPathBreadcrumb')
+  currentPathBreadcrumb: document.getElementById('currentPathBreadcrumb'),
+  
+  // Interactive Task Elements
+  taskPrompt: document.getElementById('taskPrompt'),
+  taskContainer: document.getElementById('taskContainer'),
+  taskOptions: document.getElementById('taskOptions'),
+  taskFeedback: document.getElementById('taskFeedback'),
+
+  // Game Elements
+  gameTitle: document.getElementById('gameTitle'),
+  gameInstruction: document.getElementById('gameInstruction'),
+  gameCardLeft: document.getElementById('gameCardLeft'),
+  gameCardRight: document.getElementById('gameCardRight'),
+  scoreTeamA: document.getElementById('scoreTeamA'),
+  scoreTeamB: document.getElementById('scoreTeamB'),
+
+  // Video Elements
+  videoTitle: document.getElementById('videoTitle'),
+  videoSubtitle: document.getElementById('videoSubtitle')
 };
 
-// Initialize the 5-step selectors
-function initializeSelectors() {
-  // 1. Populate Curricula
+// Initialize Application
+function initialize() {
+  populateDropdowns();
+  setupEventListeners();
+  updateUI();
+}
+
+function populateDropdowns() {
   elements.selCurriculum.innerHTML = CURRICULA.map(c => 
     `<option value="${c.id}" ${c.id === state.curriculum ? 'selected' : ''}>${c.name}</option>`
   ).join('');
 
-  // 2. Populate Disability Profiles
   elements.selDisability.innerHTML = DISABILITY_PROFILES.map(d => 
     `<option value="${d.id}" ${d.id === state.disability ? 'selected' : ''}>${d.name}</option>`
   ).join('');
 
-  // 3. Populate Grades
   elements.selGrade.innerHTML = GRADES.map(g => 
     `<option value="${g.id}" ${g.id === state.grade ? 'selected' : ''}>${g.name} (${g.ageRange})</option>`
   ).join('');
 
-  // 4. Populate Subjects
   elements.selSubject.innerHTML = SUBJECTS.map(s => 
     `<option value="${s.id}" ${s.id === state.subject ? 'selected' : ''}>${s.name}</option>`
   ).join('');
 
-  // 5. Populate Topics based on current subject
-  updateTopicOptions();
+  updateTopicDropdown();
+}
 
-  // Attach Event Listeners
+function updateTopicDropdown() {
+  const currentSubj = SUBJECTS.find(s => s.id === state.subject) || SUBJECTS[0];
+  elements.selTopic.innerHTML = currentSubj.topics.map(t => 
+    `<option value="${t.id}" ${t.id === state.topic ? 'selected' : ''}>${t.title}</option>`
+  ).join('');
+
+  if (!currentSubj.topics.some(t => t.id === state.topic)) {
+    state.topic = currentSubj.topics[0].id;
+  }
+}
+
+function setupEventListeners() {
   elements.selCurriculum.addEventListener('change', (e) => {
     state.curriculum = e.target.value;
     updateUI();
@@ -74,7 +106,7 @@ function initializeSelectors() {
 
   elements.selSubject.addEventListener('change', (e) => {
     state.subject = e.target.value;
-    updateTopicOptions();
+    updateTopicDropdown();
     updateUI();
   });
 
@@ -83,32 +115,18 @@ function initializeSelectors() {
     updateUI();
   });
 
-  // Toolbar Listeners
+  // Toolbar Actions
   elements.btnDyslexia.addEventListener('click', toggleDyslexia);
   elements.btnContrast.addEventListener('click', toggleContrast);
   elements.btnProjector.addEventListener('click', toggleProjector);
-  elements.btnTts.addEventListener('click', speakCurrentTopic);
+  elements.btnTts.addEventListener('click', speakCurrentScreen);
 
-  // Tab Listeners
+  // Tabs
   document.querySelectorAll('.stage-tab-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
-      const targetTab = e.currentTarget.dataset.tab;
-      setStageTab(targetTab);
+      setStageTab(e.currentTarget.dataset.tab);
     });
   });
-
-  updateUI();
-}
-
-function updateTopicOptions() {
-  const currentSubjectObj = SUBJECTS.find(s => s.id === state.subject) || SUBJECTS[0];
-  elements.selTopic.innerHTML = currentSubjectObj.topics.map(t => 
-    `<option value="${t.id}" ${t.id === state.topic ? 'selected' : ''}>${t.title}</option>`
-  ).join('');
-
-  if (!currentSubjectObj.topics.some(t => t.id === state.topic)) {
-    state.topic = currentSubjectObj.topics[0].id;
-  }
 }
 
 function updateUI() {
@@ -117,34 +135,104 @@ function updateUI() {
   const subjObj = SUBJECTS.find(s => s.id === state.subject);
   const topicObj = subjObj.topics.find(t => t.id === state.topic) || subjObj.topics[0];
 
-  // Update Breadcrumb
+  // 1. Update Breadcrumb
   elements.currentPathBreadcrumb.innerHTML = `
     <span class="font-bold text-indigo-700">${currObj.name}</span> 
-    <i class="fa-solid fa-chevron-right text-xs text-slate-400"></i>
+    <i class="fa-solid fa-chevron-right text-[10px] text-slate-400"></i>
     <span class="font-bold text-amber-600">${disObj.name}</span> 
-    <i class="fa-solid fa-chevron-right text-xs text-slate-400"></i>
+    <i class="fa-solid fa-chevron-right text-[10px] text-slate-400"></i>
     <span>Grade ${state.grade}</span> 
-    <i class="fa-solid fa-chevron-right text-xs text-slate-400"></i>
+    <i class="fa-solid fa-chevron-right text-[10px] text-slate-400"></i>
     <span class="font-semibold text-slate-700">${subjObj.name}</span>
-    <i class="fa-solid fa-chevron-right text-xs text-slate-400"></i>
+    <i class="fa-solid fa-chevron-right text-[10px] text-slate-400"></i>
     <span class="bg-indigo-100 text-indigo-800 px-2 py-0.5 rounded-md font-bold">${topicObj.title}</span>
   `;
 
-  // Update Pedagogical Strategy Badge
+  // 2. Update Adaptation Strategy Banner
   elements.adaptationTitle.innerHTML = `<i class="fa-solid ${disObj.icon} mr-1.5" style="color: ${disObj.accentColor}"></i> Strategy for ${disObj.name}:`;
   elements.adaptationText.innerText = disObj.strategy;
 
-  // Render Stage Content
-  renderStage(topicObj, disObj);
+  // 3. Update Stage Titles
+  document.getElementById('stageHeaderTitle').innerText = topicObj.title;
+  document.getElementById('stageHeaderSub').innerText = `${topicObj.description} • Calibrated for ${disObj.name}`;
+
+  // 4. Render Active Interactive Task
+  renderInteractiveTask(topicObj);
+
+  // 5. Render Group Game
+  renderGroupGame(topicObj);
+
+  // 6. Render Video Tab
+  renderVideoTab(topicObj);
 }
 
-function renderStage(topicObj, disObj) {
-  const stageHeader = document.getElementById('stageHeaderTitle');
-  const stageHeaderSub = document.getElementById('stageHeaderSub');
-  
-  stageHeader.innerText = topicObj.title;
-  stageHeaderSub.innerText = `${topicObj.description} • Calibrated for ${disObj.name}`;
+function renderInteractiveTask(topicObj) {
+  elements.taskPrompt.innerText = topicObj.taskPrompt;
+  elements.taskFeedback.innerHTML = '';
+
+  // Render Visual Items
+  elements.taskContainer.innerHTML = topicObj.taskItems.map((item, idx) => `
+    <div class="px-5 py-3 bg-white border-2 border-indigo-200 text-indigo-900 rounded-2xl flex items-center justify-center text-3xl font-bold shadow-sm animate-bounce" style="animation-delay: ${idx * 0.1}s">
+      ${item}
+    </div>
+  `).join('');
+
+  // Render Polling Options
+  elements.taskOptions.innerHTML = topicObj.options.map(opt => `
+    <button onclick="handleAnswerChoice('${opt}')" class="py-4 px-6 bg-white hover:bg-indigo-50 border-2 border-indigo-200 rounded-2xl text-xl font-black text-indigo-700 shadow-sm transition transform hover:-translate-y-1 active:scale-95">
+      ${opt}
+    </button>
+  `).join('');
 }
+
+function renderGroupGame(topicObj) {
+  const g = topicObj.gameChallenge;
+  elements.gameTitle.innerText = g.title;
+  elements.gameInstruction.innerText = g.instruction;
+  elements.gameCardLeft.innerText = g.left;
+  elements.gameCardRight.innerText = g.right;
+}
+
+function renderVideoTab(topicObj) {
+  elements.videoTitle.innerText = topicObj.videoTitle;
+  elements.videoSubtitle.innerText = topicObj.videoSubtitle;
+}
+
+// Global Answer Checker
+window.handleAnswerChoice = function(chosen) {
+  const subjObj = SUBJECTS.find(s => s.id === state.subject);
+  const topicObj = subjObj.topics.find(t => t.id === state.topic);
+  
+  const isMatch = String(chosen).toLowerCase().includes(String(topicObj.correctAnswer).toLowerCase());
+
+  if (isMatch) {
+    elements.taskFeedback.innerHTML = `
+      <div class="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-green-100 text-green-800 border-2 border-green-300 font-extrabold text-lg shadow-sm">
+        <i class="fa-solid fa-circle-check text-2xl text-green-600"></i>
+        <span>${topicObj.successMessage}</span>
+      </div>
+    `;
+    speakPaced(topicObj.successMessage);
+  } else {
+    elements.taskFeedback.innerHTML = `
+      <div class="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-amber-100 text-amber-900 border-2 border-amber-300 font-extrabold text-lg shadow-sm">
+        <i class="fa-solid fa-rotate text-xl text-amber-600"></i>
+        <span>Let us look closely and try once more together!</span>
+      </div>
+    `;
+    speakPaced("Let us look closely and try once more together!");
+  }
+};
+
+// Global Team Points
+window.awardTeamPoint = function(team) {
+  if (team === 'A') state.scores.teamA++;
+  if (team === 'B') state.scores.teamB++;
+
+  elements.scoreTeamA.innerText = state.scores.teamA;
+  elements.scoreTeamB.innerText = state.scores.teamB;
+  speakPaced(`Point awarded to Team ${team}! Outstanding teamwork!`);
+};
 
 // Accessibility Toggles
 function toggleDyslexia() {
@@ -166,40 +254,36 @@ function toggleProjector() {
   document.body.classList.toggle('projector-fullscreen', state.isProjectorMode);
   elements.btnProjector.classList.toggle('bg-amber-400', state.isProjectorMode);
   elements.btnProjector.classList.toggle('text-slate-900', state.isProjectorMode);
-  
+
   const icon = elements.btnProjector.querySelector('i');
   if (state.isProjectorMode) {
     icon.className = 'fa-solid fa-compress';
-    elements.btnProjector.querySelector('span').innerText = 'Exit Projector';
+    elements.btnProjector.querySelector('span').innerText = 'Exit Fullscreen';
   } else {
     icon.className = 'fa-solid fa-expand';
     elements.btnProjector.querySelector('span').innerText = 'Projector Mode';
   }
 }
 
-function speakCurrentTopic() {
-  if (!('speechSynthesis' in window)) {
-    alert('Web Speech API is not supported in this browser.');
-    return;
-  }
-  window.speechSynthesis.cancel();
-  
+function speakCurrentScreen() {
   const subjObj = SUBJECTS.find(s => s.id === state.subject);
   const topicObj = subjObj.topics.find(t => t.id === state.topic);
-  const disObj = DISABILITY_PROFILES.find(d => d.id === state.disability);
+  speakPaced(`Class prompt: ${topicObj.taskPrompt}`);
+}
 
-  const textToSpeak = `Today's lesson is ${topicObj.title}. ${topicObj.description}. Let us learn together!`;
-  const utterance = new SpeechSynthesisUtterance(textToSpeak);
+function speakPaced(text) {
+  if (!('speechSynthesis' in window)) return;
+  window.speechSynthesis.cancel();
   
-  // Slower rate for cognitive comprehension
-  utterance.rate = state.disability === 'ID' || state.disability === 'ASD' ? 0.8 : 0.9;
-  utterance.pitch = 1.0;
-  window.speechSynthesis.speak(utterance);
+  const u = new SpeechSynthesisUtterance(text);
+  u.rate = state.disability === 'ID' || state.disability === 'ASD' ? 0.8 : 0.88;
+  u.pitch = 1.05;
+  window.speechSynthesis.speak(u);
 }
 
 function setStageTab(tab) {
   state.activeStageTab = tab;
-  
+
   document.querySelectorAll('.stage-tab-btn').forEach(btn => {
     const isTarget = btn.dataset.tab === tab;
     btn.className = isTarget 
@@ -212,35 +296,5 @@ function setStageTab(tab) {
   document.getElementById('paneVideo').classList.toggle('hidden', tab !== 'video');
 }
 
-// Global hook for demo interactivity
-window.checkAnswer = function(selectedVal) {
-  const fb = document.getElementById('taskFeedback');
-  if (selectedVal === 5) {
-    fb.innerHTML = `<span class="text-green-600 bg-green-50 px-4 py-2 rounded-xl border border-green-200 inline-flex items-center gap-2"><i class="fa-solid fa-circle-check text-xl"></i> Correct! Exactly 5 apples in the basket!</span>`;
-    speakFeedback("Correct! Exactly 5 apples in the basket!");
-  } else {
-    fb.innerHTML = `<span class="text-amber-600 bg-amber-50 px-4 py-2 rounded-xl border border-amber-200 inline-flex items-center gap-2"><i class="fa-solid fa-arrows-rotate text-xl"></i> Nice try! Let us count them together one by one!</span>`;
-    speakFeedback("Nice try! Let us count them together one by one!");
-  }
-};
-
-let groupPoints = { a: 0, b: 0 };
-window.addTeamPoint = function(team) {
-  if (team === 'A') groupPoints.a++;
-  if (team === 'B') groupPoints.b++;
-  
-  document.getElementById('scoreTeamA').innerText = groupPoints.a;
-  document.getElementById('scoreTeamB').innerText = groupPoints.b;
-  speakFeedback(`Point for Team ${team}!`);
-};
-
-function speakFeedback(text) {
-  if ('speechSynthesis' in window) {
-    const u = new SpeechSynthesisUtterance(text);
-    u.rate = 0.85;
-    window.speechSynthesis.speak(u);
-  }
-}
-
-// Start application
-document.addEventListener('DOMContentLoaded', initializeSelectors);
+// Run on load
+document.addEventListener('DOMContentLoaded', initialize);
