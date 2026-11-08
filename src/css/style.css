@@ -1,0 +1,80 @@
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Comic+Neue:wght@400;700&display=swap');
+
+:root {
+  --font-main: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-dyslexic: 'Comic Neue', 'OpenDyslexic', sans-serif;
+}
+
+body {
+  font-family: var(--font-main);
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* Accessibility: Dyslexia-Friendly Font Mode */
+body.font-dyslexic {
+  font-family: var(--font-dyslexic) !important;
+  letter-spacing: 0.08em;
+  word-spacing: 0.16em;
+  line-height: 1.85;
+}
+
+/* Accessibility: High Contrast Mode (WCAG AAA Compliance) */
+body.high-contrast {
+  background-color: #000000 !important;
+  color: #FFFF00 !important;
+}
+
+body.high-contrast .card-surface {
+  background-color: #121212 !important;
+  border-color: #FFFF00 !important;
+  color: #FFFFFF !important;
+}
+
+body.high-contrast .text-muted {
+  color: #00FFCC !important;
+}
+
+body.high-contrast button {
+  border: 2px solid #FFFF00 !important;
+}
+
+/* Accessibility: Low Stimulation / Sensory Mode (Calm for Autism Spectrum) */
+body.low-sensory {
+  background-color: #f1f5f9 !important;
+  filter: saturate(0.85);
+}
+
+body.low-sensory * {
+  animation: none !important;
+  transition: none !important;
+}
+
+/* Projector Display Mode */
+body.projector-fullscreen #teacherNavigationSection {
+  display: none !important;
+}
+
+body.projector-fullscreen #topNavbar {
+  background-color: #0f172a !important;
+}
+
+body.projector-fullscreen #projectorStage {
+  min-height: calc(100vh - 80px);
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
+}
+
+/* Interactive Card Transitions */
+.step-card {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.step-card:hover {
+  transform: translateY(-2px);
+}
+
+.step-card.active {
+  ring-width: 2px;
+}
