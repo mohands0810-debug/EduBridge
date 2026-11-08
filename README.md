@@ -1,5 +1,10 @@
 # Computer-Based Learning Tool for Mentally Challenged Students
 
+[![Vercel Deployment](https://img.shields.io/badge/Vercel-Live%20Demo-black?logo=vercel&style=for-the-badge)](https://edubridge-cp.vercel.app)
+[![GitHub Repo](https://img.shields.io/badge/GitHub-Repository-blue?logo=github&style=for-the-badge)](https://github.com/mohands0810-debug/EduBridge)
+
+🔗 **Live Platform Demo:** [https://edubridge-cp.vercel.app](https://edubridge-cp.vercel.app)
+
 **Department of Computer Science & Engineering**  
 **K.S. Institute of Technology (KSIT), Bengaluru**  
 **Course:** Community Project (`25BCP308`) — 3rd Semester  
