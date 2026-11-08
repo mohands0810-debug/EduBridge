@@ -333,7 +333,7 @@ function renderGroupGame(topicObj) {
 }
 
 // ----------------------------------------------------
-// Fully Working Concept Clip Player
+// Fully Working Concept Clip Player (Audio-Synchronized)
 // ----------------------------------------------------
 function getCurrentTopic() {
   const subjObj = SUBJECTS.find(s => s.id === state.subject);
@@ -349,8 +349,7 @@ function renderConceptClipInitial(topicObj) {
     if (firstStep) {
       elements.clipVisualStage.innerHTML = firstStep.visualHtml;
       elements.clipCaptionDisplay.innerText = firstStep.caption;
-      const totalDur = topicObj.clipSteps.reduce((acc, s) => acc + s.duration, 0);
-      elements.clipTimeDisplay.innerText = `00:00 / 00:${totalDur.toString().padStart(2, '0')}`;
+      elements.clipTimeDisplay.innerText = `Step 1 of ${topicObj.clipSteps.length}`;
       elements.clipProgressBar.style.width = '0%';
     }
   }
@@ -371,66 +370,97 @@ function playConceptClip() {
   state.clipPlaying = true;
   elements.clipPlayIcon.className = 'fa-solid fa-pause';
 
-  // If at the end, restart from step 0
+  // If at the end or starting fresh, begin from step 0
   if (state.clipStepIndex >= topicObj.clipSteps.length) {
     state.clipStepIndex = 0;
-    state.clipElapsed = 0;
   }
 
-  showCurrentClipStep();
-
-  // Progress timer
-  const totalDuration = topicObj.clipSteps.reduce((acc, s) => acc + s.duration, 0);
-
-  clearInterval(state.clipInterval);
-  state.clipInterval = setInterval(() => {
-    state.clipElapsed++;
-    
-    // Progress calculation
-    const pct = Math.min(100, Math.round((state.clipElapsed / totalDuration) * 100));
-    elements.clipProgressBar.style.width = `${pct}%`;
-    elements.clipTimeDisplay.innerText = `00:${state.clipElapsed.toString().padStart(2, '0')} / 00:${totalDuration.toString().padStart(2, '0')}`;
-
-    // Step calculation
-    let accumulated = 0;
-    let targetIndex = 0;
-    for (let i = 0; i < topicObj.clipSteps.length; i++) {
-      accumulated += topicObj.clipSteps[i].duration;
-      if (state.clipElapsed < accumulated) {
-        targetIndex = i;
-        break;
-      }
-      targetIndex = i;
-    }
-
-    if (targetIndex !== state.clipStepIndex && targetIndex < topicObj.clipSteps.length) {
-      state.clipStepIndex = targetIndex;
-      showCurrentClipStep();
-    }
-
-    if (state.clipElapsed >= totalDuration) {
-      pauseConceptClip();
-      state.clipStepIndex = 0;
-    }
-  }, 1000);
+  playStepByIndex(state.clipStepIndex);
 }
 
-function showCurrentClipStep() {
+function playStepByIndex(index) {
   const topicObj = getCurrentTopic();
-  const step = topicObj.clipSteps[state.clipStepIndex];
-  if (!step) return;
+  if (!state.clipPlaying) return;
 
+  // If reached end of steps
+  if (index >= topicObj.clipSteps.length) {
+    pauseConceptClip();
+    state.clipStepIndex = 0;
+    elements.clipProgressBar.style.width = '100%';
+    elements.clipCaptionDisplay.innerText = 'Lesson complete! Click replay to watch again.';
+    elements.clipTimeDisplay.innerText = `Completed`;
+    return;
+  }
+
+  state.clipStepIndex = index;
+  const step = topicObj.clipSteps[index];
+
+  // Update visual stage and caption display
   elements.clipVisualStage.innerHTML = step.visualHtml;
   elements.clipCaptionDisplay.innerText = step.caption;
-  
-  // Speak the step caption with studio clarity
-  speakText(step.caption);
+
+  // Update progress bar
+  const pct = Math.round(((index + 1) / topicObj.clipSteps.length) * 100);
+  elements.clipProgressBar.style.width = `${pct}%`;
+  elements.clipTimeDisplay.innerText = `Step ${index + 1} of ${topicObj.clipSteps.length}`;
+
+  // Speak every single word of the caption completely before advancing
+  speakClipStep(step.caption, () => {
+    if (!state.clipPlaying) return;
+
+    // Comfortable 1-second educational pause between steps
+    state.clipTimeout = setTimeout(() => {
+      if (state.clipPlaying) {
+        playStepByIndex(index + 1);
+      }
+    }, 1100);
+  });
+}
+
+function speakClipStep(text, onComplete) {
+  if (!('speechSynthesis' in window)) {
+    setTimeout(onComplete, 3500);
+    return;
+  }
+
+  window.speechSynthesis.cancel();
+
+  const utterance = new SpeechSynthesisUtterance(text);
+  if (state.selectedVoice) {
+    utterance.voice = state.selectedVoice;
+    utterance.lang = state.selectedVoice.lang || 'en-US';
+  } else {
+    utterance.lang = 'en-US';
+  }
+
+  // Clear, articulated pace
+  utterance.rate = 0.92;
+  utterance.pitch = 1.0;
+  utterance.volume = 1.0;
+
+  let finished = false;
+
+  utterance.onend = () => {
+    if (!finished) {
+      finished = true;
+      if (onComplete) onComplete();
+    }
+  };
+
+  utterance.onerror = (e) => {
+    if (!finished) {
+      finished = true;
+      if (onComplete) onComplete();
+    }
+  };
+
+  window.speechSynthesis.speak(utterance);
 }
 
 function pauseConceptClip() {
   state.clipPlaying = false;
   elements.clipPlayIcon.className = 'fa-solid fa-play ml-0.5';
-  clearInterval(state.clipInterval);
+  clearTimeout(state.clipTimeout);
   if ('speechSynthesis' in window) {
     window.speechSynthesis.cancel();
   }
@@ -439,7 +469,6 @@ function pauseConceptClip() {
 function resetConceptClip() {
   pauseConceptClip();
   state.clipStepIndex = 0;
-  state.clipElapsed = 0;
   const topicObj = getCurrentTopic();
   renderConceptClipInitial(topicObj);
 }
