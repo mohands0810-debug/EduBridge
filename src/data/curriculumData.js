@@ -1,6 +1,5 @@
 /**
  * EduBridge Curriculum & Adaptation Knowledge Base
- * Developed for KSIT Community Project (25BCP308)
  */
 
 export const CURRICULA = [
@@ -72,7 +71,29 @@ export const SUBJECTS = [
           right: '🍎 🍎 🍎 🍎 🍎 (5)'
         },
         videoTitle: 'Visual Addition with Familiar Objects',
-        videoSubtitle: 'Step-by-step counting with clear audio captions'
+        videoSubtitle: 'Step-by-step counting with clear audio captions',
+        clipSteps: [
+          {
+            duration: 4,
+            caption: 'Step 1: First, we start with 2 red apples on the table.',
+            visualHtml: '<div class="flex items-center gap-4 text-5xl animate-bounce"><span>🍎</span><span>🍎</span></div>'
+          },
+          {
+            duration: 4,
+            caption: 'Step 2: Now, let us add 3 more green apples beside them.',
+            visualHtml: '<div class="flex items-center gap-3 text-5xl"><span>🍎</span><span>🍎</span><span class="text-3xl text-zinc-400 font-bold">+</span><span>🍏</span><span>🍏</span><span>🍏</span></div>'
+          },
+          {
+            duration: 5,
+            caption: 'Step 3: Let us count all of them together: one, two, three, four, five!',
+            visualHtml: '<div class="flex flex-col items-center gap-2"><div class="flex gap-3 text-5xl"><span>🍎</span><span>🍎</span><span>🍏</span><span>🍏</span><span>🍏</span></div><div class="text-sm font-semibold text-zinc-500">1 ... 2 ... 3 ... 4 ... 5</div></div>'
+          },
+          {
+            duration: 4,
+            caption: 'Summary: Two plus three equals five apples in total!',
+            visualHtml: '<div class="surface-card px-8 py-5 rounded-2xl border border-zinc-300 dark:border-zinc-700 text-3xl font-black tracking-tight">2 + 3 = 5 ⭐</div>'
+          }
+        ]
       },
       {
         id: 'math_shapes',
@@ -90,7 +111,29 @@ export const SUBJECTS = [
           right: 'Square (Tile / Box)'
         },
         videoTitle: 'Recognizing Geometric Shapes Around Us',
-        videoSubtitle: 'Visual properties of circles, squares, and triangles'
+        videoSubtitle: 'Visual properties of circles, squares, and triangles',
+        clipSteps: [
+          {
+            duration: 4,
+            caption: 'Step 1: A Square has four straight sides of equal length and four corners.',
+            visualHtml: '<div class="w-24 h-24 border-4 border-zinc-900 dark:border-zinc-100 flex items-center justify-center font-bold text-xs uppercase tracking-wider">Square</div>'
+          },
+          {
+            duration: 4,
+            caption: 'Step 2: A Circle is completely round with continuous curve and zero corners.',
+            visualHtml: '<div class="w-24 h-24 rounded-full border-4 border-zinc-900 dark:border-zinc-100 flex items-center justify-center font-bold text-xs uppercase tracking-wider">Circle</div>'
+          },
+          {
+            duration: 4,
+            caption: 'Step 3: A Triangle has three straight sides and three sharp corners.',
+            visualHtml: '<div class="text-6xl font-black">🔺</div>'
+          },
+          {
+            duration: 4,
+            caption: 'Summary: Look around the classroom to find these three basic shapes!',
+            visualHtml: '<div class="flex items-center gap-6 text-4xl"><span>🟦</span><span>🔴</span><span>🔺</span></div>'
+          }
+        ]
       },
       {
         id: 'math_patterns',
@@ -108,7 +151,29 @@ export const SUBJECTS = [
           right: 'Tap (Blue)'
         },
         videoTitle: 'Understanding Repeating Patterns',
-        videoSubtitle: 'Identifying rhythmic and visual sequences'
+        videoSubtitle: 'Identifying rhythmic and visual sequences',
+        clipSteps: [
+          {
+            duration: 4,
+            caption: 'Step 1: Let us start with a Red token on the left.',
+            visualHtml: '<div class="text-6xl animate-pulse">🔴</div>'
+          },
+          {
+            duration: 4,
+            caption: 'Step 2: Following it comes a Blue token.',
+            visualHtml: '<div class="flex gap-4 text-6xl"><span>🔴</span><span>🔵</span></div>'
+          },
+          {
+            duration: 4,
+            caption: 'Step 3: The pattern repeats: Red, then Blue, then Red again.',
+            visualHtml: '<div class="flex gap-4 text-5xl"><span>🔴</span><span>🔵</span><span>🔴</span></div>'
+          },
+          {
+            duration: 4,
+            caption: 'Answer: To complete the pattern, the next token must be Blue!',
+            visualHtml: '<div class="flex items-center gap-3 text-5xl"><span>🔴</span><span>🔵</span><span>🔴</span><span class="p-2 border-2 border-dashed border-zinc-400 rounded-xl">🔵</span></div>'
+          }
+        ]
       }
     ]
   },
@@ -133,7 +198,29 @@ export const SUBJECTS = [
           right: 'Leaves (Sunlight & Air)'
         },
         videoTitle: 'The Life of a Plant: From Seed to Bloom',
-        videoSubtitle: 'An illustrated guide to plant anatomy'
+        videoSubtitle: 'An illustrated guide to plant anatomy',
+        clipSteps: [
+          {
+            duration: 4,
+            caption: 'Step 1: Deep underground, the Roots drink water and anchor the plant.',
+            visualHtml: '<div class="text-center"><div class="text-6xl">🌱</div><div class="text-xs font-bold text-zinc-500 mt-1">1. Roots (Underground)</div></div>'
+          },
+          {
+            duration: 4,
+            caption: 'Step 2: The Stem grows upwards to hold the plant strong.',
+            visualHtml: '<div class="text-center"><div class="text-6xl">🌿</div><div class="text-xs font-bold text-zinc-500 mt-1">2. Stem & Branches</div></div>'
+          },
+          {
+            duration: 4,
+            caption: 'Step 3: Green Leaves absorb sunlight to prepare food for the plant.',
+            visualHtml: '<div class="text-center"><div class="text-6xl">🍃</div><div class="text-xs font-bold text-zinc-500 mt-1">3. Leaves (Sunlight)</div></div>'
+          },
+          {
+            duration: 4,
+            caption: 'Step 4: Finally, bright Flowers bloom to produce seeds and fruits!',
+            visualHtml: '<div class="text-center"><div class="text-6xl">🌸</div><div class="text-xs font-bold text-zinc-500 mt-1">4. Flower & Seeds</div></div>'
+          }
+        ]
       },
       {
         id: 'evs_animals',
@@ -151,7 +238,29 @@ export const SUBJECTS = [
           right: 'Wild (Forest & Jungle)'
         },
         videoTitle: 'Animal Habitats and Living Patterns',
-        videoSubtitle: 'Understanding wildlife and farm companions'
+        videoSubtitle: 'Understanding wildlife and farm companions',
+        clipSteps: [
+          {
+            duration: 4,
+            caption: 'Step 1: Domestic animals live peacefully with humans on farms and at home.',
+            visualHtml: '<div class="text-center"><div class="text-6xl">🐄</div><div class="text-xs font-bold text-zinc-500 mt-1">Domestic: Cow (Provides milk)</div></div>'
+          },
+          {
+            duration: 4,
+            caption: 'Step 2: Other domestic friends include sheep, horses, and dogs.',
+            visualHtml: '<div class="flex items-center gap-6 text-5xl"><span>🐑</span><span>🐕</span><span>🐎</span></div>'
+          },
+          {
+            duration: 4,
+            caption: 'Step 3: Wild animals live independently in natural forests and jungles.',
+            visualHtml: '<div class="flex items-center gap-6 text-5xl"><span>🦁</span><span>🐘</span><span>🐅</span></div>'
+          },
+          {
+            duration: 4,
+            caption: 'Summary: We care for farm animals, while respecting wildlife in nature.',
+            visualHtml: '<div class="surface-card px-6 py-4 rounded-xl text-lg font-bold">Farm Friends & Wildlife Habitats</div>'
+          }
+        ]
       }
     ]
   },
@@ -176,7 +285,29 @@ export const SUBJECTS = [
           right: '/c/ Sound (Cat, Cup)'
         },
         videoTitle: 'Phonics & Pronunciation Practice',
-        videoSubtitle: 'Auditory and visual letter-sound association'
+        videoSubtitle: 'Auditory and visual letter-sound association',
+        clipSteps: [
+          {
+            duration: 4,
+            caption: 'Step 1: Today we listen to the letter B sound: /b/.',
+            visualHtml: '<div class="text-7xl font-black">Bb</div>'
+          },
+          {
+            duration: 4,
+            caption: 'Step 2: /b/ as in B-A-L-L... Ball!',
+            visualHtml: '<div class="text-center"><div class="text-6xl">⚽</div><div class="text-xl font-bold mt-1">/b/ - Ball</div></div>'
+          },
+          {
+            duration: 4,
+            caption: 'Step 3: /b/ as in B-A-T... Bat!',
+            visualHtml: '<div class="text-center"><div class="text-6xl">🏏</div><div class="text-xl font-bold mt-1">/b/ - Bat</div></div>'
+          },
+          {
+            duration: 4,
+            caption: 'Summary: B says /b/. Repeat after your teacher: /b/, /b/, Ball!',
+            visualHtml: '<div class="surface-card px-6 py-3 rounded-xl text-2xl font-black">Bb ➔ /b/ ➔ ⚽ 🏏</div>'
+          }
+        ]
       },
       {
         id: 'eng_action_words',
@@ -194,7 +325,29 @@ export const SUBJECTS = [
           right: 'Stand Up'
         },
         videoTitle: 'Verbs in Action: Learn Through Movement',
-        videoSubtitle: 'Demonstrating common physical actions'
+        videoSubtitle: 'Demonstrating common physical actions',
+        clipSteps: [
+          {
+            duration: 4,
+            caption: 'Step 1: Action verbs describe what our bodies do in motion.',
+            visualHtml: '<div class="text-5xl font-extrabold">Action Verbs</div>'
+          },
+          {
+            duration: 4,
+            caption: 'Step 2: Jump means pushing off the floor with both feet!',
+            visualHtml: '<div class="text-center"><div class="text-6xl animate-bounce">🦘</div><div class="text-lg font-bold mt-1">JUMP</div></div>'
+          },
+          {
+            duration: 4,
+            caption: 'Step 3: Clap means bringing your hands together with a sound!',
+            visualHtml: '<div class="text-center"><div class="text-6xl">👏</div><div class="text-lg font-bold mt-1">CLAP</div></div>'
+          },
+          {
+            duration: 4,
+            caption: 'Summary: Words that show action are called Action Verbs!',
+            visualHtml: '<div class="surface-card px-6 py-3 rounded-xl text-xl font-bold">Jump • Clap • Run • Smile</div>'
+          }
+        ]
       }
     ]
   }

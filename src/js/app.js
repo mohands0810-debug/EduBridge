@@ -12,7 +12,13 @@ const state = {
   isProjectorMode: false,
   activeTab: 'interactive',
   scores: { teamA: 0, teamB: 0 },
-  selectedVoice: null
+  selectedVoice: null,
+
+  // Concept Clip State
+  clipPlaying: false,
+  clipStepIndex: 0,
+  clipInterval: null,
+  clipElapsed: 0
 };
 
 // DOM References
@@ -49,9 +55,16 @@ const elements = {
   scoreTeamA: document.getElementById('scoreTeamA'),
   scoreTeamB: document.getElementById('scoreTeamB'),
 
-  // Video
+  // Concept Clip Player
   videoTitle: document.getElementById('videoTitle'),
-  videoSubtitle: document.getElementById('videoSubtitle')
+  videoSubtitle: document.getElementById('videoSubtitle'),
+  clipVisualStage: document.getElementById('clipVisualStage'),
+  clipCaptionDisplay: document.getElementById('clipCaptionDisplay'),
+  clipProgressBar: document.getElementById('clipProgressBar'),
+  clipTimeDisplay: document.getElementById('clipTimeDisplay'),
+  btnPlayClip: document.getElementById('btnPlayClip'),
+  clipPlayIcon: document.getElementById('clipPlayIcon'),
+  btnResetClip: document.getElementById('btnResetClip')
 };
 
 // Application Initialization
@@ -98,8 +111,7 @@ function initializeIndianSpeechVoice() {
     const voices = window.speechSynthesis.getVoices();
     if (!voices || voices.length === 0) return;
 
-    // Strict priority filter for Indian English Voices:
-    // (e.g. Microsoft Heera, Microsoft Ravi, Microsoft Neerja, Google English India, etc.)
+    // Strict priority filter for Indian English Voices
     const indianVoice = voices.find(v => 
       v.lang === 'en-IN' || 
       v.lang.toLowerCase().replace('_', '-').startsWith('en-in') ||
@@ -113,7 +125,6 @@ function initializeIndianSpeechVoice() {
     if (indianVoice) {
       state.selectedVoice = indianVoice;
     } else {
-      // Fallback: search for Hindi / Indian locale or clear English voice
       state.selectedVoice = voices.find(v => v.lang.includes('IN')) || 
                            voices.find(v => v.lang.startsWith('en')) || 
                            voices[0];
@@ -128,18 +139,15 @@ function initializeIndianSpeechVoice() {
 
 function speakText(text) {
   if (!('speechSynthesis' in window)) return;
-  window.speechSynthesis.cancel(); // Stop pending utterances
+  window.speechSynthesis.cancel();
 
   const utterance = new SpeechSynthesisUtterance(text);
-  
-  // Set Indian English Locale explicitly
   utterance.lang = 'en-IN';
 
   if (state.selectedVoice) {
     utterance.voice = state.selectedVoice;
   }
   
-  // Paced Indian classroom teacher rate
   utterance.rate = state.disability === 'ID' || state.disability === 'ASD' ? 0.82 : 0.86;
   utterance.pitch = 1.0;
   utterance.volume = 1.0;
@@ -205,6 +213,7 @@ function setupEventListeners() {
 
   elements.selTopic.addEventListener('change', (e) => {
     state.topic = e.target.value;
+    resetConceptClip();
     updateUI();
   });
 
@@ -224,6 +233,10 @@ function setupEventListeners() {
       setStageTab(e.currentTarget.dataset.tab);
     });
   });
+
+  // Concept Clip Player Buttons
+  elements.btnPlayClip.addEventListener('click', togglePlayConceptClip);
+  elements.btnResetClip.addEventListener('click', resetConceptClip);
 }
 
 function updateUI() {
@@ -256,21 +269,19 @@ function updateUI() {
   // 4. Render Active Content
   renderInteractiveTask(topicObj);
   renderGroupGame(topicObj);
-  renderVideoTab(topicObj);
+  renderConceptClipInitial(topicObj);
 }
 
 function renderInteractiveTask(topicObj) {
   elements.taskPrompt.innerText = topicObj.taskPrompt;
   elements.taskFeedback.innerHTML = '';
 
-  // Visual Tokens
   elements.taskContainer.innerHTML = topicObj.taskItems.map(item => `
     <div class="px-6 py-4 surface-card rounded-xl text-2xl font-bold tracking-tight shadow-sm flex items-center justify-center min-w-[100px]">
       ${item}
     </div>
   `).join('');
 
-  // Options
   elements.taskOptions.innerHTML = topicObj.options.map(opt => `
     <button onclick="handleAnswerChoice('${opt}')" class="btn-secondary py-3.5 px-6 rounded-xl text-lg font-bold tracking-tight transition transform hover:-translate-y-0.5 active:scale-98">
       ${opt}
@@ -286,9 +297,116 @@ function renderGroupGame(topicObj) {
   elements.gameCardRight.innerText = g.right;
 }
 
-function renderVideoTab(topicObj) {
+// ----------------------------------------------------
+// Fully Working Concept Clip Player
+// ----------------------------------------------------
+function getCurrentTopic() {
+  const subjObj = SUBJECTS.find(s => s.id === state.subject);
+  return subjObj.topics.find(t => t.id === state.topic) || subjObj.topics[0];
+}
+
+function renderConceptClipInitial(topicObj) {
   elements.videoTitle.innerText = topicObj.videoTitle;
   elements.videoSubtitle.innerText = topicObj.videoSubtitle;
+  
+  if (!state.clipPlaying) {
+    const firstStep = topicObj.clipSteps ? topicObj.clipSteps[0] : null;
+    if (firstStep) {
+      elements.clipVisualStage.innerHTML = firstStep.visualHtml;
+      elements.clipCaptionDisplay.innerText = firstStep.caption;
+      const totalDur = topicObj.clipSteps.reduce((acc, s) => acc + s.duration, 0);
+      elements.clipTimeDisplay.innerText = `00:00 / 00:${totalDur.toString().padStart(2, '0')}`;
+      elements.clipProgressBar.style.width = '0%';
+    }
+  }
+}
+
+function togglePlayConceptClip() {
+  if (state.clipPlaying) {
+    pauseConceptClip();
+  } else {
+    playConceptClip();
+  }
+}
+
+function playConceptClip() {
+  const topicObj = getCurrentTopic();
+  if (!topicObj.clipSteps || topicObj.clipSteps.length === 0) return;
+
+  state.clipPlaying = true;
+  elements.clipPlayIcon.className = 'fa-solid fa-pause';
+
+  // If at the end, restart from step 0
+  if (state.clipStepIndex >= topicObj.clipSteps.length) {
+    state.clipStepIndex = 0;
+    state.clipElapsed = 0;
+  }
+
+  showCurrentClipStep();
+
+  // Progress timer
+  const totalDuration = topicObj.clipSteps.reduce((acc, s) => acc + s.duration, 0);
+
+  clearInterval(state.clipInterval);
+  state.clipInterval = setInterval(() => {
+    state.clipElapsed++;
+    
+    // Progress calculation
+    const pct = Math.min(100, Math.round((state.clipElapsed / totalDuration) * 100));
+    elements.clipProgressBar.style.width = `${pct}%`;
+    elements.clipTimeDisplay.innerText = `00:${state.clipElapsed.toString().padStart(2, '0')} / 00:${totalDuration.toString().padStart(2, '0')}`;
+
+    // Step calculation
+    let accumulated = 0;
+    let targetIndex = 0;
+    for (let i = 0; i < topicObj.clipSteps.length; i++) {
+      accumulated += topicObj.clipSteps[i].duration;
+      if (state.clipElapsed < accumulated) {
+        targetIndex = i;
+        break;
+      }
+      targetIndex = i;
+    }
+
+    if (targetIndex !== state.clipStepIndex && targetIndex < topicObj.clipSteps.length) {
+      state.clipStepIndex = targetIndex;
+      showCurrentClipStep();
+    }
+
+    if (state.clipElapsed >= totalDuration) {
+      pauseConceptClip();
+      state.clipStepIndex = 0;
+    }
+  }, 1000);
+}
+
+function showCurrentClipStep() {
+  const topicObj = getCurrentTopic();
+  const step = topicObj.clipSteps[state.clipStepIndex];
+  if (!step) return;
+
+  elements.clipVisualStage.innerHTML = step.visualHtml;
+  elements.clipCaptionDisplay.innerText = step.caption;
+  
+  // Speak the step caption in Indian English accent
+  speakText(step.caption);
+}
+
+function pauseConceptClip() {
+  state.clipPlaying = false;
+  elements.clipPlayIcon.className = 'fa-solid fa-play ml-0.5';
+  clearInterval(state.clipInterval);
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+  }
+}
+
+function resetConceptClip() {
+  pauseConceptClip();
+  state.clipStepIndex = 0;
+  state.clipElapsed = 0;
+  const topicObj = getCurrentTopic();
+  renderConceptClipInitial(topicObj);
 }
 
 // ----------------------------------------------------
@@ -353,6 +471,11 @@ function toggleProjector() {
 
 function setStageTab(tab) {
   state.activeTab = tab;
+
+  // If leaving video tab, pause clip
+  if (tab !== 'video' && state.clipPlaying) {
+    pauseConceptClip();
+  }
 
   document.querySelectorAll('.stage-tab-btn').forEach(btn => {
     const isTarget = btn.dataset.tab === tab;

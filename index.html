@@ -26,7 +26,7 @@
         <img src="src/assets/logo.jpg" alt="EduBridge Logo" class="h-10 w-auto rounded-lg object-contain border border-zinc-200 dark:border-zinc-700 p-0.5">
         <div>
           <h1 class="text-lg font-bold tracking-tight">EduBridge</h1>
-          <p class="text-[11px] text-secondary">Teacher-Led Classroom Projection System • KSIT CSE</p>
+          <p class="text-[11px] text-secondary">Teacher-Led Classroom Projection System</p>
         </div>
       </div>
 
@@ -194,19 +194,67 @@
         </div>
       </div>
 
-      <!-- Tab 3: Visual Concept Clip -->
+      <!-- Tab 3: Interactive Visual Concept Clip Player -->
       <div id="paneVideo" class="hidden flex-1 flex flex-col items-center justify-center py-4 text-center">
-        <div class="w-full max-w-2xl aspect-video surface-secondary rounded-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden shadow-sm relative flex flex-col items-center justify-center p-6">
-          <div class="w-16 h-16 rounded-full surface-card border border-zinc-300 dark:border-zinc-700 flex items-center justify-center text-xl mb-3 cursor-pointer hover:scale-105 transition">
-            <i class="fa-solid fa-play ml-1"></i>
+        <div class="w-full max-w-3xl surface-secondary rounded-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden shadow-sm flex flex-col">
+          
+          <!-- Concept Clip Video Header -->
+          <div class="p-4 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between text-left">
+            <div>
+              <h4 id="videoTitle" class="text-base font-bold tracking-tight">Visual Concept Demo</h4>
+              <p id="videoSubtitle" class="text-secondary text-xs">Paced educational delivery with clear closed captions</p>
+            </div>
+            <span class="text-[10px] font-bold px-2.5 py-1 rounded-full surface-card border border-zinc-300 dark:border-zinc-700 text-secondary">
+              HD Animated Clip
+            </span>
           </div>
-          <h4 id="videoTitle" class="text-base font-bold tracking-tight mb-1">Visual Concept Demo</h4>
-          <p id="videoSubtitle" class="text-secondary text-xs">Paced educational delivery with clear closed captions</p>
-          <div class="absolute bottom-3 left-4 right-4 flex items-center justify-between text-[11px] text-secondary surface-card px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700">
-            <span>01:15 / 03:20</span>
-            <span>Audio & visual pacing calibrated</span>
-            <span class="font-bold opacity-80">CC ACTIVE</span>
+
+          <!-- Video Stage / Canvas Area -->
+          <div class="relative min-h-[260px] flex items-center justify-center p-6 bg-white dark:bg-zinc-950 transition-colors">
+            <!-- Dynamic Animation Content Area -->
+            <div id="clipVisualStage" class="flex flex-col items-center justify-center w-full min-h-[160px]">
+              <!-- Injected by app.js -->
+            </div>
           </div>
+
+          <!-- Closed Captions Display Bar -->
+          <div class="px-5 py-3 surface-secondary border-t border-zinc-200 dark:border-zinc-800 text-left min-h-[48px] flex items-center">
+            <div class="flex items-center space-x-2 text-xs font-semibold w-full">
+              <span class="px-1.5 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900">CC</span>
+              <span id="clipCaptionDisplay" class="text-secondary flex-1 font-medium">Click Play to begin step-by-step visual lesson.</span>
+            </div>
+          </div>
+
+          <!-- Player Controls Bar -->
+          <div class="p-4 surface-card border-t border-zinc-200 dark:border-zinc-800 flex flex-col gap-2.5">
+            <!-- Scrub Progress Bar -->
+            <div id="clipProgressTrack" class="w-full bg-zinc-200 dark:bg-zinc-800 h-1.5 rounded-full overflow-hidden cursor-pointer">
+              <div id="clipProgressBar" class="bg-zinc-900 dark:bg-zinc-100 h-full w-0 transition-all duration-300"></div>
+            </div>
+
+            <!-- Buttons & Time Display -->
+            <div class="flex items-center justify-between">
+              <div class="flex items-center space-x-2">
+                <!-- Play / Pause Button -->
+                <button id="btnPlayClip" class="btn-primary w-9 h-9 rounded-lg flex items-center justify-center text-sm transition" title="Play or Pause Clip">
+                  <i id="clipPlayIcon" class="fa-solid fa-play ml-0.5"></i>
+                </button>
+                <!-- Reset / Replay Button -->
+                <button id="btnResetClip" class="btn-secondary w-9 h-9 rounded-lg flex items-center justify-center text-sm transition" title="Restart Clip">
+                  <i class="fa-solid fa-rotate-left"></i>
+                </button>
+                <!-- Time Indicator -->
+                <span id="clipTimeDisplay" class="text-xs font-mono text-secondary ml-2">00:00 / 00:00</span>
+              </div>
+
+              <!-- Audio Indian Narration Indicator -->
+              <div class="flex items-center space-x-2 text-xs text-secondary">
+                <i class="fa-solid fa-volume-high text-xs"></i>
+                <span class="text-[11px] font-medium">Audio Narration (Indian Accent)</span>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
 
@@ -215,9 +263,8 @@
   </main>
 
   <!-- Clean Minimalist Footer -->
-  <footer class="surface-card border-t border-zinc-200 dark:border-zinc-800 py-3.5 px-6 text-center text-xs text-secondary flex flex-wrap justify-between items-center max-w-7xl mx-auto w-full transition-colors">
-    <span>Developed by Sanjay Srinivas M • CSE Department • KSIT Bengaluru</span>
-    <span class="font-medium">Batch 02 • Community Project (25BCP308)</span>
+  <footer class="surface-card border-t border-zinc-200 dark:border-zinc-800 py-3.5 px-6 text-center text-xs text-secondary flex justify-center items-center max-w-7xl mx-auto w-full transition-colors">
+    <span>Developed by Sanjay Srinivas M</span>
   </footer>
 
   <!-- Modular JavaScript Entry Point -->
