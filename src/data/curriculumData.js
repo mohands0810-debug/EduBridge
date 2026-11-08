@@ -60,22 +60,60 @@ export const SUBJECTS = [
     id: 'Math',
     name: 'Mathematics',
     icon: 'fa-calculator',
-    color: 'text-amber-500',
     topics: [
       {
         id: 'math_addition',
         title: 'Visual Addition (Sums to 10)',
-        description: 'Counting physical fruits and grouping quantities together.'
+        description: 'Counting physical fruits and grouping quantities together.',
+        taskPrompt: 'How many apples are in the basket?',
+        taskItems: ['🍎', '🍎', '🍎', '🍎', '🍎'],
+        options: [3, 5, 7],
+        correctAnswer: 5,
+        successMessage: 'Great job! Exactly 5 apples in the basket!',
+        gameChallenge: {
+          title: 'Class Fruit Counting Match',
+          instruction: 'Which side has more fruits? Group A calls Left, Group B calls Right!',
+          left: '🍎 🍎 🍎 (3)',
+          right: '🍌 🍌 🍌 🍌 🍌 (5)'
+        },
+        videoTitle: 'Visual Addition with Real World Objects',
+        videoSubtitle: 'Counting one-by-one with clear contrast'
       },
       {
         id: 'math_shapes',
         title: '2D Shapes Recognition',
-        description: 'Identifying circles, squares, triangles in everyday objects.'
+        description: 'Identifying circles, squares, triangles in everyday objects.',
+        taskPrompt: 'Which shape has 4 equal straight sides?',
+        taskItems: ['🟦 Square', '🔴 Circle', '🔺 Triangle'],
+        options: ['Square', 'Circle', 'Triangle'],
+        correctAnswer: 'Square',
+        successMessage: 'Correct! A square has 4 equal straight sides and 4 corners!',
+        gameChallenge: {
+          title: 'Class Shape Hunting Challenge',
+          instruction: 'Spot the circle in the classroom! Team with first spot gets the point.',
+          left: '🔴 Round Objects',
+          right: '🟦 Box Objects'
+        },
+        videoTitle: 'Exploring Shapes Around Us',
+        videoSubtitle: 'Identifying circles, squares and triangles in real life'
       },
       {
         id: 'math_patterns',
-        title: 'Repeating Color Patterns',
-        description: 'Sequential reasoning using visual blocks.'
+        title: 'Color & Pattern Sequences',
+        description: 'Sequential logical reasoning using visual color blocks.',
+        taskPrompt: 'What comes next in the pattern: Red ➔ Blue ➔ Red ➔ ?',
+        taskItems: ['🔴', '🔵', '🔴', '❓'],
+        options: ['🔵 Blue', '🔴 Red', '🟢 Green'],
+        correctAnswer: '🔵 Blue',
+        successMessage: 'Brilliant! The pattern repeats: Red then Blue!',
+        gameChallenge: {
+          title: 'Rhythm Pattern Clapping Game',
+          instruction: 'Clap on Red, Stomp on Blue! Teacher leads the rhythm.',
+          left: 'Clap (Red)',
+          right: 'Stomp (Blue)'
+        },
+        videoTitle: 'Learning Visual Patterns Step-by-Step',
+        videoSubtitle: 'Predicting colors and repeating shapes'
       }
     ]
   },
@@ -83,17 +121,42 @@ export const SUBJECTS = [
     id: 'EVS',
     name: 'Environmental Studies (EVS)',
     icon: 'fa-leaf',
-    color: 'text-emerald-500',
     topics: [
       {
         id: 'evs_plants',
         title: 'Parts of a Plant',
-        description: 'Roots, stem, leaves, flower, and their primary functions.'
+        description: 'Roots, stem, leaves, flower, and their primary functions.',
+        taskPrompt: 'Which part of the plant grows under the soil and drinks water?',
+        taskItems: ['🌱 Roots (Underground)', '🌿 Leaves (Green)', '🌸 Flower (Colorful)'],
+        options: ['Roots', 'Leaves', 'Flower'],
+        correctAnswer: 'Roots',
+        successMessage: 'Spot on! The roots anchor the plant and drink water from the soil!',
+        gameChallenge: {
+          title: 'Plant Parts Relay Challenge',
+          instruction: 'Call out the function: Team A names what drinks water, Team B names what catches sunlight!',
+          left: 'Roots (Water)',
+          right: 'Leaves (Sunlight)'
+        },
+        videoTitle: 'How Plants Grow: Roots to Flowers',
+        videoSubtitle: 'A sensory visual journey through the garden'
       },
       {
         id: 'evs_animals',
         title: 'Domestic & Wild Animals',
-        description: 'Categorizing animals by sounds, habitats, and food habits.'
+        description: 'Categorizing animals by sounds, habitats, and food habits.',
+        taskPrompt: 'Which animal is a domestic farm friend who gives milk?',
+        taskItems: ['🐄 Cow (Farm)', '🦁 Lion (Jungle)', '🐘 Elephant (Forest)'],
+        options: ['Cow', 'Lion', 'Elephant'],
+        correctAnswer: 'Cow',
+        successMessage: 'Correct! The cow lives peacefully on farms and provides milk!',
+        gameChallenge: {
+          title: 'Animal Sound Mimic Challenge',
+          instruction: 'Team A makes farm sounds, Team B makes jungle sounds!',
+          left: 'Farm Friends (Moo/Baa)',
+          right: 'Jungle Kings (Roar/Trumpet)'
+        },
+        videoTitle: 'Animals and Their Homes',
+        videoSubtitle: 'Exploring domestic friends and jungle wildlife'
       }
     ]
   },
@@ -101,17 +164,42 @@ export const SUBJECTS = [
     id: 'English',
     name: 'English Language',
     icon: 'fa-spell-check',
-    color: 'text-blue-500',
     topics: [
       {
         id: 'eng_phonics',
         title: 'Phonic Word Sounds',
-        description: 'Letter-sound matching with audio pronunciation.'
+        description: 'Letter-sound matching with audio pronunciation.',
+        taskPrompt: 'Which word starts with the sound /b/ as in Ball?',
+        taskItems: ['⚽ Ball', '🐱 Cat', '🍎 Apple'],
+        options: ['Ball', 'Cat', 'Apple'],
+        correctAnswer: 'Ball',
+        successMessage: 'Great listening! /b/ is for B-A-L-L!',
+        gameChallenge: {
+          title: 'Phonics Echo Challenge',
+          instruction: 'Teacher says sound, whole class repeats in chorus!',
+          left: '/b/ Sound',
+          right: '/c/ Sound'
+        },
+        videoTitle: 'Phonics Fun: Exploring Letter Sounds',
+        videoSubtitle: 'Sing-along phonetic pronunciation'
       },
       {
         id: 'eng_action_words',
         title: 'Action Words (Verbs)',
-        description: 'Associating verbs with animated everyday movements.'
+        description: 'Associating action verbs with physical movements.',
+        taskPrompt: 'What action do your feet do when you leap into the air?',
+        taskItems: ['🦘 Jump', '😴 Sleep', '📖 Read'],
+        options: ['Jump', 'Sleep', 'Read'],
+        correctAnswer: 'Jump',
+        successMessage: 'Awesome! Jumping uses your feet to spring into the air!',
+        gameChallenge: {
+          title: 'Simon Says Classroom Movement Game',
+          instruction: 'Simon says: Touch your toes! Simon says: Jump together!',
+          left: 'Clap Hands',
+          right: 'Stand Tall'
+        },
+        videoTitle: 'Action Words in Motion',
+        videoSubtitle: 'Connecting verbs to joyful classroom activities'
       }
     ]
   }
