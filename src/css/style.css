@@ -19,35 +19,129 @@ body.font-dyslexic {
   line-height: 1.85;
 }
 
-/* Accessibility: High Contrast Mode (WCAG AAA Compliance) */
+/* ========================================================
+   Accessibility: High Contrast Mode (WCAG AAA Compliance)
+   Ensures 100% crystal-clear visibility on dark backgrounds
+   ======================================================== */
 body.high-contrast {
   background-color: #000000 !important;
   color: #FFFF00 !important;
 }
 
-body.high-contrast .card-surface {
-  background-color: #121212 !important;
-  border-color: #FFFF00 !important;
+body.high-contrast header#topNavbar {
+  background-color: #0a0e17 !important;
+  border-bottom: 2px solid #FFFF00 !important;
+}
+
+body.high-contrast .card-surface,
+body.high-contrast section {
+  background-color: #0d1117 !important;
+  border: 2px solid #FFFF00 !important;
   color: #FFFFFF !important;
 }
 
-body.high-contrast .text-muted {
-  color: #00FFCC !important;
+/* All Headings & Primary Titles turn Bright High-Contrast Yellow */
+body.high-contrast h1,
+body.high-contrast h2,
+body.high-contrast h3,
+body.high-contrast h4,
+body.high-contrast #stageHeaderTitle,
+body.high-contrast #taskPrompt,
+body.high-contrast #gameTitle,
+body.high-contrast #videoTitle {
+  color: #FFFF00 !important;
 }
 
-body.high-contrast button {
+/* Subheadings, Prompts and Instructions turn Crisp Cyan */
+body.high-contrast p,
+body.high-contrast label,
+body.high-contrast #stageHeaderSub,
+body.high-contrast #gameInstruction,
+body.high-contrast #videoSubtitle,
+body.high-contrast .text-slate-500,
+body.high-contrast .text-slate-400,
+body.high-contrast .text-slate-600,
+body.high-contrast .text-slate-700 {
+  color: #00FFFF !important;
+}
+
+/* Dropdowns & Input Fields */
+body.high-contrast select {
+  background-color: #161b22 !important;
+  color: #FFFFFF !important;
   border: 2px solid #FFFF00 !important;
 }
 
-/* Accessibility: Low Stimulation / Sensory Mode (Calm for Autism Spectrum) */
-body.low-sensory {
-  background-color: #f1f5f9 !important;
-  filter: saturate(0.85);
+body.high-contrast option {
+  background-color: #161b22 !important;
+  color: #FFFFFF !important;
 }
 
-body.low-sensory * {
-  animation: none !important;
-  transition: none !important;
+/* Pedagogical Strategy Badge */
+body.high-contrast #adaptationBadge {
+  background-color: #161b22 !important;
+  border: 2px solid #FFFF00 !important;
+}
+body.high-contrast #adaptationTitle {
+  color: #FFFF00 !important;
+}
+body.high-contrast #adaptationText {
+  color: #FFFFFF !important;
+}
+
+/* Task Workspace & Visual Objects */
+body.high-contrast #taskContainer,
+body.high-contrast #appleContainer {
+  background-color: #161b22 !important;
+  border: 2px dashed #FFFF00 !important;
+}
+
+/* Answer Choices */
+body.high-contrast #taskOptions button {
+  background-color: #161b22 !important;
+  color: #FFFF00 !important;
+  border: 2px solid #FFFF00 !important;
+}
+
+body.high-contrast #taskOptions button:hover {
+  background-color: #FFFF00 !important;
+  color: #000000 !important;
+}
+
+/* Breadcrumb Navigation */
+body.high-contrast #currentPathBreadcrumb span,
+body.high-contrast #currentPathBreadcrumb i {
+  color: #00FFFF !important;
+}
+body.high-contrast #currentPathBreadcrumb .font-bold {
+  color: #FFFF00 !important;
+}
+body.high-contrast #currentPathBreadcrumb .bg-indigo-100 {
+  background-color: #1f2937 !important;
+  border: 1px solid #FFFF00 !important;
+  color: #FFFF00 !important;
+}
+
+/* Group Game Cards */
+body.high-contrast #paneGame .rounded-2xl {
+  background-color: #161b22 !important;
+  border: 2px solid #FFFF00 !important;
+}
+body.high-contrast #scoreTeamA,
+body.high-contrast #scoreTeamB {
+  color: #FFFF00 !important;
+}
+
+/* Toolbar Buttons */
+body.high-contrast button {
+  border: 1px solid #FFFF00 !important;
+}
+
+/* Footer */
+body.high-contrast footer {
+  background-color: #0d1117 !important;
+  border-top: 2px solid #FFFF00 !important;
+  color: #00FFFF !important;
 }
 
 /* Projector Display Mode */
@@ -65,17 +159,3 @@ body.projector-fullscreen #projectorStage {
   border: none;
   box-shadow: none;
 }
-
-/* Interactive Card Transitions */
-.step-card {
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.step-card:hover {
-  transform: translateY(-2px);
-}
-
-.step-card.active {
-  ring-width: 2px;
-}
-

@@ -19,11 +19,9 @@ Unlike typical e-learning tools that require individual student tablets and pers
 
 ---
 
-## 👥 Team & Roles
-| USN | Student Name | Assigned Role |
-| :--- | :--- | :--- |
-| **1KS25CS102** | **Ravi Vishnu Vardhan** | Testing & Documentation Lead |
-| **1KS25CS111** | **Sanjay Srinivas M** | Survey Lead & Frontend Developer |
+## 👥 Project Team & Developer
+* **Developer & Project Lead:** **Sanjay Srinivas M** (USN: `1KS25CS111`) — Frontend Architecture, UI/UX & Development
+* **Testing & Documentation Support:** Ravi Vishnu Vardhan (USN: `1KS25CS102`)
 
 * **Institution:** K.S. Institute of Technology, Raghuvanahalli, Kanakapura Road, Bengaluru - 560 109
 * **Affiliation:** Autonomous Institution under VTU, Belagavi & Approved by AICTE, New Delhi (Accredited by NBA & NAAC A+)
