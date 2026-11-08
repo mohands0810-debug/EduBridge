@@ -57,7 +57,7 @@ const elements = {
 // Application Initialization
 function initialize() {
   applyTheme(state.theme);
-  initializeSpeechVoices();
+  initializeIndianSpeechVoice();
   populateDropdowns();
   setupEventListeners();
   updateUI();
@@ -89,42 +89,58 @@ function toggleTheme() {
 }
 
 // ----------------------------------------------------
-// Natural Speech Synthesis Engine
+// Indian Accent Speech Synthesis Engine
 // ----------------------------------------------------
-function initializeSpeechVoices() {
+function initializeIndianSpeechVoice() {
   if (!('speechSynthesis' in window)) return;
 
-  function loadVoices() {
+  function loadIndianVoice() {
     const voices = window.speechSynthesis.getVoices();
     if (!voices || voices.length === 0) return;
 
-    // Priority filter for natural/neural sounding voices
-    state.selectedVoice = voices.find(v => 
-      (v.lang === 'en-IN' && (v.name.includes('Natural') || v.name.includes('Neural') || v.name.includes('Heera') || v.name.includes('Neerja')))
-    ) || voices.find(v => 
-      (v.lang.startsWith('en') && (v.name.includes('Natural') || v.name.includes('Neural') || v.name.includes('Google') || v.name.includes('Jenny') || v.name.includes('Aria') || v.name.includes('Samantha') || v.name.includes('Zira')))
-    ) || voices.find(v => v.lang === 'en-IN')
-      || voices.find(v => v.lang.startsWith('en'))
-      || voices[0];
+    // Strict priority filter for Indian English Voices:
+    // (e.g. Microsoft Heera, Microsoft Ravi, Microsoft Neerja, Google English India, etc.)
+    const indianVoice = voices.find(v => 
+      v.lang === 'en-IN' || 
+      v.lang.toLowerCase().replace('_', '-').startsWith('en-in') ||
+      v.name.toLowerCase().includes('india') ||
+      v.name.toLowerCase().includes('heera') ||
+      v.name.toLowerCase().includes('neerja') ||
+      v.name.toLowerCase().includes('ravi') ||
+      v.name.toLowerCase().includes('veena')
+    );
+
+    if (indianVoice) {
+      state.selectedVoice = indianVoice;
+    } else {
+      // Fallback: search for Hindi / Indian locale or clear English voice
+      state.selectedVoice = voices.find(v => v.lang.includes('IN')) || 
+                           voices.find(v => v.lang.startsWith('en')) || 
+                           voices[0];
+    }
   }
 
-  loadVoices();
+  loadIndianVoice();
   if (window.speechSynthesis.onvoiceschanged !== undefined) {
-    window.speechSynthesis.onvoiceschanged = loadVoices;
+    window.speechSynthesis.onvoiceschanged = loadIndianVoice;
   }
 }
 
 function speakText(text) {
   if (!('speechSynthesis' in window)) return;
-  window.speechSynthesis.cancel(); // Stop any pending speech
+  window.speechSynthesis.cancel(); // Stop pending utterances
 
   const utterance = new SpeechSynthesisUtterance(text);
+  
+  // Set Indian English Locale explicitly
+  utterance.lang = 'en-IN';
+
   if (state.selectedVoice) {
     utterance.voice = state.selectedVoice;
   }
   
-  // Slower, clearer educational cadence (0.88x)
-  utterance.rate = state.disability === 'ID' || state.disability === 'ASD' ? 0.82 : 0.88;
+  // Paced Indian classroom teacher rate
+  utterance.rate = state.disability === 'ID' || state.disability === 'ASD' ? 0.82 : 0.86;
   utterance.pitch = 1.0;
   utterance.volume = 1.0;
 

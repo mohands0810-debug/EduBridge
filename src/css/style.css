@@ -29,143 +29,161 @@ body.font-dyslexic {
 
 /* Light Theme (Default) */
 body.light-theme {
-  background-color: #fafafa;
-  color: #18181b;
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+
+/* Top Navbar with Visible Styled Background */
+body.light-theme header#topNavbar {
+  background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+  border-bottom: 1px solid #cbd5e1;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+}
+
+body.light-theme .navbar-toolbar-bg {
+  background-color: #e2e8f0;
+  border: 1px solid #cbd5e1;
 }
 
 body.light-theme .surface-card {
   background-color: #ffffff;
-  border: 1px solid #e4e4e7;
-  color: #18181b;
+  border: 1px solid #e2e8f0;
+  color: #0f172a;
 }
 
 body.light-theme .surface-secondary {
-  background-color: #f4f4f5;
-  border: 1px solid #e4e4e7;
+  background-color: #f1f5f9;
+  border: 1px solid #e2e8f0;
 }
 
 body.light-theme .text-secondary {
-  color: #71717a;
+  color: #64748b;
 }
 
 body.light-theme .btn-primary {
-  background-color: #18181b;
+  background-color: #0f172a;
   color: #ffffff;
-  border: 1px solid #18181b;
+  border: 1px solid #0f172a;
 }
 body.light-theme .btn-primary:hover {
-  background-color: #27272a;
+  background-color: #1e293b;
 }
 
 body.light-theme .btn-secondary {
   background-color: #ffffff;
-  color: #18181b;
-  border: 1px solid #e4e4e7;
+  color: #0f172a;
+  border: 1px solid #cbd5e1;
 }
 body.light-theme .btn-secondary:hover {
-  background-color: #f4f4f5;
-  border-color: #d4d4d8;
+  background-color: #f8fafc;
+  border-color: #94a3b8;
 }
 
 body.light-theme .tab-active {
-  background-color: #18181b;
+  background-color: #0f172a;
   color: #ffffff;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
 body.light-theme .tab-inactive {
   background-color: transparent;
-  color: #71717a;
+  color: #64748b;
 }
 body.light-theme .tab-inactive:hover {
-  color: #18181b;
-  background-color: #f4f4f5;
+  color: #0f172a;
+  background-color: #f1f5f9;
 }
 
 body.light-theme select {
   background-color: #ffffff;
-  color: #18181b;
-  border: 1px solid #d4d4d8;
+  color: #0f172a;
+  border: 1px solid #cbd5e1;
 }
 body.light-theme select:focus {
-  border-color: #18181b;
+  border-color: #0f172a;
   outline: none;
 }
 
 /* ========================================================
-   Dark Theme (Sleek Obsidian & Pure White Text)
+   Dark Theme (Obsidian with Crisp Contrast)
    ======================================================== */
 body.dark-theme {
   background-color: #09090b;
-  color: #f4f4f5;
+  color: #f8fafc;
 }
 
+/* Top Navbar with Deep Carbon Background in Dark Mode */
 body.dark-theme header#topNavbar {
-  background-color: #09090b;
+  background: linear-gradient(135deg, #121216 0%, #09090b 100%);
   border-bottom: 1px solid #27272a;
-  color: #f4f4f5;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.4);
+}
+
+body.dark-theme .navbar-toolbar-bg {
+  background-color: #1c1c22;
+  border: 1px solid #3f3f46;
 }
 
 body.dark-theme .surface-card {
-  background-color: #121215;
+  background-color: #121216;
   border: 1px solid #27272a;
-  color: #f4f4f5;
+  color: #f8fafc;
 }
 
 body.dark-theme .surface-secondary {
-  background-color: #18181b;
+  background-color: #18181c;
   border: 1px solid #27272a;
 }
 
 body.dark-theme .text-secondary {
-  color: #a1a1aa;
+  color: #94a3b8;
 }
 
 body.dark-theme .btn-primary {
-  background-color: #f4f4f5;
+  background-color: #f8fafc;
   color: #09090b;
-  border: 1px solid #f4f4f5;
+  border: 1px solid #f8fafc;
 }
 body.dark-theme .btn-primary:hover {
   background-color: #ffffff;
 }
 
 body.dark-theme .btn-secondary {
-  background-color: #18181b;
-  color: #f4f4f5;
-  border: 1px solid #27272a;
+  background-color: #18181c;
+  color: #f8fafc;
+  border: 1px solid #3f3f46;
 }
 body.dark-theme .btn-secondary:hover {
   background-color: #27272a;
-  border-color: #3f3f46;
+  border-color: #52525b;
 }
 
 body.dark-theme .tab-active {
-  background-color: #f4f4f5;
+  background-color: #f8fafc;
   color: #09090b;
 }
 body.dark-theme .tab-inactive {
   background-color: transparent;
-  color: #a1a1aa;
+  color: #94a3b8;
 }
 body.dark-theme .tab-inactive:hover {
-  color: #f4f4f5;
-  background-color: #18181b;
+  color: #f8fafc;
+  background-color: #18181c;
 }
 
 body.dark-theme select {
-  background-color: #18181b;
-  color: #f4f4f5;
-  border: 1px solid #27272a;
+  background-color: #18181c;
+  color: #f8fafc;
+  border: 1px solid #3f3f46;
 }
 body.dark-theme select:focus {
-  border-color: #f4f4f5;
+  border-color: #f8fafc;
   outline: none;
 }
 
 body.dark-theme footer {
   background-color: #09090b;
   border-top: 1px solid #27272a;
-  color: #71717a;
+  color: #64748b;
 }
 
 /* Projector Fullscreen Mode */
