@@ -16,12 +16,6 @@ Unlike conventional edtech applications that mandate individual student tablets,
 
 ---
 
-## 👨‍💻 Developer & Author
-* **Built & Designed by:** **Mohan D S** ([@mohands0810-debug](https://github.com/mohands0810-debug))
-* **Role:** Full-Stack Design, Frontend Architecture & Accessibility Engineering
-
----
-
 ## 🌟 Key Features
 
 ### 1. 5-Tier Adaptive Curriculum Filter

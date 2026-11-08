@@ -63,3 +63,4 @@ Standard electronic learning software frequently relies on 1:1 hardware deployme
 │         (Projected to Smart Screen / Display)          │
 └────────────────────────────────────────────────────────┘
 ```
+
