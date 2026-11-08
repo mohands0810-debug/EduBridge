@@ -32,11 +32,14 @@
 
       <!-- Action Toolbar with Distinct Elevated Background Container -->
       <div class="navbar-toolbar-bg p-1.5 rounded-xl flex items-center space-x-2 shadow-sm">
-        <!-- Read Aloud (Indian English Accent Speech) -->
-        <button id="btnTts" class="btn-secondary px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1.5 transition shadow-sm" title="Read task prompt aloud with Indian English accent">
+        <!-- Read Aloud -->
+        <button id="btnTts" class="btn-secondary px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1.5 transition shadow-sm" title="Read task prompt aloud with clear speech">
           <i class="fa-solid fa-volume-high"></i>
           <span>Read Aloud</span>
         </button>
+
+        <!-- Voice Selector -->
+        <select id="selVoice" class="btn-secondary text-[11px] font-semibold py-1.5 px-2 rounded-lg border border-zinc-300 dark:border-zinc-700 outline-none max-w-[130px] transition cursor-pointer" title="Select Voice Clarity"></select>
 
         <!-- Dyslexia Font -->
         <button id="btnDyslexia" class="btn-secondary px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1.5 transition shadow-sm" title="Toggle dyslexia-friendly font spacing">
@@ -247,10 +250,10 @@
                 <span id="clipTimeDisplay" class="text-xs font-mono text-secondary ml-2">00:00 / 00:00</span>
               </div>
 
-              <!-- Audio Indian Narration Indicator -->
+              <!-- Audio Narration Indicator -->
               <div class="flex items-center space-x-2 text-xs text-secondary">
                 <i class="fa-solid fa-volume-high text-xs"></i>
-                <span class="text-[11px] font-medium">Audio Narration (Indian Accent)</span>
+                <span class="text-[11px] font-medium">Clear Audio Narration</span>
               </div>
             </div>
           </div>

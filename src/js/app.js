@@ -13,6 +13,7 @@ const state = {
   activeTab: 'interactive',
   scores: { teamA: 0, teamB: 0 },
   selectedVoice: null,
+  availableVoices: [],
 
   // Concept Clip State
   clipPlaying: false,
@@ -28,6 +29,7 @@ const elements = {
   selGrade: document.getElementById('selGrade'),
   selSubject: document.getElementById('selSubject'),
   selTopic: document.getElementById('selTopic'),
+  selVoice: document.getElementById('selVoice'),
   
   adaptationTitle: document.getElementById('adaptationTitle'),
   adaptationText: document.getElementById('adaptationText'),
@@ -70,7 +72,7 @@ const elements = {
 // Application Initialization
 function initialize() {
   applyTheme(state.theme);
-  initializeIndianSpeechVoice();
+  initializeSpeechVoices();
   populateDropdowns();
   setupEventListeners();
   updateUI();
@@ -102,38 +104,68 @@ function toggleTheme() {
 }
 
 // ----------------------------------------------------
-// Indian Accent Speech Synthesis Engine
+// Crystal-Clear Studio Speech Engine
 // ----------------------------------------------------
-function initializeIndianSpeechVoice() {
+function initializeSpeechVoices() {
   if (!('speechSynthesis' in window)) return;
 
-  function loadIndianVoice() {
-    const voices = window.speechSynthesis.getVoices();
-    if (!voices || voices.length === 0) return;
+  function loadVoices() {
+    const rawVoices = window.speechSynthesis.getVoices();
+    if (!rawVoices || rawVoices.length === 0) return;
 
-    // Strict priority filter for Indian English Voices
-    const indianVoice = voices.find(v => 
-      v.lang === 'en-IN' || 
-      v.lang.toLowerCase().replace('_', '-').startsWith('en-in') ||
-      v.name.toLowerCase().includes('india') ||
-      v.name.toLowerCase().includes('heera') ||
-      v.name.toLowerCase().includes('neerja') ||
-      v.name.toLowerCase().includes('ravi') ||
-      v.name.toLowerCase().includes('veena')
+    // Filter for clear English voices (prioritizing neural, natural, studio voices)
+    state.availableVoices = rawVoices.filter(v => 
+      v.lang.startsWith('en') || v.lang.startsWith('hi')
     );
 
-    if (indianVoice) {
-      state.selectedVoice = indianVoice;
-    } else {
-      state.selectedVoice = voices.find(v => v.lang.includes('IN')) || 
-                           voices.find(v => v.lang.startsWith('en')) || 
-                           voices[0];
+    if (state.availableVoices.length === 0) {
+      state.availableVoices = rawVoices;
+    }
+
+    // Rank voices by clarity and modern neural quality
+    state.availableVoices.sort((a, b) => {
+      const score = (v) => {
+        let s = 0;
+        const name = v.name.toLowerCase();
+        if (name.includes('natural') || name.includes('online (natural)')) s += 100;
+        if (name.includes('neural')) s += 90;
+        if (name.includes('google us english') || name.includes('google uk english')) s += 80;
+        if (name.includes('jenny') || name.includes('aria') || name.includes('samantha')) s += 70;
+        if (name.includes('zira') || name.includes('guy')) s += 50;
+        if (name.includes('india') || v.lang === 'en-IN') s += 40;
+        return s;
+      };
+      return score(b) - score(a);
+    });
+
+    // Populate Voice Dropdown
+    if (elements.selVoice) {
+      elements.selVoice.innerHTML = state.availableVoices.map((v, i) => {
+        // Clean friendly name
+        let cleanName = v.name
+          .replace('Microsoft ', '')
+          .replace('Google ', '')
+          .replace('Online (Natural) - ', '')
+          .replace('English (United States)', 'US')
+          .replace('English (United Kingdom)', 'UK')
+          .replace('English (India)', 'IN');
+        return `<option value="${i}">${cleanName}</option>`;
+      }).join('');
+
+      state.selectedVoice = state.availableVoices[0];
+      elements.selVoice.value = "0";
+
+      elements.selVoice.onchange = (e) => {
+        const idx = parseInt(e.target.value);
+        state.selectedVoice = state.availableVoices[idx];
+        speakText("Voice selected.");
+      };
     }
   }
 
-  loadIndianVoice();
+  loadVoices();
   if (window.speechSynthesis.onvoiceschanged !== undefined) {
-    window.speechSynthesis.onvoiceschanged = loadIndianVoice;
+    window.speechSynthesis.onvoiceschanged = loadVoices;
   }
 }
 
@@ -142,13 +174,16 @@ function speakText(text) {
   window.speechSynthesis.cancel();
 
   const utterance = new SpeechSynthesisUtterance(text);
-  utterance.lang = 'en-IN';
 
   if (state.selectedVoice) {
     utterance.voice = state.selectedVoice;
+    utterance.lang = state.selectedVoice.lang || 'en-US';
+  } else {
+    utterance.lang = 'en-US';
   }
   
-  utterance.rate = state.disability === 'ID' || state.disability === 'ASD' ? 0.82 : 0.86;
+  // Natural conversational speed (0.95x) and full volume (1.0)
+  utterance.rate = 0.95;
   utterance.pitch = 1.0;
   utterance.volume = 1.0;
 
@@ -388,7 +423,7 @@ function showCurrentClipStep() {
   elements.clipVisualStage.innerHTML = step.visualHtml;
   elements.clipCaptionDisplay.innerText = step.caption;
   
-  // Speak the step caption in Indian English accent
+  // Speak the step caption with studio clarity
   speakText(step.caption);
 }
 
