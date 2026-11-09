@@ -24,8 +24,22 @@
 
 <body class="light-theme min-h-screen flex flex-col antialiased">
 
+  <!-- Smooth Landing Splash Overlay (Dissolves smoothly upon platform ready) -->
+  <div id="landingSplash" class="landing-splash-overlay fixed inset-0 z-[100] flex flex-col items-center justify-center transition-all duration-700 ease-out select-none">
+    <div class="landing-splash-content flex flex-col items-center gap-4 text-center px-4 transform transition-all duration-700 ease-out">
+      <img src="src/assets/logo.jpg" alt="EduBridge Logo" class="h-16 w-16 sm:h-20 sm:w-20 rounded-2xl shadow-xl border border-zinc-200 dark:border-zinc-700 object-contain p-1 animate-landing-pulse">
+      <div class="space-y-1">
+        <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">EduBridge</h1>
+        <p class="text-xs sm:text-sm text-secondary font-medium tracking-wide">Inclusive Classroom Learning & Projection Platform</p>
+      </div>
+      <div class="w-36 h-1 rounded-full bg-zinc-200 dark:bg-zinc-800 overflow-hidden mt-2">
+        <div class="landing-progress-bar h-full bg-zinc-900 dark:bg-zinc-100 rounded-full"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- Top Navbar (Fully Responsive for Mobile & Desktop) -->
-  <header id="topNavbar" class="surface-card sticky top-0 z-50 transition-colors">
+  <header id="topNavbar" class="surface-card sticky top-0 z-50 transition-colors landing-reveal-1">
     <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2">
 
       <!-- Brand & Project Meta -->
@@ -93,7 +107,7 @@
   <main class="flex-1 max-w-7xl w-full mx-auto p-3 sm:p-6 lg:p-8 flex flex-col gap-4 sm:gap-6">
 
     <!-- Teacher Configuration Panel -->
-    <section id="teacherNavigationSection" class="surface-card rounded-xl p-4 sm:p-5 shadow-sm transition-colors">
+    <section id="teacherNavigationSection" class="surface-card rounded-xl p-4 sm:p-5 shadow-sm transition-colors landing-reveal-2">
       <div
         class="flex items-center justify-between mb-3 pb-2 border-b border-zinc-200 dark:border-zinc-800 gap-2 flex-wrap">
         <div class="flex items-center space-x-2 font-semibold text-xs tracking-wider uppercase opacity-80">
@@ -167,7 +181,7 @@
 
     <!-- Projector Classroom Canvas -->
     <section id="projectorStage"
-      class="surface-card rounded-2xl p-4 sm:p-6 md:p-8 flex-1 flex flex-col shadow-sm transition-colors">
+      class="surface-card rounded-2xl p-4 sm:p-6 md:p-8 flex-1 flex flex-col shadow-sm transition-colors landing-reveal-3">
 
       <!-- Printable Classroom Worksheet Header (Hidden on screen, visible when printed) -->
       <div class="print-worksheet-header mb-6 pb-4 border-b-2 border-black">

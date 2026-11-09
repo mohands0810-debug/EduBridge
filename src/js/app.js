@@ -87,6 +87,21 @@ function initialize() {
   populateDropdowns();
   setupEventListeners();
   updateUI();
+  dismissLandingSplash();
+}
+
+function dismissLandingSplash() {
+  const splash = document.getElementById('landingSplash');
+  if (splash) {
+    setTimeout(() => {
+      splash.classList.add('splash-fade-out');
+      setTimeout(() => {
+        if (splash && splash.parentNode) {
+          splash.parentNode.removeChild(splash);
+        }
+      }, 750);
+    }, 600);
+  }
 }
 
 // ----------------------------------------------------
