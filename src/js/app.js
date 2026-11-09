@@ -125,8 +125,34 @@ function toggleSoundEffects() {
 }
 
 // ----------------------------------------------------
-// Crystal-Clear Studio Speech Engine
+// Studio Speech Engine with Kannada & Indian Voice Routing
 // ----------------------------------------------------
+function resolveVoiceForText(text) {
+  const isKannada = /[\u0C80-\u0CFF]/.test(text) || state.subject === 'Kannada';
+  if (isKannada && window.speechSynthesis) {
+    const rawVoices = window.speechSynthesis.getVoices() || [];
+    // 1. Prioritize native Kannada voices (Microsoft Gagan/Sapna, Google ಕನ್ನಡ, kn-IN)
+    const knVoice = rawVoices.find(v => 
+      v.lang.toLowerCase().startsWith('kn') || 
+      v.name.toLowerCase().includes('kannada') ||
+      v.name.toLowerCase().includes('gagan') ||
+      v.name.toLowerCase().includes('sapna')
+    );
+    if (knVoice) return { voice: knVoice, lang: knVoice.lang || 'kn-IN' };
+
+    // 2. Fallback to Indian English / Hindi voices which support Indian phonetics
+    const inVoice = rawVoices.find(v => v.lang === 'en-IN' || v.lang.startsWith('hi'));
+    if (inVoice) return { voice: inVoice, lang: 'kn-IN' };
+
+    return { voice: null, lang: 'kn-IN' };
+  }
+
+  return {
+    voice: state.selectedVoice || null,
+    lang: state.selectedVoice ? (state.selectedVoice.lang || 'en-US') : 'en-US'
+  };
+}
+
 function initializeSpeechVoices() {
   if (!('speechSynthesis' in window)) return;
 
@@ -134,9 +160,12 @@ function initializeSpeechVoices() {
     const rawVoices = window.speechSynthesis.getVoices();
     if (!rawVoices || rawVoices.length === 0) return;
 
-    // Filter for clear English voices (prioritizing neural, natural, studio voices)
+    // Filter for clear voices (English, Hindi, Kannada)
     state.availableVoices = rawVoices.filter(v => 
-      v.lang.startsWith('en') || v.lang.startsWith('hi')
+      v.lang.startsWith('en') || 
+      v.lang.startsWith('hi') || 
+      v.lang.startsWith('kn') ||
+      v.name.toLowerCase().includes('kannada')
     );
 
     if (state.availableVoices.length === 0) {
@@ -153,7 +182,7 @@ function initializeSpeechVoices() {
         if (name.includes('google us english') || name.includes('google uk english')) s += 80;
         if (name.includes('jenny') || name.includes('aria') || name.includes('samantha')) s += 70;
         if (name.includes('zira') || name.includes('guy')) s += 50;
-        if (name.includes('india') || v.lang === 'en-IN') s += 40;
+        if (name.includes('india') || v.lang === 'en-IN' || v.lang.startsWith('kn')) s += 40;
         return s;
       };
       return score(b) - score(a);
@@ -168,7 +197,8 @@ function initializeSpeechVoices() {
           .replace('Online (Natural) - ', '')
           .replace('English (United States)', 'US')
           .replace('English (United Kingdom)', 'UK')
-          .replace('English (India)', 'IN');
+          .replace('English (India)', 'IN')
+          .replace('Kannada (India)', 'Kannada (IN)');
         return `<option value="${i}">${cleanName}</option>`;
       }).join('');
 
@@ -194,13 +224,12 @@ function speakText(text) {
   window.speechSynthesis.cancel();
 
   const utterance = new SpeechSynthesisUtterance(text);
+  const voiceConfig = resolveVoiceForText(text);
 
-  if (state.selectedVoice) {
-    utterance.voice = state.selectedVoice;
-    utterance.lang = state.selectedVoice.lang || 'en-US';
-  } else {
-    utterance.lang = 'en-US';
+  if (voiceConfig.voice) {
+    utterance.voice = voiceConfig.voice;
   }
+  utterance.lang = voiceConfig.lang;
   
   utterance.rate = 0.95;
   utterance.pitch = 1.0;
@@ -435,17 +464,30 @@ window.handleTokenTap = function(el) {
   const badge = el.querySelector('.tap-badge');
   const isCounted = el.getAttribute('data-counted') === 'true';
 
+  const knDigits = ['೧', '೨', '೩', '೪', '೫', '೬', '೭', '೮', '೯', '೧೦'];
+  const knWords = ['ಒಂದು', 'ಎರಡು', 'ಮೂರು', 'ನಾಲ್ಕು', 'ಐದು', 'ಆರು', 'ಏಳು', 'ಎಂಟು', 'ಒಂಬತ್ತು', 'ಹತ್ತು'];
+
   if (!isCounted) {
     state.countedTaps++;
     el.setAttribute('data-counted', 'true');
-    badge.innerText = state.countedTaps;
+    
+    if (state.subject === 'Kannada' && knDigits[state.countedTaps - 1]) {
+      badge.innerText = knDigits[state.countedTaps - 1];
+    } else {
+      badge.innerText = state.countedTaps;
+    }
     badge.classList.remove('hidden');
     el.classList.add('ring-2', 'ring-zinc-900', 'dark:ring-zinc-100');
 
     if (state.soundEffectsEnabled) {
       sounds.playTap(state.countedTaps);
     }
-    speakText(`${state.countedTaps}`);
+
+    if (state.subject === 'Kannada' && knWords[state.countedTaps - 1]) {
+      speakText(knWords[state.countedTaps - 1]);
+    } else {
+      speakText(`${state.countedTaps}`);
+    }
   } else {
     // Untap
     el.setAttribute('data-counted', 'false');
@@ -455,7 +497,11 @@ window.handleTokenTap = function(el) {
   }
 
   if (elements.countedBadge) {
-    elements.countedBadge.innerText = `Counted: ${state.countedTaps}`;
+    if (state.subject === 'Kannada' && knDigits[state.countedTaps - 1]) {
+      elements.countedBadge.innerText = `ಎಣಿಕೆ: ${knDigits[state.countedTaps - 1]} (${state.countedTaps})`;
+    } else {
+      elements.countedBadge.innerText = `Counted: ${state.countedTaps}`;
+    }
   }
 };
 
@@ -572,12 +618,12 @@ function speakClipStep(text, onComplete) {
   window.speechSynthesis.cancel();
 
   const utterance = new SpeechSynthesisUtterance(text);
-  if (state.selectedVoice) {
-    utterance.voice = state.selectedVoice;
-    utterance.lang = state.selectedVoice.lang || 'en-US';
-  } else {
-    utterance.lang = 'en-US';
+  const voiceConfig = resolveVoiceForText(text);
+
+  if (voiceConfig.voice) {
+    utterance.voice = voiceConfig.voice;
   }
+  utterance.lang = voiceConfig.lang;
 
   utterance.rate = 0.92;
   utterance.pitch = 1.0;

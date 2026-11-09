@@ -29,7 +29,8 @@ $$\text{Curriculum (CBSE / ICSE / State)} \longrightarrow \text{Support Profile}
 * **Intellectual Disabilities (ID):** Tangible real-world items (fruits, shapes, plants), single-concept prompts, and repetitive reinforcement.
 
 ### 3. Multimodal Classroom Learning Modes
-* **Interactive Tap-to-Count:** Students and teachers can tap tokens directly on screen to highlight items, display numeric badges, and count along aloud with gentle audio chimes.
+* **Interactive Tap-to-Count:** Students and teachers can tap tokens directly on screen to highlight items, display numeric badges, and count along aloud with gentle audio chimes. Supports both English and Kannada numerals (೧, ೨, ೩).
+* **Multilingual Curriculum Support:** Comprehensive modules for Mathematics, EVS, English Phonics, and Kannada (ಕನ್ನಡ ಸ್ವರಗಳು, ಕನ್ನಡ ಅಂಕಿಗಳು, ಸರಳ ಪದಗಳು) with regional voice routing and native phonics.
 * **On-The-Fly Activity Builder:** Allows educators to create custom counting/matching prompts with arbitrary emoji tokens and polling choices in seconds.
 * **Classroom Collaboration Challenges:** Group team games (e.g. Left Row vs. Right Row) with interactive scoring and praise audio.
 * **Animated Concept Clips:** Step-by-step animated visual lessons with live closed captions and synchronized speech narration.

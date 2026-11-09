@@ -350,5 +350,132 @@ export const SUBJECTS = [
         ]
       }
     ]
+  },
+  {
+    id: 'Kannada',
+    name: 'Kannada (ಕನ್ನಡ)',
+    icon: 'fa-language',
+    topics: [
+      {
+        id: 'kan_swaragalu',
+        title: 'ಕನ್ನಡ ಸ್ವರಗಳು (Kannada Vowels)',
+        description: 'ಅಕ್ಷರ ಕಲಿಕೆ: ಸ್ವರಗಳ ಉಚ್ಚಾರಣೆ ಮತ್ತು ಚಿತ್ರ ಗುರುತಿಸುವಿಕೆ (Learning vowels with visual phonics).',
+        taskPrompt: "ಕೆಳಗಿನ ಅಕ್ಷರಗಳಲ್ಲಿ 'ಅ' (ಅರಸ / ಅಮ್ಮ) ಅಕ್ಷರವನ್ನು ಗುರುತಿಸಿ:",
+        taskItems: ['ಅ', 'ಆ', 'ಇ', 'ಈ'],
+        options: ['ಅ', 'ಆ', 'ಇ'],
+        correctAnswer: 'ಅ',
+        successMessage: 'ಸರಿಯಾದ ಉತ್ತರ! ಅ - ಅರಸ (ಅಮ್ಮ). ಭೇಷ್! Excellent!',
+        gameChallenge: {
+          title: 'ಸ್ವರ ಜೋಡಿ ಸವಾಲು (Vowel Match Challenge)',
+          instruction: 'ಶಿಕ್ಷಕರು ತರಗತಿಯನ್ನು ತಂಡಗಳಾಗಿ ವಿಂಗಡಿಸಿ: ಪರದೆಯ ಮೇಲಿನ ಚಿತ್ರಕ್ಕೆ ಸರಿಯಾದ ಅಕ್ಷರವನ್ನು ಗುರುತಿಸಿ.',
+          left: 'ಅ - ಅರಸ (King) 👑',
+          right: 'ಆ - ಆನೆ (Elephant) 🐘'
+        },
+        videoTitle: "ಕನ್ನಡ ಸ್ವರಮಾಲೆ: 'ಅ' ಮತ್ತು 'ಆ'",
+        videoSubtitle: 'ಚಿತ್ರ ಮತ್ತು ಉಚ್ಚಾರಣೆಯೊಂದಿಗೆ ಅಕ್ಷರ ಕಲಿಕೆ',
+        clipSteps: [
+          {
+            duration: 4,
+            caption: 'ಮೊದಲ ಸ್ವರ ಅ: ಅ ದಿಂದ ಅರಸ ಮತ್ತು ಅಮ್ಮ.',
+            visualHtml: '<div class="text-center"><div class="text-7xl font-bold mb-2">ಅ</div><div class="text-2xl font-semibold">ಅ = ಅರಸ 👑</div></div>'
+          },
+          {
+            duration: 4,
+            caption: 'ಎರಡನೇ ಸ್ವರ ಆ: ದೀರ್ಘ ಸ್ವರ ಆ, ಆನೆಯಂತೆ ದೊಡ್ಡದಾದ ಆನೆ!',
+            visualHtml: '<div class="text-center"><div class="text-7xl font-bold mb-2">ಆ</div><div class="text-2xl font-semibold">ಆ = ಆನೆ 🐘</div></div>'
+          },
+          {
+            duration: 4,
+            caption: 'ಮೂರನೇ ಸ್ವರ ಇ: ಇ ದಿಂದ ಮುದ್ದಾದ ಇಲಿ.',
+            visualHtml: '<div class="text-center"><div class="text-7xl font-bold mb-2">ಇ</div><div class="text-2xl font-semibold">ಇ = ಇಲಿ 🐭</div></div>'
+          },
+          {
+            duration: 5,
+            caption: 'ನಾಲ್ಕನೇ ಸ್ವರ ಈ: ಈ ದಿಂದ ನೀರಿನಲ್ಲಿ ಆಡುವ ಈಜು!',
+            visualHtml: '<div class="surface-card px-6 py-4 rounded-xl text-center"><div class="text-3xl font-bold">ಅ • ಆ • ಇ • ಈ</div><div class="text-sm text-zinc-500 mt-2">ಅರಸ • ಆನೆ • ಇಲಿ • ಈಜು 🌟</div></div>'
+          }
+        ]
+      },
+      {
+        id: 'kan_ankigalu',
+        title: 'ಕನ್ನಡ ಅಂಕಿಗಳು (Kannada Numbers ೧–೫)',
+        description: '೧ ರಿಂದ ೫ ರವರೆಗೆ ವಸ್ತುಗಳ ಎಣಿಕೆ ಮತ್ತು ಕನ್ನಡ ಅಂಕಿಗಳ ಪರಿಚಯ (Counting with Kannada numerals).',
+        taskPrompt: 'ಪರದೆಯ ಮೇಲಿರುವ ಮಾವಿನ ಹಣ್ಣುಗಳನ್ನು ಎಣಿಸಿ. ಒಟ್ಟು ಎಷ್ಟು ಹಣ್ಣುಗಳಿವೆ? (೧, ೨, ೩)',
+        taskItems: ['🥭', '🥭', '🥭'],
+        options: ['೨ (ಎರಡು)', '೩ (ಮೂರು)', '೪ (ನಾಲ್ಕು)'],
+        correctAnswer: '೩ (ಮೂರು)',
+        successMessage: 'ಉತ್ತಮ! ಒಟ್ಟು ೩ (ಮೂರು) ಮಾವಿನ ಹಣ್ಣುಗಳಿವೆ!',
+        gameChallenge: {
+          title: 'ಅಂಕಿಗಳ ಎಣಿಕೆ ಸ್ಪರ್ಧೆ (Number Count Rally)',
+          instruction: 'ತಂಡ A ಮತ್ತು ತಂಡ B: ಪರದೆಯ ಮೇಲಿನ ವಸ್ತುಗಳನ್ನು ಎಣಿಸಿ ಸರಿಯಾದ ಕನ್ನಡ ಅಂಕಿಯನ್ನು ಜೋರಾಗಿ ಹೇಳಿ.',
+          left: '🥭 🥭 (೨ - ಎರಡು)',
+          right: '🥭 🥭 🥭 🥭 (೪ - ನಾಲ್ಕು)'
+        },
+        videoTitle: 'ಕನ್ನಡ ಅಂಕಿಗಳ ಪರಿಚಯ (೧, ೨, ೩)',
+        videoSubtitle: 'ಹಣ್ಣುಗಳನ್ನು ಎಣಿಸುತ್ತಾ ಕನ್ನಡ ಅಂಕಿಗಳನ್ನು ಕಲಿಯೋಣ',
+        clipSteps: [
+          {
+            duration: 4,
+            caption: 'ಒಂದು: ಒಂದು ಸುಂದರವಾದ ಕೆಂಪು ಸೇಬು. ಅಂಕಿ ೧.',
+            visualHtml: '<div class="text-center"><div class="text-7xl font-black mb-2">೧</div><div class="text-3xl">🍎 (ಒಂದು)</div></div>'
+          },
+          {
+            duration: 4,
+            caption: 'ಎರಡು: ಎರಡು ರುಚಿಯಾದ ಮಾವಿನ ಹಣ್ಣುಗಳು. ಅಂಕಿ ೨.',
+            visualHtml: '<div class="text-center"><div class="text-7xl font-black mb-2">೨</div><div class="text-3xl">🥭 🥭 (ಎರಡು)</div></div>'
+          },
+          {
+            duration: 4,
+            caption: 'ಮೂರು: ಮೂರು ಸಿಹಿಯಾದ ಬಾಳೆಹಣ್ಣುಗಳು. ಅಂಕಿ ೩.',
+            visualHtml: '<div class="text-center"><div class="text-7xl font-black mb-2">೩</div><div class="text-3xl">🍌 🍌 🍌 (ಮೂರು)</div></div>'
+          },
+          {
+            duration: 4,
+            caption: 'ಅಭ್ಯಾಸ: ೧ ಒಂದು, ೨ ಎರಡು, ೩ ಮೂರು! ಎಲ್ಲರೂ ಒಟ್ಟಿಗೆ ಹೇಳಿ.',
+            visualHtml: '<div class="surface-card px-8 py-4 rounded-xl text-3xl font-bold">೧ • ೨ • ೩ • ೪ • ೫ 🎯</div>'
+          }
+        ]
+      },
+      {
+        id: 'kan_saralapadagalu',
+        title: 'ಸರಳ ಪದಗಳು (Everyday Words)',
+        description: 'ಮನೆ, ಮರ, ಹೂವು — ದೈನಂದಿನ ಸರಳ ಕನ್ನಡ ಪದಗಳ ಪರಿಚಯ.',
+        taskPrompt: 'ನಾವು ಕುಟುಂಬದೊಂದಿಗೆ ಪ್ರೀತಿಯಿಂದ ವಾಸಿಸುವ ಸುಂದರವಾದ ಸ್ಥಳ ಯಾವುದು?',
+        taskItems: ['🏠', '🌳', '🌸'],
+        options: ['ಮನೆ (Home)', 'ಮರ (Tree)', 'ಹೂವು (Flower)'],
+        correctAnswer: 'ಮನೆ (Home)',
+        successMessage: 'ಸರಿಯಾದ ಉತ್ತರ! ನಾವು ವಾಸಿಸುವ ಸ್ಥಳ ಮನೆ 🏠.',
+        gameChallenge: {
+          title: 'ಚಿತ್ರ ಮತ್ತು ಪದ ಜೋಡಣೆ (Word Match Game)',
+          instruction: 'ಶಿಕ್ಷಕರು ಚಿತ್ರ ತೋರಿಸಿದಾಗ ವಿದ್ಯಾರ್ಥಿಗಳು ಕನ್ನಡ ಪದವನ್ನು ಗುರುತಿಸುತ್ತಾರೆ.',
+          left: '🌳 ಮರ (Tree)',
+          right: '🌸 ಹೂವು (Flower)'
+        },
+        videoTitle: 'ನಮ್ಮ ಸುತ್ತಮುತ್ತಲಿನ ಸರಳ ಕನ್ನಡ ಪದಗಳು',
+        videoSubtitle: 'ಚಿತ್ರಗಳ ಮೂಲಕ ಪದಗಳನ್ನು ಕಲಿಯುವ ವಿಧಾನ',
+        clipSteps: [
+          {
+            duration: 4,
+            caption: 'ಮನೆ: ನಾವು ಕುಟುಂಬದೊಂದಿಗೆ ನೆಮ್ಮದಿಯಿಂದ ವಾಸಿಸುವ ಸ್ಥಳ.',
+            visualHtml: '<div class="text-center"><div class="text-6xl mb-2">🏠</div><div class="text-2xl font-bold">ಮನೆ (Home)</div></div>'
+          },
+          {
+            duration: 4,
+            caption: 'ಮರ: ನಮಗೆ ತಂಪಾದ ನೆರಳು ಮತ್ತು ಶುದ್ಧ ಗಾಳಿ ನೀಡುವ ಹಸಿರು ಮರ.',
+            visualHtml: '<div class="text-center"><div class="text-6xl mb-2">🌳</div><div class="text-2xl font-bold">ಮರ (Tree)</div></div>'
+          },
+          {
+            duration: 4,
+            caption: 'ಹೂವು: ಸುಂದರ ಪರಿಮಳ ಬೀರುವ ರಂಗುರಂಗಿನ ಹೂವು.',
+            visualHtml: '<div class="text-center"><div class="text-6xl mb-2">🌸</div><div class="text-2xl font-bold">ಹೂವು (Flower)</div></div>'
+          },
+          {
+            duration: 4,
+            caption: 'ಸಾರಾಂಶ: ಮನೆ, ಮರ, ಹೂವು — ನಿಸರ್ಗ ಮತ್ತು ನಮ್ಮ ಬದುಕು.',
+            visualHtml: '<div class="surface-card px-6 py-4 rounded-xl text-xl font-bold">🏠 ಮನೆ • 🌳 ಮರ • 🌸 ಹೂವು</div>'
+          }
+        ]
+      }
+    ]
   }
 ];
