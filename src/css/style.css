@@ -236,3 +236,22 @@ body.projector-fullscreen #projectorStage {
 .print-worksheet-header {
   display: none;
 }
+
+/* ========================================================
+   Multi-Question Navigation System
+   ======================================================== */
+#paneInteractive #taskPrompt {
+  transition: opacity 0.18s ease;
+}
+
+#paneInteractive.question-transition #taskPrompt,
+#paneInteractive.question-transition #taskContainer,
+#paneInteractive.question-transition #taskOptions {
+  opacity: 0;
+  transform: translateY(4px);
+}
+
+#taskContainer .token-item,
+#taskOptions button {
+  transition: opacity 0.14s ease, transform 0.14s ease;
+}

@@ -9,6 +9,7 @@ const state = {
   grade: 2,
   subject: 'Math',
   topic: 'math_addition',
+  currentQuestionIndex: 0,
   isDyslexic: false,
   isProjectorMode: false,
   soundEffectsEnabled: true,
@@ -48,7 +49,11 @@ const elements = {
   btnTts: document.getElementById('btnTts'),
   currentPathBreadcrumb: document.getElementById('currentPathBreadcrumb'),
   
-  // Interactive Task
+  // Interactive Task & Multi-Question Navigation
+  questionStepBadge: document.getElementById('questionStepBadge'),
+  questionDots: document.getElementById('questionDots'),
+  btnPrevQuestion: document.getElementById('btnPrevQuestion'),
+  btnNextQuestion: document.getElementById('btnNextQuestion'),
   taskPrompt: document.getElementById('taskPrompt'),
   taskContainer: document.getElementById('taskContainer'),
   taskOptions: document.getElementById('taskOptions'),
@@ -411,27 +416,32 @@ function updateTopicDropdown() {
 function setupEventListeners() {
   elements.selCurriculum.addEventListener('change', (e) => {
     state.curriculum = e.target.value;
+    state.currentQuestionIndex = 0;
     updateUI();
   });
 
   elements.selDisability.addEventListener('change', (e) => {
     state.disability = e.target.value;
+    state.currentQuestionIndex = 0;
     updateUI();
   });
 
   elements.selGrade.addEventListener('change', (e) => {
     state.grade = parseInt(e.target.value);
+    state.currentQuestionIndex = 0;
     updateUI();
   });
 
   elements.selSubject.addEventListener('change', (e) => {
     state.subject = e.target.value;
+    state.currentQuestionIndex = 0;
     updateTopicDropdown();
     updateUI();
   });
 
   elements.selTopic.addEventListener('change', (e) => {
     state.topic = e.target.value;
+    state.currentQuestionIndex = 0;
     resetConceptClip();
     updateUI();
   });
@@ -444,18 +454,18 @@ function setupEventListeners() {
   elements.btnDyslexia.addEventListener('click', toggleDyslexia);
   elements.btnProjector.addEventListener('click', toggleProjector);
   elements.btnTts.addEventListener('click', () => {
-    const subjObj = SUBJECTS.find(s => s.id === state.subject) || SUBJECTS[0];
-    const topicObj = subjObj.topics.find(t => t.id === state.topic) || subjObj.topics[0];
+    const topicObj = getCurrentTopic();
+    const q = getCurrentQuestion(topicObj);
     const mode = state.currentVoiceOption ? state.currentVoiceOption.id : 'en_us';
 
     if (state.subject === 'Kannada' || mode === 'kannada') {
-      const prompt = topicObj.promptKn || topicObj.taskPrompt;
+      const prompt = q.promptKn || q.taskPrompt;
       speakText(`ಪ್ರಶ್ನೆ: ${prompt}`);
     } else if (mode === 'hindi') {
-      const prompt = topicObj.promptHi || topicObj.taskPrompt;
+      const prompt = q.promptHi || q.taskPrompt;
       speakText(`कक्षा प्रश्न: ${prompt}`);
     } else {
-      speakText(`Class prompt: ${topicObj.taskPrompt}`);
+      speakText(`Class prompt: ${q.taskPrompt}`);
     }
   });
 
@@ -545,6 +555,7 @@ function launchCustomActivity() {
 
 function updateUI() {
   state.customActiveTopic = null;
+  state.currentQuestionIndex = 0; // Reset to first question on any filter change
   const currObj = CURRICULA.find(c => c.id === state.curriculum);
   const disObj = DISABILITY_PROFILES.find(d => d.id === state.disability);
   const subjObj = SUBJECTS.find(s => s.id === state.subject);
@@ -578,18 +589,84 @@ function updateUI() {
 }
 
 // ----------------------------------------------------
-// Interactive Visual Task & Tap-to-Count Engine
+// Interactive Visual Task & Multi-Question Question Pool
 // ----------------------------------------------------
+function getCurrentQuestion(topicObj) {
+  if (!topicObj) return null;
+  const questions = topicObj.questions && topicObj.questions.length > 0 ? topicObj.questions : [topicObj];
+  if (state.currentQuestionIndex >= questions.length) {
+    state.currentQuestionIndex = 0;
+  }
+  if (state.currentQuestionIndex < 0) {
+    state.currentQuestionIndex = 0;
+  }
+  return questions[state.currentQuestionIndex];
+}
+
+window.nextQuestion = function() {
+  const topicObj = getCurrentTopic();
+  const questions = topicObj.questions && topicObj.questions.length > 0 ? topicObj.questions : [topicObj];
+  if (state.currentQuestionIndex < questions.length - 1) {
+    state.currentQuestionIndex++;
+  } else {
+    state.currentQuestionIndex = 0; // Wrap around to question 1
+  }
+  renderInteractiveTask(topicObj);
+  if (state.soundEffectsEnabled) {
+    sounds.playTap(1);
+  }
+};
+
+window.prevQuestion = function() {
+  const topicObj = getCurrentTopic();
+  const questions = topicObj.questions && topicObj.questions.length > 0 ? topicObj.questions : [topicObj];
+  if (state.currentQuestionIndex > 0) {
+    state.currentQuestionIndex--;
+  } else {
+    state.currentQuestionIndex = questions.length - 1;
+  }
+  renderInteractiveTask(topicObj);
+  if (state.soundEffectsEnabled) {
+    sounds.playTap(1);
+  }
+};
+
+window.goToQuestion = function(idx) {
+  const topicObj = getCurrentTopic();
+  state.currentQuestionIndex = idx;
+  renderInteractiveTask(topicObj);
+  if (state.soundEffectsEnabled) {
+    sounds.playTap(1);
+  }
+};
+
 function renderInteractiveTask(topicObj) {
-  elements.taskPrompt.innerText = topicObj.taskPrompt;
+  const questions = topicObj.questions && topicObj.questions.length > 0 ? topicObj.questions : [topicObj];
+  const q = getCurrentQuestion(topicObj);
+
+  // 1. Question Step Indicator & Navigation Dots
+  if (elements.questionStepBadge) {
+    elements.questionStepBadge.innerText = `Question ${state.currentQuestionIndex + 1} of ${questions.length}`;
+  }
+
+  if (elements.questionDots) {
+    elements.questionDots.innerHTML = questions.map((_, i) => `
+      <button onclick="goToQuestion(${i})" 
+              class="h-2 rounded-full transition-all cursor-pointer ${i === state.currentQuestionIndex ? 'w-5 bg-zinc-900 dark:bg-zinc-100 shadow-sm' : 'w-2 bg-zinc-300 dark:bg-zinc-700 hover:bg-zinc-400'}"
+              title="Go to Question ${i + 1}"></button>
+    `).join('');
+  }
+
+  // 2. Prompt & Reset Feedback
+  elements.taskPrompt.innerText = q.taskPrompt;
   elements.taskFeedback.innerHTML = '';
   state.countedTaps = 0;
   if (elements.countedBadge) {
-    elements.countedBadge.innerText = 'Counted: 0';
+    elements.countedBadge.innerText = state.subject === 'Kannada' ? 'ಎಣಿಕೆ: ೦ (0)' : 'Counted: 0';
   }
 
-  // Render clickable tokens with count slots
-  elements.taskContainer.innerHTML = topicObj.taskItems.map((item, idx) => `
+  // 3. Render Clickable Tokens
+  elements.taskContainer.innerHTML = q.taskItems.map((item, idx) => `
     <div onclick="handleTokenTap(this, ${idx + 1})" 
          data-counted="false"
          class="token-item relative px-5 py-3.5 surface-card rounded-xl text-2xl font-bold tracking-tight shadow-sm flex items-center justify-center min-w-[90px] cursor-pointer select-none transition transform hover:-translate-y-1 hover:border-zinc-400 active:scale-95" 
@@ -599,7 +676,8 @@ function renderInteractiveTask(topicObj) {
     </div>
   `).join('');
 
-  elements.taskOptions.innerHTML = topicObj.options.map(opt => `
+  // 4. Render Multiple Choice Options
+  elements.taskOptions.innerHTML = q.options.map(opt => `
     <button onclick="handleAnswerChoice('${opt}')" class="btn-secondary py-3 px-4 rounded-xl text-base sm:text-lg font-bold tracking-tight transition transform hover:-translate-y-0.5 active:scale-98">
       ${opt}
     </button>
@@ -777,10 +855,10 @@ function resetConceptClip() {
 // Global Interaction Functions
 // ----------------------------------------------------
 window.handleAnswerChoice = function(chosen) {
-  const subjObj = SUBJECTS.find(s => s.id === state.subject);
-  const topicObj = subjObj.topics.find(t => t.id === state.topic);
+  const topicObj = getCurrentTopic();
+  const q = getCurrentQuestion(topicObj);
   
-  const isMatch = String(chosen).trim().toLowerCase() === String(topicObj.correctAnswer).trim().toLowerCase();
+  const isMatch = String(chosen).trim().toLowerCase() === String(q.correctAnswer).trim().toLowerCase();
 
   if (isMatch) {
     if (state.soundEffectsEnabled) {
@@ -789,21 +867,36 @@ window.handleAnswerChoice = function(chosen) {
     elements.taskFeedback.innerHTML = `
       <div class="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-xl surface-card border-l-4 border-l-emerald-500 font-semibold text-base shadow-sm">
         <i class="fa-solid fa-check text-emerald-600"></i>
-        <span>${topicObj.successMessage}</span>
+        <span>${q.successMessage}</span>
       </div>
     `;
-    speakText(topicObj.successMessage);
+    speakText(q.successMessage);
+
+    // Auto-advance to next question after a short pause on correct answer
+    const questions = topicObj.questions && topicObj.questions.length > 0 ? topicObj.questions : [topicObj];
+    if (state.currentQuestionIndex < questions.length - 1) {
+      setTimeout(() => {
+        state.currentQuestionIndex++;
+        renderInteractiveTask(topicObj);
+        elements.taskFeedback.innerHTML = '';
+      }, 2200);
+    }
   } else {
     if (state.soundEffectsEnabled) {
       sounds.playRetry();
     }
+
+    const retryMsg = state.subject === 'Kannada'
+      ? 'ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ! ಒಟ್ಟಿಗೆ ಎಣಿಸೋಣ.'
+      : (state.currentVoiceOption?.id === 'hindi' ? 'एक बार और कोशिश करें!' : "Let's count together and try one more time!");
+
     elements.taskFeedback.innerHTML = `
       <div class="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-xl surface-card border-l-4 border-l-zinc-500 font-semibold text-base shadow-sm">
         <i class="fa-solid fa-arrow-rotate-right text-zinc-500"></i>
-        <span>Let's count together and try one more time!</span>
+        <span>${retryMsg}</span>
       </div>
     `;
-    speakText("Let's count together and try one more time!");
+    speakText(retryMsg);
   }
 };
 

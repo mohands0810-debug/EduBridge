@@ -66,6 +66,44 @@ export const SUBJECTS = [
         options: ['3', '5', '7'],
         correctAnswer: '5',
         successMessage: 'Correct! There are exactly 5 apples.',
+        questions: [
+          {
+            taskPrompt: 'Count the apples on the screen. How many are there in total?',
+            promptHi: 'स्क्रीन पर सेबों को गिनें। कुल मिलाकर कितने सेब हैं?',
+            promptKn: 'ಪರದೆಯ ಮೇಲಿರುವ ಸೇಬುಗಳನ್ನು ಎಣಿಸಿ. ಒಟ್ಟು ಎಷ್ಟು ಸೇಬುಗಳಿವೆ?',
+            taskItems: ['🍎', '🍎', '🍎', '🍎', '🍎'],
+            options: ['3', '5', '7'],
+            correctAnswer: '5',
+            successMessage: 'Correct! There are exactly 5 apples.'
+          },
+          {
+            taskPrompt: 'How many shiny stars are in the sky? Tap each one to count!',
+            promptHi: 'आसमान में कितने चमकदार तारे हैं? गिनने के लिए टैप करें!',
+            promptKn: 'ಆಕಾಶದಲ್ಲಿ ಎಷ್ಟು ಹೊಳೆಯುವ ನಕ್ಷತ್ರಗಳಿವೆ? ಎಣಿಸಲು ಟ್ಯಾಪ್ ಮಾಡಿ!',
+            taskItems: ['⭐', '⭐', '⭐'],
+            options: ['2', '3', '4'],
+            correctAnswer: '3',
+            successMessage: 'Awesome! There are 3 bright stars.'
+          },
+          {
+            taskPrompt: 'Count the sweet strawberries on the table. How many do you see?',
+            promptHi: 'मेज़ पर रखी मीठी स्ट्रॉबेरी को गिनें। कुल कितनी हैं?',
+            promptKn: 'ಮೇಜಿನ ಮೇಲಿರುವ ಸ್ಟ್ರಾಬೆರಿಗಳನ್ನು ಎಣಿಸಿ. ಎಷ್ಟು ಹಣ್ಣುಗಳಿವೆ?',
+            taskItems: ['🍓', '🍓', '🍓', '🍓', '🍓', '🍓'],
+            options: ['4', '6', '8'],
+            correctAnswer: '6',
+            successMessage: 'Wonderful! Exactly 6 delicious strawberries.'
+          },
+          {
+            taskPrompt: 'Count the yellow bananas in the fruit bowl. How many are there?',
+            promptHi: 'फलों के कटोरे में कितने पीले केले हैं?',
+            promptKn: 'ಹಣ್ಣಿನ ಬುಟ್ಟಿಯಲ್ಲಿ ಎಷ್ಟು ಹಳದಿ ಬಾಳೆಹಣ್ಣುಗಳಿವೆ?',
+            taskItems: ['🍌', '🍌', '🍌', '🍌'],
+            options: ['3', '4', '5'],
+            correctAnswer: '4',
+            successMessage: 'Spot on! There are 4 bananas.'
+          }
+        ],
         gameChallenge: {
           title: 'Classroom Count Challenge',
           instruction: 'Compare the two groups. Teacher calls on Row A or Row B to identify the larger quantity.',
@@ -108,6 +146,35 @@ export const SUBJECTS = [
         options: ['Square', 'Circle', 'Triangle'],
         correctAnswer: 'Square',
         successMessage: 'Correct! A square has 4 equal straight sides.',
+        questions: [
+          {
+            taskPrompt: 'Which shape has 4 straight sides of equal length?',
+            promptHi: 'किस आकार की 4 समान सीधी भुजाएं होती हैं?',
+            promptKn: 'ಯಾವ ಆಕಾರವು 4 ಸಮಾನ ನೇರ ಬದಿಗಳನ್ನು ಹೊಂದಿದೆ?',
+            taskItems: ['Square', 'Circle', 'Triangle'],
+            options: ['Square', 'Circle', 'Triangle'],
+            correctAnswer: 'Square',
+            successMessage: 'Correct! A square has 4 equal straight sides.'
+          },
+          {
+            taskPrompt: 'Which shape is completely round with zero corners?',
+            promptHi: 'कौन सा आकार पूरी तरह गोल होता है जिसमें कोई कोना नहीं होता?',
+            promptKn: 'ಯಾವ ಆಕಾರವು ಸಂಪೂರ್ಣ ದುಂಡಾಗಿದ್ದು ಯಾವುದೇ ಮೂಲೆಗಳನ್ನು ಹೊಂದಿಲ್ಲ?',
+            taskItems: ['Circle', 'Square', 'Triangle'],
+            options: ['Circle', 'Square', 'Triangle'],
+            correctAnswer: 'Circle',
+            successMessage: 'Great! A circle is completely round like a clock or wheel.'
+          },
+          {
+            taskPrompt: 'Which shape has exactly 3 straight sides and 3 sharp corners?',
+            promptHi: 'किस आकार की 3 सीधी भुजाएं और 3 कोने होते हैं?',
+            promptKn: 'ಯಾವ ಆಕಾರವು 3 ನೇರ ಬದಿಗಳು ಮತ್ತು 3 ಮೂಲೆಗಳನ್ನು ಹೊಂದಿದೆ?',
+            taskItems: ['Triangle', 'Square', 'Circle'],
+            options: ['Triangle', 'Square', 'Circle'],
+            correctAnswer: 'Triangle',
+            successMessage: 'Excellent! Triangles have 3 sides, like a slice of pizza.'
+          }
+        ],
         gameChallenge: {
           title: 'Classroom Shape Spotting',
           instruction: 'Teacher points to a shape. Students raise hands to match it with an object in the room.',
@@ -150,6 +217,35 @@ export const SUBJECTS = [
         options: ['Blue', 'Red', 'Green'],
         correctAnswer: 'Blue',
         successMessage: 'Great work! The sequence continues with Blue.',
+        questions: [
+          {
+            taskPrompt: 'What comes next in the sequence: Red ➔ Blue ➔ Red ➔ ?',
+            promptHi: 'इस क्रम में आगे क्या आएगा: लाल, नीला, लाल, अगला क्या?',
+            promptKn: 'ಈ ಕ್ರಮದಲ್ಲಿ ಮುಂದಿನ ಬಣ್ಣ ಯಾವುದು: ಕೆಂಪು, ನೀಲಿ, ಕೆಂಪು, ನಂತರ ಯಾವುದು?',
+            taskItems: ['🔴 Red', '🔵 Blue', '🔴 Red', '❓ Next'],
+            options: ['Blue', 'Red', 'Green'],
+            correctAnswer: 'Blue',
+            successMessage: 'Great work! The sequence continues with Blue.'
+          },
+          {
+            taskPrompt: 'Complete the celestial rhythm: Sun ➔ Moon ➔ Sun ➔ ?',
+            promptHi: 'क्रम पूरा करें: सूरज, चाँद, सूरज, अगला क्या?',
+            promptKn: 'ಕ್ರಮವನ್ನು ಪೂರ್ಣಗೊಳಿಸಿ: ಸೂರ್ಯ, ಚಂದ್ರ, ಸೂರ್ಯ, ನಂತರ ಯಾವುದು?',
+            taskItems: ['☀️ Sun', '🌙 Moon', '☀️ Sun', '❓ Next'],
+            options: ['Moon', 'Sun', 'Star'],
+            correctAnswer: 'Moon',
+            successMessage: 'Correct! Sun followed by Moon.'
+          },
+          {
+            taskPrompt: 'What fruit comes next: Apple ➔ Banana ➔ Apple ➔ ?',
+            promptHi: 'अगला फल कौन सा आएगा: सेब, केला, सेब, अगला क्या?',
+            promptKn: 'ಮುಂದಿನ ಹಣ್ಣು ಯಾವುದು: ಸೇಬು, ಬಾಳೆಹಣ್ಣು, ಸೇಬು, ನಂತರ ಯಾವುದು?',
+            taskItems: ['🍎 Apple', '🍌 Banana', '🍎 Apple', '❓ Next'],
+            options: ['Banana', 'Apple', 'Orange'],
+            correctAnswer: 'Banana',
+            successMessage: 'Terrific! Apple and Banana repeat in harmony.'
+          }
+        ],
         gameChallenge: {
           title: 'Pattern Clapping Game',
           instruction: 'Students clap on Red and tap desks on Blue as the teacher projects the rhythm.',
@@ -199,6 +295,35 @@ export const SUBJECTS = [
         options: ['Roots', 'Leaves', 'Flower'],
         correctAnswer: 'Roots',
         successMessage: 'Correct! Roots grow below the soil to absorb water and nutrients.',
+        questions: [
+          {
+            taskPrompt: 'Which part of the plant anchors it underground and absorbs water?',
+            promptHi: 'पौधे का कौन सा भाग मिट्टी के नीचे बढ़ता है और पानी सोखता है?',
+            promptKn: 'ಸಸ್ಯದ ಯಾವ ಭಾಗವು ನೆಲದ ಕೆಳಗೆ ಬೆಳೆದು ನೀರನ್ನು ಹೀರಿಕೊಳ್ಳುತ್ತದೆ?',
+            taskItems: ['Roots (Underground)', 'Leaves (Green)', 'Flower (Bloom)'],
+            options: ['Roots', 'Leaves', 'Flower'],
+            correctAnswer: 'Roots',
+            successMessage: 'Correct! Roots grow below the soil to absorb water and nutrients.'
+          },
+          {
+            taskPrompt: 'Which green part of the plant catches sunlight to prepare food?',
+            promptHi: 'पौधे की कौन सी हरी पत्तियां धूप से भोजन बनाती हैं?',
+            promptKn: 'ಸಸ್ಯದ ಯಾವ ಹಸಿರು ಭಾಗವು ಸೂರ್ಯನ ಬೆಳಕಿನಿಂದ ಆಹಾರ ತಯಾರಿಸುತ್ತದೆ?',
+            taskItems: ['Leaves', 'Roots', 'Stem'],
+            options: ['Leaves', 'Roots', 'Stem'],
+            correctAnswer: 'Leaves',
+            successMessage: 'Spot on! Leaves are the food factories of plants.'
+          },
+          {
+            taskPrompt: 'Which colorful part of the plant blooms and produces seeds?',
+            promptHi: 'पौधे का कौन सा सुंदर भाग खिलता है और बीज बनाता है?',
+            promptKn: 'ಸಸ್ಯದ ಯಾವ ಸುಂದರ ಬಣ್ಣದ ಭಾಗವು ಅರಳಿ ಬೀಜಗಳನ್ನು ಉತ್ಪಾದಿಸುತ್ತದೆ?',
+            taskItems: ['Flower', 'Roots', 'Branches'],
+            options: ['Flower', 'Roots', 'Branches'],
+            correctAnswer: 'Flower',
+            successMessage: 'Beautiful! Flowers attract butterflies and make seeds.'
+          }
+        ],
         gameChallenge: {
           title: 'Plant Parts Relay',
           instruction: 'Row A identifies what absorbs sunlight; Row B identifies what absorbs water from soil.',
@@ -241,6 +366,35 @@ export const SUBJECTS = [
         options: ['Cow', 'Lion', 'Elephant'],
         correctAnswer: 'Cow',
         successMessage: 'Correct! Cows are domestic farm animals.',
+        questions: [
+          {
+            taskPrompt: 'Which of these is a domestic animal that lives on farms?',
+            promptHi: 'इनमें से कौन सा पालतू जानवर है जो खेतों या घरों में रहता है?',
+            promptKn: 'ಇವುಗಳಲ್ಲಿ ತೋಟ ಅಥವಾ ಮನೆಗಳಲ್ಲಿ ವಾಸಿಸುವ ಸಾಕುಪ್ರಾಣಿ ಯಾವುದು?',
+            taskItems: ['Cow (Farm)', 'Lion (Jungle)', 'Elephant (Forest)'],
+            options: ['Cow', 'Lion', 'Elephant'],
+            correctAnswer: 'Cow',
+            successMessage: 'Correct! Cows are domestic farm animals.'
+          },
+          {
+            taskPrompt: 'Which powerful wild animal is known as the King of the Jungle?',
+            promptHi: 'किस शक्तिशाली जंगली जानवर को जंगल का राजा कहा जाता है?',
+            promptKn: 'ಯಾವ ಬಲಿಷ್ಠ ಕಾಡು ಪ್ರಾಣಿಯನ್ನು ಕಾಡಿನ ರಾಜ ಎಂದು ಕರೆಯಲಾಗುತ್ತದೆ?',
+            taskItems: ['Lion (Jungle)', 'Dog (Home)', 'Sheep (Farm)'],
+            options: ['Lion', 'Dog', 'Sheep'],
+            correctAnswer: 'Lion',
+            successMessage: 'Roar! The lion is the majestic King of the Jungle.'
+          },
+          {
+            taskPrompt: 'Which friendly domestic animal barks and guards our houses?',
+            promptHi: 'कौन सा पालतू जानवर भौंकता है और हमारे घर की रखवाली करता है?',
+            promptKn: 'ಯಾವ ಸ್ನೇಹಪರ ಸಾಕುಪ್ರಾಣಿಯು ಬೊಗಳಿ ನಮ್ಮ ಮನೆಯನ್ನು ಕಾಯುತ್ತದೆ?',
+            taskItems: ['Dog', 'Tiger', 'Wolf'],
+            options: ['Dog', 'Tiger', 'Wolf'],
+            correctAnswer: 'Dog',
+            successMessage: 'Good job! Dogs are loyal domestic companions.'
+          }
+        ],
         gameChallenge: {
           title: 'Animal Habitat Categorization',
           instruction: 'Students identify whether the projected animal lives with humans or in the wild.',
@@ -290,6 +444,35 @@ export const SUBJECTS = [
         options: ['Ball', 'Cat', 'Apple'],
         correctAnswer: 'Ball',
         successMessage: 'Spot on! Ball begins with the letter B.',
+        questions: [
+          {
+            taskPrompt: 'Which word begins with the sound /b/ as in Ball?',
+            promptHi: 'कौन सा शब्द /ब/ ध्वनि से शुरू होता है जैसे बॉल या बैट?',
+            promptKn: 'ಯಾವ ಪದವು /ಬ/ ಶಬ್ದದಿಂದ ಪ್ರಾರಂಭವಾಗುತ್ತದೆ, ಉದಾಹರಣೆಗೆ ಬಾಲ್ ಅಥವಾ ಬ್ಯಾಟ್?',
+            taskItems: ['Ball', 'Cat', 'Apple'],
+            options: ['Ball', 'Cat', 'Apple'],
+            correctAnswer: 'Ball',
+            successMessage: 'Spot on! Ball begins with the letter B.'
+          },
+          {
+            taskPrompt: 'Which word begins with the sound /k/ as in Cat or Cup?',
+            promptHi: 'कौन सा शब्द /क/ ध्वनि से शुरू होता है जैसे कैट या कप?',
+            promptKn: 'ಯಾವ ಪದವು /ಕ/ ಶಬ್ದದಿಂದ ಪ್ರಾರಂಭವಾಗುತ್ತದೆ, ಉದಾಹರಣೆಗೆ ಕ್ಯಾಟ್ ಅಥವಾ ಕಪ್?',
+            taskItems: ['Cat', 'Dog', 'Fish'],
+            options: ['Cat', 'Dog', 'Fish'],
+            correctAnswer: 'Cat',
+            successMessage: 'Purr-fect! Cat starts with the /k/ sound.'
+          },
+          {
+            taskPrompt: 'Which word begins with the sound /s/ as in Sun?',
+            promptHi: 'कौन सा शब्द /स/ ध्वनि से शुरू होता है जैसे सन?',
+            promptKn: 'ಯಾವ ಪದವು /ಸ/ ಶಬ್ದದಿಂದ ಪ್ರಾರಂಭವಾಗುತ್ತದೆ, ಉದಾಹರಣೆಗೆ ಸನ್?',
+            taskItems: ['Sun', 'Moon', 'Tree'],
+            options: ['Sun', 'Moon', 'Tree'],
+            correctAnswer: 'Sun',
+            successMessage: 'Super! Sun starts with the sunny /s/ sound.'
+          }
+        ],
         gameChallenge: {
           title: 'Phonics Chorus Call',
           instruction: 'Teacher pronounces the starting phoneme; the entire class responds in unison.',
@@ -332,6 +515,35 @@ export const SUBJECTS = [
         options: ['Jump', 'Sleep', 'Read'],
         correctAnswer: 'Jump',
         successMessage: 'Correct! Jumping is an action verb.',
+        questions: [
+          {
+            taskPrompt: 'Which word describes pushing off the ground with your feet into the air?',
+            promptHi: 'कौन सा शब्द जमीन से हवा में कूदने की क्रिया को दर्शाता है?',
+            promptKn: 'ನೆಲದಿಂದ ಮೇಲಕ್ಕೆ ಹಾರುವ ಕ್ರಿಯೆಯನ್ನು ಯಾವ ಪದವು ಸೂಚಿಸುತ್ತದೆ?',
+            taskItems: ['Jump', 'Sleep', 'Read'],
+            options: ['Jump', 'Sleep', 'Read'],
+            correctAnswer: 'Jump',
+            successMessage: 'Correct! Jumping is an action verb.'
+          },
+          {
+            taskPrompt: 'Which action word means bringing your hands together with a sound?',
+            promptHi: 'हाथों को एक साथ लाकर आवाज़ करने को क्या कहते हैं?',
+            promptKn: 'ಎರಡೂ ಕೈಗಳನ್ನು ಒಟ್ಟಿಗೆ ಜೋಡಿಸಿ ಶಬ್ದ ಮಾಡುವ ಕ್ರಿಯೆ ಯಾವುದು?',
+            taskItems: ['Clap', 'Sit', 'Eat'],
+            options: ['Clap', 'Sit', 'Eat'],
+            correctAnswer: 'Clap',
+            successMessage: 'Clap, clap! Clapping is an energetic action verb.'
+          },
+          {
+            taskPrompt: 'Which action word means moving your feet quickly to run and race?',
+            promptHi: 'तेज़ी से दौड़ने को कौन सा क्रिया शब्द दर्शाता है?',
+            promptKn: 'ವೇಗವಾಗಿ ಓಡುವ ಕ್ರಿಯೆಯನ್ನು ಯಾವ ಪದವು ಸೂಚಿಸುತ್ತದೆ?',
+            taskItems: ['Run', 'Sleep', 'Draw'],
+            options: ['Run', 'Sleep', 'Draw'],
+            correctAnswer: 'Run',
+            successMessage: 'Great! Running is moving with rapid speed.'
+          }
+        ],
         gameChallenge: {
           title: 'Classroom Action Simon Says',
           instruction: 'Teacher projects the action word; students demonstrate the physical movement safely.',
@@ -375,10 +587,50 @@ export const SUBJECTS = [
         title: 'ಕನ್ನಡ ಸ್ವರಗಳು (Kannada Vowels)',
         description: 'ಅಕ್ಷರ ಕಲಿಕೆ: ಸ್ವರಗಳ ಉಚ್ಚಾರಣೆ ಮತ್ತು ಚಿತ್ರ ಗುರುತಿಸುವಿಕೆ (Learning vowels with visual phonics).',
         taskPrompt: "ಕೆಳಗಿನ ಅಕ್ಷರಗಳಲ್ಲಿ 'ಅ' (ಅರಸ / ಅಮ್ಮ) ಅಕ್ಷರವನ್ನು ಗುರುತಿಸಿ:",
+        promptHi: "नीचे दिए गए अक्षरों में 'ಅ' (ಅರಸ / ಅಮ್ಮ) को पहचानें:",
+        promptKn: "ಕೆಳಗಿನ ಅಕ್ಷರಗಳಲ್ಲಿ 'ಅ' (ಅರಸ / ಅಮ್ಮ) ಅಕ್ಷರವನ್ನು ಗುರುತಿಸಿ:",
         taskItems: ['ಅ', 'ಆ', 'ಇ', 'ಈ'],
         options: ['ಅ', 'ಆ', 'ಇ'],
         correctAnswer: 'ಅ',
         successMessage: 'ಸರಿಯಾದ ಉತ್ತರ! ಅ - ಅರಸ (ಅಮ್ಮ). ಭೇಷ್! Excellent!',
+        questions: [
+          {
+            taskPrompt: "ಕೆಳಗಿನ ಅಕ್ಷರಗಳಲ್ಲಿ 'ಅ' (ಅರಸ / ಅಮ್ಮ) ಅಕ್ಷರವನ್ನು ಗುರುತಿಸಿ:",
+            promptHi: "नीचे दिए गए अक्षरों में 'ಅ' (ಅರಸ / ಅಮ್ಮ) को पहचानें:",
+            promptKn: "ಕೆಳಗಿನ ಅಕ್ಷರಗಳಲ್ಲಿ 'ಅ' (ಅರಸ / ಅಮ್ಮ) ಅಕ್ಷರವನ್ನು ಗುರುತಿಸಿ:",
+            taskItems: ['ಅ', 'ಆ', 'ಇ', 'ಈ'],
+            options: ['ಅ', 'ಆ', 'ಇ'],
+            correctAnswer: 'ಅ',
+            successMessage: 'ಸರಿಯಾದ ಉತ್ತರ! ಅ - ಅರಸ (ಅಮ್ಮ). ಭೇಷ್!'
+          },
+          {
+            taskPrompt: "ದೊಡ್ಡದಾದ ಆನೆಯ 'ಆ' ಅಕ್ಷರ ಯಾವುದು?",
+            promptHi: "हाथी (ಆನೆ) का पहला अक्षर 'ಆ' कौन सा है?",
+            promptKn: "ದೊಡ್ಡದಾದ ಆನೆಯ 'ಆ' ಅಕ್ಷರ ಯಾವುದು?",
+            taskItems: ['ಆ', 'ಅ', 'ಉ'],
+            options: ['ಆ', 'ಅ', 'ಉ'],
+            correctAnswer: 'ಆ',
+            successMessage: 'ಉತ್ತಮ! ಆ - ಆನೆ 🐘 (Elephant).'
+          },
+          {
+            taskPrompt: "ಮುದ್ದಾದ ಇಲಿಯ 'ಇ' ಅಕ್ಷರವನ್ನು ಆಯ್ಕೆ ಮಾಡಿ:",
+            promptHi: "चूहे (ಇಲಿ) का पहला अक्षर 'ಇ' चुनें:",
+            promptKn: "ಮುದ್ದಾದ ಇಲಿಯ 'ಇ' ಅಕ್ಷರವನ್ನು ಆಯ್ಕೆ ಮಾಡಿ:",
+            taskItems: ['ಇ', 'ಈ', 'ಎ'],
+            options: ['ಇ', 'ಈ', 'ಎ'],
+            correctAnswer: 'ಇ',
+            successMessage: 'ಭೇಷ್! ಇ - ಇಲಿ 🐭 (Mouse).'
+          },
+          {
+            taskPrompt: "ನೀರಿನಲ್ಲಿ ಈಜುವ 'ಈ' ಅಕ್ಷರ ಯಾವುದು?",
+            promptHi: "तैरने (ಈಜು) का अक्षर 'ಈ' कौन सा है?",
+            promptKn: "ನೀರಿನಲ್ಲಿ ಈಜುವ 'ಈ' ಅಕ್ಷರ ಯಾವುದು?",
+            taskItems: ['ಈ', 'ಇ', 'ಐ'],
+            options: ['ಈ', 'ಇ', 'ಐ'],
+            correctAnswer: 'ಈ',
+            successMessage: 'ಅದ್ಭುತ! ಈ - ಈಜು 🏊.'
+          }
+        ],
         gameChallenge: {
           title: 'ಸ್ವರ ಜೋಡಿ ಸವಾಲು (Vowel Match Challenge)',
           instruction: 'ಶಿಕ್ಷಕರು ತರಗತಿಯನ್ನು ತಂಡಗಳಾಗಿ ವಿಂಗಡಿಸಿ: ಪರದೆಯ ಮೇಲಿನ ಚಿತ್ರಕ್ಕೆ ಸರಿಯಾದ ಅಕ್ಷರವನ್ನು ಗುರುತಿಸಿ.',
@@ -415,10 +667,50 @@ export const SUBJECTS = [
         title: 'ಕನ್ನಡ ಅಂಕಿಗಳು (Kannada Numbers ೧–೫)',
         description: '೧ ರಿಂದ ೫ ರವರೆಗೆ ವಸ್ತುಗಳ ಎಣಿಕೆ ಮತ್ತು ಕನ್ನಡ ಅಂಕಿಗಳ ಪರಿಚಯ (Counting with Kannada numerals).',
         taskPrompt: 'ಪರದೆಯ ಮೇಲಿರುವ ಮಾವಿನ ಹಣ್ಣುಗಳನ್ನು ಎಣಿಸಿ. ಒಟ್ಟು ಎಷ್ಟು ಹಣ್ಣುಗಳಿವೆ? (೧, ೨, ೩)',
+        promptHi: 'स्क्रीन पर आमों को गिनें। कुल कितने हैं?',
+        promptKn: 'ಪರದೆಯ ಮೇಲಿರುವ ಮಾವಿನ ಹಣ್ಣುಗಳನ್ನು ಎಣಿಸಿ. ಒಟ್ಟು ಎಷ್ಟು ಹಣ್ಣುಗಳಿವೆ?',
         taskItems: ['🥭', '🥭', '🥭'],
         options: ['೨ (ಎರಡು)', '೩ (ಮೂರು)', '೪ (ನಾಲ್ಕು)'],
         correctAnswer: '೩ (ಮೂರು)',
         successMessage: 'ಉತ್ತಮ! ಒಟ್ಟು ೩ (ಮೂರು) ಮಾವಿನ ಹಣ್ಣುಗಳಿವೆ!',
+        questions: [
+          {
+            taskPrompt: 'ಪರದೆಯ ಮೇಲಿರುವ ಮಾವಿನ ಹಣ್ಣುಗಳನ್ನು ಎಣಿಸಿ. ಒಟ್ಟು ಎಷ್ಟು ಹಣ್ಣುಗಳಿವೆ?',
+            promptHi: 'स्क्रीन पर आमों को गिनें। कुल कितने हैं?',
+            promptKn: 'ಪರದೆಯ ಮೇಲಿರುವ ಮಾವಿನ ಹಣ್ಣುಗಳನ್ನು ಎಣಿಸಿ. ಒಟ್ಟು ಎಷ್ಟು ಹಣ್ಣುಗಳಿವೆ?',
+            taskItems: ['🥭', '🥭', '🥭'],
+            options: ['೨ (ಎರಡು)', '೩ (ಮೂರು)', '೪ (ನಾಲ್ಕು)'],
+            correctAnswer: '೩ (ಮೂರು)',
+            successMessage: 'ಉತ್ತಮ! ಒಟ್ಟು ೩ (ಮೂರು) ಮಾವಿನ ಹಣ್ಣುಗಳಿವೆ!'
+          },
+          {
+            taskPrompt: 'ಪರದೆಯ ಮೇಲಿರುವ ಕೆಂಪು ಸೇಬುಗಳನ್ನು ಎಣಿಸಿ:',
+            promptHi: 'स्क्रीन पर लाल सेबों को गिनें:',
+            promptKn: 'ಪರದೆಯ ಮೇಲಿರುವ ಕೆಂಪು ಸೇಬುಗಳನ್ನು ಎಣಿಸಿ:',
+            taskItems: ['🍎', '🍎'],
+            options: ['೧ (ಒಂದು)', '೨ (ಎರಡು)', '೩ (ಮೂರು)'],
+            correctAnswer: '೨ (ಎರಡು)',
+            successMessage: 'ಸರಿಯಾಗಿದೆ! ೨ (ಎರಡು) ಸೇಬುಗಳು 🍎🍎.'
+          },
+          {
+            taskPrompt: 'ಪರದೆಯ ಮೇಲಿರುವ ಹಳದಿ ಬಾಳೆಹಣ್ಣುಗಳನ್ನು ಎಣಿಸಿ:',
+            promptHi: 'स्क्रीन पर केलों को गिनें:',
+            promptKn: 'ಪರದೆಯ ಮೇಲಿರುವ ಹಳದಿ ಬಾಳೆಹಣ್ಣುಗಳನ್ನು ಎಣಿಸಿ:',
+            taskItems: ['🍌', '🍌', '🍌', '🍌'],
+            options: ['೩ (ಮೂರು)', '೪ (ನಾಲ್ಕು)', '೫ (ಐದು)'],
+            correctAnswer: '೪ (ನಾಲ್ಕು)',
+            successMessage: 'ಅತ್ಯುತ್ತಮ! ೪ (ನಾಲ್ಕು) ಬಾಳೆಹಣ್ಣುಗಳು 🍌🍌🍌🍌.'
+          },
+          {
+            taskPrompt: 'ಆಕಾಶದಲ್ಲಿ ಬೆಳಗುವ ಪ್ರಕಾಶಮಾನ ಸೂರ್ಯ ಎಷ್ಟು ಜನರಿದ್ದಾರೆ?',
+            promptHi: 'आसमान में कितने सूरज चमक रहे हैं?',
+            promptKn: 'ಆಕಾಶದಲ್ಲಿ ಬೆಳಗುವ ಪ್ರಕಾಶಮಾನ ಸೂರ್ಯ ಎಷ್ಟು ಜನರಿದ್ದಾರೆ?',
+            taskItems: ['☀️'],
+            options: ['೧ (ಒಂದು)', '೨ (ಎರಡು)', '೪ (ನಾಲ್ಕು)'],
+            correctAnswer: '೧ (ಒಂದು)',
+            successMessage: 'ಭೇಷ್! ೧ (ಒಂದು) ಪ್ರಕಾಶಮಾನ ಸೂರ್ಯ ☀️.'
+          }
+        ],
         gameChallenge: {
           title: 'ಅಂಕಿಗಳ ಎಣಿಕೆ ಸ್ಪರ್ಧೆ (Number Count Rally)',
           instruction: 'ತಂಡ A ಮತ್ತು ತಂಡ B: ಪರದೆಯ ಮೇಲಿನ ವಸ್ತುಗಳನ್ನು ಎಣಿಸಿ ಸರಿಯಾದ ಕನ್ನಡ ಅಂಕಿಯನ್ನು ಜೋರಾಗಿ ಹೇಳಿ.',
@@ -455,10 +747,41 @@ export const SUBJECTS = [
         title: 'ಸರಳ ಪದಗಳು (Everyday Words)',
         description: 'ಮನೆ, ಮರ, ಹೂವು — ದೈನಂದಿನ ಸರಳ ಕನ್ನಡ ಪದಗಳ ಪರಿಚಯ.',
         taskPrompt: 'ನಾವು ಕುಟುಂಬದೊಂದಿಗೆ ಪ್ರೀತಿಯಿಂದ ವಾಸಿಸುವ ಸುಂದರವಾದ ಸ್ಥಳ ಯಾವುದು?',
+        promptHi: 'हम परिवार के साथ जिस सुंदर घर में रहते हैं वह कौन सा है?',
+        promptKn: 'ನಾವು ಕುಟುಂಬದೊಂದಿಗೆ ಪ್ರೀತಿಯಿಂದ ವಾಸಿಸುವ ಸುಂದರವಾದ ಸ್ಥಳ ಯಾವುದು?',
         taskItems: ['🏠', '🌳', '🌸'],
         options: ['ಮನೆ (Home)', 'ಮರ (Tree)', 'ಹೂವು (Flower)'],
         correctAnswer: 'ಮನೆ (Home)',
         successMessage: 'ಸರಿಯಾದ ಉತ್ತರ! ನಾವು ವಾಸಿಸುವ ಸ್ಥಳ ಮನೆ 🏠.',
+        questions: [
+          {
+            taskPrompt: 'ನಾವು ಕುಟುಂಬದೊಂದಿಗೆ ಪ್ರೀತಿಯಿಂದ ವಾಸಿಸುವ ಸುಂದರವಾದ ಸ್ಥಳ ಯಾವುದು?',
+            promptHi: 'हम परिवार के साथ जिस सुंदर घर में रहते हैं वह कौन सा है?',
+            promptKn: 'ನಾವು ಕುಟುಂಬದೊಂದಿಗೆ ಪ್ರೀತಿಯಿಂದ ವಾಸಿಸುವ ಸುಂದರವಾದ ಸ್ಥಳ ಯಾವುದು?',
+            taskItems: ['🏠', '🌳', '🌸'],
+            options: ['ಮನೆ (Home)', 'ಮರ (Tree)', 'ಹೂವು (Flower)'],
+            correctAnswer: 'ಮನೆ (Home)',
+            successMessage: 'ಸರಿಯಾದ ಉತ್ತರ! ನಾವು ವಾಸಿಸುವ ಸ್ಥಳ ಮನೆ 🏠.'
+          },
+          {
+            taskPrompt: 'ನಮಗೆ ತಂಪಾದ ನೆರಳು ಮತ್ತು ಶುದ್ಧ ಗಾಳಿ ನೀಡುವ ನಿಸರ್ಗದ ಗೆಳೆಯ ಯಾರು?',
+            promptHi: 'हमें ठंडी छाया और ताज़ी हवा देने वाला कौन सा है?',
+            promptKn: 'ನಮಗೆ ತಂಪಾದ ನೆರಳು ಮತ್ತು ಶುದ್ಧ ಗಾಳಿ ನೀಡುವ ನಿಸರ್ಗದ ಗೆಳೆಯ ಯಾರು?',
+            taskItems: ['🌳', '🏠', '🚗'],
+            options: ['ಮರ (Tree)', 'ಮನೆ (Home)', 'ಬಸ್ (Bus)'],
+            correctAnswer: 'ಮರ (Tree)',
+            successMessage: 'ಉತ್ತಮ! ನಮಗೆ ಹಸಿರು ನೆರಳು ನೀಡುವ ಮರ 🌳.'
+          },
+          {
+            taskPrompt: 'ತೋಟದಲ್ಲಿ ರಂಗುರಂಗಾಗಿ ಅರಳುವ ಪರಿಮಳಯುಕ್ತ ವಸ್ತು ಯಾವುದು?',
+            promptHi: 'बगीचे में खुशबू बिखेरने वाला सुंदर क्या है?',
+            promptKn: 'ತೋಟದಲ್ಲಿ ರಂಗುರಂಗಾಗಿ ಅರಳುವ ಪರಿಮಳಯುಕ್ತ ವಸ್ತು ಯಾವುದು?',
+            taskItems: ['🌸', '🪨', '🪵'],
+            options: ['ಹೂವು (Flower)', 'ಕಲ್ಲು (Stone)', 'ಮರಳು (Sand)'],
+            correctAnswer: 'ಹೂವು (Flower)',
+            successMessage: 'ಅದ್ಭುತ! ಪರಿಮಳ ಸೂಸುವ ಸುಂದರ ಹೂವು 🌸.'
+          }
+        ],
         gameChallenge: {
           title: 'ಚಿತ್ರ ಮತ್ತು ಪದ ಜೋಡಣೆ (Word Match Game)',
           instruction: 'ಶಿಕ್ಷಕರು ಚಿತ್ರ ತೋರಿಸಿದಾಗ ವಿದ್ಯಾರ್ಥಿಗಳು ಕನ್ನಡ ಪದವನ್ನು ಗುರುತಿಸುತ್ತಾರೆ.',
