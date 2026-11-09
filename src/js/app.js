@@ -294,9 +294,82 @@ function setupEventListeners() {
   // Concept Clip Player Buttons
   elements.btnPlayClip.addEventListener('click', togglePlayConceptClip);
   elements.btnResetClip.addEventListener('click', resetConceptClip);
+
+  // Custom Activity Builder Modal
+  const modalBuilder = document.getElementById('modalCustomBuilder');
+  const btnOpenBuilder = document.getElementById('btnOpenCustomBuilder');
+  const btnCloseBuilder = document.getElementById('btnCloseCustomBuilder');
+  const btnCancelBuilder = document.getElementById('btnCancelCustomBuilder');
+  const btnLaunchBuilder = document.getElementById('btnLaunchCustomBuilder');
+
+  if (btnOpenBuilder && modalBuilder) {
+    btnOpenBuilder.addEventListener('click', () => modalBuilder.classList.remove('hidden'));
+    btnCloseBuilder.addEventListener('click', () => modalBuilder.classList.add('hidden'));
+    btnCancelBuilder.addEventListener('click', () => modalBuilder.classList.add('hidden'));
+    btnLaunchBuilder.addEventListener('click', launchCustomActivity);
+  }
+}
+
+function launchCustomActivity() {
+  const promptVal = document.getElementById('customPromptInput').value.trim() || 'How many items are displayed?';
+  const tokenVal = document.getElementById('customTokenSelect').value || '⭐';
+  const qtyVal = parseInt(document.getElementById('customQuantitySelect').value) || 4;
+  const optionsRaw = document.getElementById('customOptionsInput').value.trim() || '2, 4, 6';
+  const correctVal = document.getElementById('customCorrectInput').value.trim() || String(qtyVal);
+
+  const optionsArr = optionsRaw.split(',').map(s => s.trim()).filter(Boolean);
+  if (!optionsArr.includes(correctVal)) {
+    optionsArr.push(correctVal);
+  }
+
+  const customTopic = {
+    id: 'custom_user_topic',
+    title: 'Custom Classroom Activity',
+    description: 'Teacher on-the-fly customized prompt',
+    taskPrompt: promptVal,
+    taskItems: Array(qtyVal).fill(tokenVal),
+    options: optionsArr,
+    correctAnswer: correctVal,
+    successMessage: `Fantastic! Exactly ${correctVal} ${tokenVal} items counted!`,
+    gameChallenge: {
+      title: 'Classroom Challenge',
+      instruction: promptVal,
+      left: `Team A (${tokenVal})`,
+      right: `Team B (${tokenVal})`
+    },
+    videoTitle: 'Visual Demonstration',
+    videoSubtitle: promptVal,
+    clipSteps: [
+      {
+        duration: 4,
+        caption: promptVal,
+        visualHtml: `<div class="text-5xl sm:text-6xl flex flex-wrap justify-center gap-3">${Array(qtyVal).fill(`<span>${tokenVal}</span>`).join('')}</div>`
+      },
+      {
+        duration: 4,
+        caption: `Count with your teacher: Total equals ${correctVal}!`,
+        visualHtml: `<div class="surface-card px-8 py-5 rounded-2xl text-3xl font-black">${correctVal} ${tokenVal}</div>`
+      }
+    ]
+  };
+
+  document.getElementById('modalCustomBuilder').classList.add('hidden');
+  state.customActiveTopic = customTopic;
+
+  document.getElementById('stageHeaderTitle').innerText = customTopic.title;
+  document.getElementById('stageHeaderSub').innerText = customTopic.description;
+  renderInteractiveTask(customTopic);
+  renderGroupGame(customTopic);
+  renderConceptClipInitial(customTopic);
+
+  if (state.soundEffectsEnabled) {
+    sounds.playSuccess();
+  }
+  speakText(`Custom activity ready: ${promptVal}`);
 }
 
 function updateUI() {
+  state.customActiveTopic = null;
   const currObj = CURRICULA.find(c => c.id === state.curriculum);
   const disObj = DISABILITY_PROFILES.find(d => d.id === state.disability);
   const subjObj = SUBJECTS.find(s => s.id === state.subject);
@@ -411,6 +484,7 @@ function renderGroupGame(topicObj) {
 // Fully Working Concept Clip Player (Audio-Synchronized)
 // ----------------------------------------------------
 function getCurrentTopic() {
+  if (state.customActiveTopic) return state.customActiveTopic;
   const subjObj = SUBJECTS.find(s => s.id === state.subject);
   return subjObj.topics.find(t => t.id === state.topic) || subjObj.topics[0];
 }

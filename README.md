@@ -29,14 +29,18 @@ $$\text{Curriculum (CBSE / ICSE / State)} \longrightarrow \text{Support Profile}
 * **Intellectual Disabilities (ID):** Tangible real-world items (fruits, shapes, plants), single-concept prompts, and repetitive reinforcement.
 
 ### 3. Multimodal Classroom Learning Modes
-* **Interactive Visual Tasks:** Hands-on polling challenges where teachers prompt the class to count, identify, and answer collectively.
+* **Interactive Tap-to-Count:** Students and teachers can tap tokens directly on screen to highlight items, display numeric badges, and count along aloud with gentle audio chimes.
+* **On-The-Fly Activity Builder:** Allows educators to create custom counting/matching prompts with arbitrary emoji tokens and polling choices in seconds.
 * **Classroom Collaboration Challenges:** Group team games (e.g. Left Row vs. Right Row) with interactive scoring and praise audio.
 * **Animated Concept Clips:** Step-by-step animated visual lessons with live closed captions and synchronized speech narration.
+* **Printable Student Worksheets:** One-click print-ready classroom activity sheet generation for physical handwriting and practice.
 
 ### 4. Accessibility & Inclusive Technology (WCAG 2.2)
 * **Natural Speech Synthesis:** Integrated Web Speech API narration with custom voice selection and balanced classroom pacing.
+* **Sensory Harmonic Synthesizer:** Built-in Web Audio API engine providing soft harmonic chimes for correct answers and taps without jarring noises.
 * **One-Click Dyslexia Font:** Toggles specialized letter-spacing and weighted character baselines.
 * **Minimalist Black & White System:** Clean Light and Dark modes engineered for maximum contrast and zero visual fatigue.
+* **Offline Progressive Web App (PWA):** Installs natively and functions fully offline via service worker caching for low-connectivity environments.
 * **Classroom Projector Mode:** One-click full-screen stage that hides administrative setup controls for distraction-free classroom projection.
 
 ---

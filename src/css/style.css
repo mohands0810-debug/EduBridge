@@ -203,3 +203,36 @@ body.projector-fullscreen #projectorStage {
   border: none;
   box-shadow: none;
 }
+
+/* ========================================================
+   Printable Classroom Worksheet Styles (@media print)
+   ======================================================== */
+@media print {
+  body {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  header, #teacherNavigationSection, .stage-tab-btn, .navbar-toolbar-bg, footer, #countingBar, #taskOptions, #btnCustomBuilder {
+    display: none !important;
+  }
+
+  #projectorStage {
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+  }
+
+  .print-worksheet-header {
+    display: block !important;
+  }
+
+  .surface-card, .surface-secondary {
+    background: transparent !important;
+    border: 1px solid #000000 !important;
+  }
+}
+
+.print-worksheet-header {
+  display: none;
+}
