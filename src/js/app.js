@@ -148,12 +148,18 @@ function toggleSoundEffects() {
 // Unified Studio Speech Engine (English, Kannada, Hindi)
 // ----------------------------------------------------
 let currentUtterance = null;
+let currentTtsAudio = null;
 let speechTimeoutId = null;
 
 function stopAllSpeech() {
   if (speechTimeoutId) {
     clearTimeout(speechTimeoutId);
     speechTimeoutId = null;
+  }
+  if (currentTtsAudio) {
+    currentTtsAudio.pause();
+    currentTtsAudio.currentTime = 0;
+    currentTtsAudio = null;
   }
   if (currentUtterance) {
     // Strip callbacks before cancelling so cancel() cannot trigger double completion
@@ -368,6 +374,52 @@ function initializeSpeechVoices() {
 }
 
 /**
+ * Streams crystal-clear native human speech via the serverless /api/tts endpoint
+ * with immediate fallback to Web Speech API if offline or on network issue.
+ */
+function playNativeAudioStream(text, lang, onComplete, fallback) {
+  stopAllSpeech();
+  let finished = false;
+  const finish = () => {
+    if (!finished) {
+      finished = true;
+      currentTtsAudio = null;
+      if (onComplete) onComplete();
+    }
+  };
+
+  try {
+    const clean = text.replace(/[:!?]/g, ' ').substring(0, 190).trim();
+    const endpoint = `/api/tts?tl=${lang}&q=${encodeURIComponent(clean)}`;
+    const audio = new Audio(endpoint);
+    currentTtsAudio = audio;
+
+    audio.onended = finish;
+    audio.onerror = () => {
+      currentTtsAudio = null;
+      if (!finished) {
+        finished = true;
+        if (fallback) fallback();
+        else if (onComplete) onComplete();
+      }
+    };
+
+    audio.play().catch(() => {
+      currentTtsAudio = null;
+      if (!finished) {
+        finished = true;
+        if (fallback) fallback();
+        else if (onComplete) onComplete();
+      }
+    });
+  } catch (e) {
+    currentTtsAudio = null;
+    if (fallback) fallback();
+    else if (onComplete) onComplete();
+  }
+}
+
+/**
  * Executes single-utterance speech with strict completion guard to prevent duplicate speech.
  */
 function speakViaUtterance(text, voice, lang, rate, onComplete) {
@@ -422,7 +474,7 @@ function speakText(text, onComplete) {
   const isKn = isKannadaText || mode === 'kannada';
   const isHi = isHindiText || mode === 'hindi';
 
-  // 1. KANNADA SPEECH
+  // 1. KANNADA SPEECH (Authentic native pronunciation)
   if (isKn) {
     const nativeKn = (state.currentVoiceOption?.voice && state.currentVoiceOption.lang.startsWith('kn'))
       ? state.currentVoiceOption.voice
@@ -433,20 +485,23 @@ function speakText(text, onComplete) {
           v.name.toLowerCase().includes('sapna')
         );
 
-    // If native Kannada voice is installed (Edge, Android, etc.)
+    // If browser has an authentic native offline Kannada voice (Edge / Android)
     if (nativeKn) {
       speakViaUtterance(text, nativeKn, 'kn-IN', 0.92, onComplete);
       return;
     }
 
-    // Universal fallback: speak authentic phonetic Roman Kannada
-    const phonetic = isKannadaText ? knToPhonetic(text) : text;
-    const inVoice = rawVoices.find(v => v.lang === 'en-IN' || v.name.toLowerCase().includes('india'))
-      || state.currentVoiceOption?.voice
-      || rawVoices[0]
-      || null;
+    // Stream 100% natural native Kannada speech via /api/tts endpoint
+    playNativeAudioStream(text, 'kn', onComplete, () => {
+      // Offline fallback: phonetic Roman Kannada speech via available voice
+      const phonetic = isKannadaText ? knToPhonetic(text) : text;
+      const inVoice = rawVoices.find(v => v.lang === 'en-IN' || v.name.toLowerCase().includes('india'))
+        || state.currentVoiceOption?.voice
+        || rawVoices[0]
+        || null;
 
-    speakViaUtterance(phonetic, inVoice, inVoice?.lang || 'en-IN', 0.90, onComplete);
+      speakViaUtterance(phonetic, inVoice, inVoice?.lang || 'en-IN', 0.90, onComplete);
+    });
     return;
   }
 
@@ -466,13 +521,15 @@ function speakText(text, onComplete) {
       return;
     }
 
-    const phonetic = isHindiText ? hiToPhonetic(text) : text;
-    const inVoice = rawVoices.find(v => v.lang === 'en-IN' || v.name.toLowerCase().includes('india'))
-      || state.currentVoiceOption?.voice
-      || rawVoices[0]
-      || null;
+    playNativeAudioStream(text, 'hi', onComplete, () => {
+      const phonetic = isHindiText ? hiToPhonetic(text) : text;
+      const inVoice = rawVoices.find(v => v.lang === 'en-IN' || v.name.toLowerCase().includes('india'))
+        || state.currentVoiceOption?.voice
+        || rawVoices[0]
+        || null;
 
-    speakViaUtterance(phonetic, inVoice, inVoice?.lang || 'en-IN', 0.92, onComplete);
+      speakViaUtterance(phonetic, inVoice, inVoice?.lang || 'en-IN', 0.92, onComplete);
+    });
     return;
   }
 
