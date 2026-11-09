@@ -132,17 +132,135 @@ function toggleSoundEffects() {
 // ----------------------------------------------------
 // Unified Studio Speech Engine (English, Kannada, Hindi)
 // ----------------------------------------------------
-let currentTtsAudio = null;
+let currentUtterance = null;
+let speechTimeoutId = null;
 
 function stopAllSpeech() {
+  if (speechTimeoutId) {
+    clearTimeout(speechTimeoutId);
+    speechTimeoutId = null;
+  }
+  if (currentUtterance) {
+    // Strip callbacks before cancelling so cancel() cannot trigger double completion
+    currentUtterance.onend = null;
+    currentUtterance.onerror = null;
+    currentUtterance = null;
+  }
   if (window.speechSynthesis) {
     window.speechSynthesis.cancel();
   }
-  if (currentTtsAudio) {
-    currentTtsAudio.pause();
-    currentTtsAudio.currentTime = 0;
-    currentTtsAudio = null;
+}
+
+/**
+ * Phonetically transliterates Kannada characters into natural Romanized words
+ * so browsers without native Kannada TTS installed can speak Kannada prompts audibly.
+ */
+function knToPhonetic(text) {
+  if (!text) return '';
+  const vowels = {
+    '\u0C85':'a','\u0C86':'aa','\u0C87':'i','\u0C88':'ee','\u0C89':'u','\u0C8A':'oo','\u0C8B':'ru',
+    '\u0C8E':'e','\u0C8F':'ae','\u0C90':'ai','\u0C92':'o','\u0C93':'oh','\u0C94':'au'
+  };
+  const matras = {
+    '\u0CBE':'aa','\u0CBF':'i','\u0CC0':'ee','\u0CC1':'u','\u0CC2':'oo','\u0CC3':'ru',
+    '\u0CC6':'e','\u0CC7':'ae','\u0CC8':'ai','\u0CCA':'o','\u0CCB':'oh','\u0CCC':'au'
+  };
+  const consonants = {
+    '\u0C95':'k','\u0C96':'kh','\u0C97':'g','\u0C98':'gh','\u0C99':'ng',
+    '\u0C9A':'ch','\u0C9B':'chh','\u0C9C':'j','\u0C9D':'jh','\u0C9E':'ny',
+    '\u0C9F':'t','\u0CA0':'th','\u0CA1':'d','\u0CA2':'dh','\u0CA3':'n',
+    '\u0CA4':'t','\u0CA5':'th','\u0CA6':'d','\u0CA7':'dh','\u0CA8':'n',
+    '\u0CAA':'p','\u0CAB':'ph','\u0CAC':'b','\u0CAD':'bh','\u0CAE':'m',
+    '\u0CAF':'y','\u0CB0':'r','\u0CB1':'r','\u0CB2':'l','\u0CB3':'l','\u0CB5':'v',
+    '\u0CB6':'sh','\u0CB7':'sh','\u0CB8':'s','\u0CB9':'h'
+  };
+  const digits = {
+    '೧':'ondu ','೨':'eradu ','೩':'mooru ','೪':'naalaku ','೫':'aidu ',
+    '೬':'aaru ','೭':'aelu ','೮':'entu ','೯':'ombattu ','೦':'sonne '
+  };
+
+  let out = '';
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    const next = text[i + 1] || '';
+    if (digits[ch]) {
+      out += digits[ch];
+    } else if (vowels[ch]) {
+      out += vowels[ch];
+    } else if (consonants[ch]) {
+      const base = consonants[ch];
+      if (next === '\u0CCD') { // virama (no vowel)
+        out += base;
+        i++;
+      } else if (matras[next]) {
+        out += base + matras[next];
+        i++;
+      } else {
+        out += base + 'a';
+      }
+    } else if (ch === '\u0C82') { // anusvara
+      out += 'm';
+    } else if (ch === '\u0C83') { // visarga
+      out += 'h';
+    } else if (ch === '\u0CCD') {
+      // isolated virama
+    } else {
+      out += ch;
+    }
   }
+  return out.replace(/\s+/g, ' ').trim();
+}
+
+/**
+ * Phonetically transliterates Devanagari Hindi characters into Romanized text
+ * when no native Hindi voice is installed in the browser.
+ */
+function hiToPhonetic(text) {
+  if (!text) return '';
+  const vowels = {
+    '\u0905':'a','\u0906':'aa','\u0907':'i','\u0908':'ee','\u0909':'u','\u090A':'oo','\u090B':'ri',
+    '\u090F':'e','\u0910':'ai','\u0913':'o','\u0914':'au'
+  };
+  const matras = {
+    '\u093E':'aa','\u093F':'i','\u0940':'ee','\u0941':'u','\u0942':'oo','\u0943':'ri',
+    '\u0947':'e','\u0948':'ai','\u094B':'o','\u094C':'au'
+  };
+  const consonants = {
+    '\u0915':'k','\u0916':'kh','\u0917':'g','\u0918':'gh','\u0919':'ng',
+    '\u091A':'ch','\u091B':'chh','\u091C':'j','\u091D':'jh','\u091E':'ny',
+    '\u091F':'t','\u0920':'th','\u0921':'d','\u0922':'dh','\u0923':'n',
+    '\u0924':'t','\u0925':'th','\u0926':'d','\u0927':'dh','\u0928':'n',
+    '\u092A':'p','\u092B':'ph','\u092C':'b','\u092D':'bh','\u092E':'m',
+    '\u092F':'y','\u0930':'r','\u0932':'l','\u0935':'v',
+    '\u0936':'sh','\u0937':'sh','\u0938':'s','\u0939':'h'
+  };
+
+  let out = '';
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    const next = text[i + 1] || '';
+    if (vowels[ch]) {
+      out += vowels[ch];
+    } else if (consonants[ch]) {
+      const base = consonants[ch];
+      if (next === '\u094D') {
+        out += base;
+        i++;
+      } else if (matras[next]) {
+        out += base + matras[next];
+        i++;
+      } else {
+        out += base + 'a';
+      }
+    } else if (ch === '\u0902') {
+      out += 'n';
+    } else if (ch === '\u0903') {
+      out += 'h';
+    } else {
+      out += ch;
+    }
+  }
+  return out.replace(/\s+/g, ' ').trim();
 }
 
 function initializeSpeechVoices() {
@@ -218,9 +336,9 @@ function initializeSpeechVoices() {
         localStorage.setItem('edubridge_selected_voice_id', opt.id);
 
         if (opt.id === 'kannada') {
-          speakText("ಕನ್ನಡ ಧ್ವನಿ ಸಿದ್ಧವಾಗಿದೆ.");
+          speakText("ಕನ್ನಡ ಧ್ವನಿ ಆಯ್ಕೆಯಾಗಿದೆ");
         } else if (opt.id === 'hindi') {
-          speakText("हिंदी आवाज़ चुनी गई है।");
+          speakText("हिंदी आवाज़ चुनी गई है");
         } else {
           speakText("Voice selected.");
         }
@@ -234,23 +352,63 @@ function initializeSpeechVoices() {
   }
 }
 
-function speakText(text, onComplete) {
+/**
+ * Executes single-utterance speech with strict completion guard to prevent duplicate speech.
+ */
+function speakViaUtterance(text, voice, lang, rate, onComplete) {
+  if (!('speechSynthesis' in window)) {
+    if (onComplete) setTimeout(onComplete, 2000);
+    return;
+  }
+
   stopAllSpeech();
+
+  const u = new SpeechSynthesisUtterance(text);
+  if (voice) {
+    u.voice = voice;
+  }
+  u.lang = lang || 'en-US';
+  u.rate = rate || 0.95;
+  u.pitch = 1.0;
+  u.volume = 1.0;
+
+  let completed = false;
+  const finish = () => {
+    if (!completed) {
+      completed = true;
+      currentUtterance = null;
+      if (onComplete) onComplete();
+    }
+  };
+
+  u.onend = finish;
+  u.onerror = finish;
+  currentUtterance = u;
+
+  // 35ms timeout ensures previous speech cancellation is committed by browser engine
+  speechTimeoutId = setTimeout(() => {
+    if (currentUtterance === u) {
+      window.speechSynthesis.speak(u);
+    }
+  }, 35);
+}
+
+function speakText(text, onComplete) {
   if (!text) {
     if (onComplete) onComplete();
     return;
   }
 
+  const rawVoices = ('speechSynthesis' in window) ? window.speechSynthesis.getVoices() : [];
   const isKannadaText = /[\u0C80-\u0CFF]/.test(text);
   const isHindiText = /[\u0900-\u097F]/.test(text);
   const mode = state.currentVoiceOption ? state.currentVoiceOption.id : 'en_us';
 
-  const isKn = isKannadaText || mode === 'kannada' || (state.subject === 'Kannada' && !isHindiText);
+  const isKn = isKannadaText || mode === 'kannada';
   const isHi = isHindiText || mode === 'hindi';
 
   // 1. KANNADA SPEECH
   if (isKn) {
-    const rawVoices = ('speechSynthesis' in window) ? window.speechSynthesis.getVoices() : [];
     const nativeKn = (state.currentVoiceOption?.voice && state.currentVoiceOption.lang.startsWith('kn'))
       ? state.currentVoiceOption.voice
       : rawVoices.find(v => 
@@ -260,89 +418,56 @@ function speakText(text, onComplete) {
           v.name.toLowerCase().includes('sapna')
         );
 
+    // If native Kannada voice is installed (Edge, Android, etc.)
     if (nativeKn) {
-      const u = new SpeechSynthesisUtterance(text);
-      u.voice = nativeKn;
-      u.lang = 'kn-IN';
-      u.rate = 0.92;
-      u.onend = () => { if (onComplete) onComplete(); };
-      u.onerror = () => { if (onComplete) onComplete(); };
-      window.speechSynthesis.speak(u);
+      speakViaUtterance(text, nativeKn, 'kn-IN', 0.92, onComplete);
       return;
     }
 
-    // Audio stream for native Kannada pronunciation
-    try {
-      const q = encodeURIComponent(text.substring(0, 180));
-      const audioUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=kn&client=tw-ob&q=${q}`;
-      const audio = new Audio(audioUrl);
-      currentTtsAudio = audio;
+    // Universal fallback: speak authentic phonetic Roman Kannada
+    const phonetic = isKannadaText ? knToPhonetic(text) : text;
+    const inVoice = rawVoices.find(v => v.lang === 'en-IN' || v.name.toLowerCase().includes('india'))
+      || state.currentVoiceOption?.voice
+      || rawVoices[0]
+      || null;
 
-      audio.onended = () => {
-        currentTtsAudio = null;
-        if (onComplete) onComplete();
-      };
-      audio.onerror = () => {
-        currentTtsAudio = null;
-        fallbackWebSpeech(text, 'kn-IN', onComplete);
-      };
-      audio.play().catch(() => {
-        currentTtsAudio = null;
-        fallbackWebSpeech(text, 'kn-IN', onComplete);
-      });
-      return;
-    } catch (e) {
-      fallbackWebSpeech(text, 'kn-IN', onComplete);
-      return;
-    }
+    speakViaUtterance(phonetic, inVoice, inVoice?.lang || 'en-IN', 0.90, onComplete);
+    return;
   }
 
   // 2. HINDI SPEECH
   if (isHi) {
-    const rawVoices = ('speechSynthesis' in window) ? window.speechSynthesis.getVoices() : [];
     const nativeHi = (state.currentVoiceOption?.voice && state.currentVoiceOption.lang.startsWith('hi'))
       ? state.currentVoiceOption.voice
-      : rawVoices.find(v => v.lang.startsWith('hi'));
+      : rawVoices.find(v => 
+          v.lang.startsWith('hi') || 
+          v.name.toLowerCase().includes('hindi') || 
+          v.name.toLowerCase().includes('swara') || 
+          v.name.toLowerCase().includes('kalpana')
+        );
 
     if (nativeHi) {
-      const u = new SpeechSynthesisUtterance(text);
-      u.voice = nativeHi;
-      u.lang = 'hi-IN';
-      u.rate = 0.95;
-      u.onend = () => { if (onComplete) onComplete(); };
-      u.onerror = () => { if (onComplete) onComplete(); };
-      window.speechSynthesis.speak(u);
+      speakViaUtterance(text, nativeHi, 'hi-IN', 0.92, onComplete);
       return;
     }
 
-    try {
-      const q = encodeURIComponent(text.substring(0, 180));
-      const audioUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=hi&client=tw-ob&q=${q}`;
-      const audio = new Audio(audioUrl);
-      currentTtsAudio = audio;
-      audio.onended = () => { currentTtsAudio = null; if (onComplete) onComplete(); };
-      audio.onerror = () => { currentTtsAudio = null; fallbackWebSpeech(text, 'hi-IN', onComplete); };
-      audio.play().catch(() => { currentTtsAudio = null; fallbackWebSpeech(text, 'hi-IN', onComplete); });
-      return;
-    } catch (e) {
-      fallbackWebSpeech(text, 'hi-IN', onComplete);
-      return;
-    }
-  }
+    const phonetic = isHindiText ? hiToPhonetic(text) : text;
+    const inVoice = rawVoices.find(v => v.lang === 'en-IN' || v.name.toLowerCase().includes('india'))
+      || state.currentVoiceOption?.voice
+      || rawVoices[0]
+      || null;
 
-  // 3. ENGLISH / GENERAL SPEECH
-  if (!('speechSynthesis' in window)) {
-    if (onComplete) setTimeout(onComplete, 2500);
+    speakViaUtterance(phonetic, inVoice, inVoice?.lang || 'en-IN', 0.92, onComplete);
     return;
   }
 
-  const u = new SpeechSynthesisUtterance(text);
-  if (state.currentVoiceOption?.voice && state.currentVoiceOption.voice.lang.startsWith('en')) {
-    u.voice = state.currentVoiceOption.voice;
-    u.lang = state.currentVoiceOption.voice.lang || 'en-US';
-  } else {
-    const rawVoices = window.speechSynthesis.getVoices();
-    const enVoice = rawVoices.find(v => 
+  // 3. ENGLISH / GENERAL SPEECH
+  let chosenVoice = (state.currentVoiceOption?.voice && state.currentVoiceOption.voice.lang.startsWith('en'))
+    ? state.currentVoiceOption.voice
+    : null;
+
+  if (!chosenVoice) {
+    chosenVoice = rawVoices.find(v => 
       v.lang.startsWith('en') && (
         v.name.toLowerCase().includes('natural') || 
         v.name.toLowerCase().includes('neural') ||
@@ -350,33 +475,10 @@ function speakText(text, onComplete) {
         v.name.toLowerCase().includes('aria') ||
         v.name.toLowerCase().includes('jenny')
       )
-    ) || rawVoices.find(v => v.lang.startsWith('en'));
-
-    if (enVoice) u.voice = enVoice;
-    u.lang = enVoice?.lang || 'en-US';
+    ) || rawVoices.find(v => v.lang.startsWith('en')) || null;
   }
 
-  u.rate = 0.95;
-  u.pitch = 1.0;
-  u.volume = 1.0;
-
-  u.onend = () => { if (onComplete) onComplete(); };
-  u.onerror = () => { if (onComplete) onComplete(); };
-
-  window.speechSynthesis.speak(u);
-}
-
-function fallbackWebSpeech(text, lang, onComplete) {
-  if (!('speechSynthesis' in window)) {
-    if (onComplete) onComplete();
-    return;
-  }
-  const u = new SpeechSynthesisUtterance(text);
-  u.lang = lang;
-  u.rate = 0.92;
-  u.onend = () => { if (onComplete) onComplete(); };
-  u.onerror = () => { if (onComplete) onComplete(); };
-  window.speechSynthesis.speak(u);
+  speakViaUtterance(text, chosenVoice, chosenVoice?.lang || 'en-US', 0.95, onComplete);
 }
 
 // ----------------------------------------------------
