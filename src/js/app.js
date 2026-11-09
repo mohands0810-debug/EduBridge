@@ -1,4 +1,5 @@
 import { CURRICULA, DISABILITY_PROFILES, GRADES, SUBJECTS } from '../data/curriculumData.js';
+import { sounds } from './soundEngine.js';
 
 // Application State
 const state = {
@@ -10,16 +11,17 @@ const state = {
   topic: 'math_addition',
   isDyslexic: false,
   isProjectorMode: false,
+  soundEffectsEnabled: true,
   activeTab: 'interactive',
   scores: { teamA: 0, teamB: 0 },
   selectedVoice: null,
   availableVoices: [],
+  countedTaps: 0,
 
   // Concept Clip State
   clipPlaying: false,
   clipStepIndex: 0,
-  clipInterval: null,
-  clipElapsed: 0
+  clipTimeout: null
 };
 
 // DOM References
@@ -38,6 +40,9 @@ const elements = {
   themeIcon: document.getElementById('themeIcon'),
   themeText: document.getElementById('themeText'),
   
+  btnSoundToggle: document.getElementById('btnSoundToggle'),
+  soundIcon: document.getElementById('soundIcon'),
+  
   btnDyslexia: document.getElementById('btnDyslexia'),
   btnProjector: document.getElementById('btnProjector'),
   btnTts: document.getElementById('btnTts'),
@@ -48,6 +53,7 @@ const elements = {
   taskContainer: document.getElementById('taskContainer'),
   taskOptions: document.getElementById('taskOptions'),
   taskFeedback: document.getElementById('taskFeedback'),
+  countedBadge: document.getElementById('countedBadge'),
 
   // Game
   gameTitle: document.getElementById('gameTitle'),
@@ -88,12 +94,12 @@ function applyTheme(theme) {
   if (theme === 'dark') {
     document.body.classList.remove('light-theme');
     document.body.classList.add('dark-theme');
-    elements.themeIcon.className = 'fa-solid fa-sun';
+    elements.themeIcon.className = 'fa-solid fa-sun text-xs sm:text-sm';
     elements.themeText.innerText = 'Light';
   } else {
     document.body.classList.remove('dark-theme');
     document.body.classList.add('light-theme');
-    elements.themeIcon.className = 'fa-solid fa-moon';
+    elements.themeIcon.className = 'fa-solid fa-moon text-xs sm:text-sm';
     elements.themeText.innerText = 'Dark';
   }
 }
@@ -101,6 +107,21 @@ function applyTheme(theme) {
 function toggleTheme() {
   const newTheme = state.theme === 'light' ? 'dark' : 'light';
   applyTheme(newTheme);
+}
+
+// ----------------------------------------------------
+// Sound Effects Toggle
+// ----------------------------------------------------
+function toggleSoundEffects() {
+  state.soundEffectsEnabled = !state.soundEffectsEnabled;
+  if (state.soundEffectsEnabled) {
+    elements.soundIcon.className = 'fa-solid fa-bell text-xs sm:text-sm';
+    elements.btnSoundToggle.title = 'Sound Effects: ON';
+    sounds.playTap(3);
+  } else {
+    elements.soundIcon.className = 'fa-solid fa-bell-slash text-xs sm:text-sm opacity-50';
+    elements.btnSoundToggle.title = 'Sound Effects: MUTED';
+  }
 }
 
 // ----------------------------------------------------
@@ -141,7 +162,6 @@ function initializeSpeechVoices() {
     // Populate Voice Dropdown
     if (elements.selVoice) {
       elements.selVoice.innerHTML = state.availableVoices.map((v, i) => {
-        // Clean friendly name
         let cleanName = v.name
           .replace('Microsoft ', '')
           .replace('Google ', '')
@@ -182,7 +202,6 @@ function speakText(text) {
     utterance.lang = 'en-US';
   }
   
-  // Natural conversational speed (0.95x) and full volume (1.0)
   utterance.rate = 0.95;
   utterance.pitch = 1.0;
   utterance.volume = 1.0;
@@ -254,6 +273,9 @@ function setupEventListeners() {
 
   // Toolbar Actions
   elements.btnThemeToggle.addEventListener('click', toggleTheme);
+  if (elements.btnSoundToggle) {
+    elements.btnSoundToggle.addEventListener('click', toggleSoundEffects);
+  }
   elements.btnDyslexia.addEventListener('click', toggleDyslexia);
   elements.btnProjector.addEventListener('click', toggleProjector);
   elements.btnTts.addEventListener('click', () => {
@@ -307,22 +329,75 @@ function updateUI() {
   renderConceptClipInitial(topicObj);
 }
 
+// ----------------------------------------------------
+// Interactive Visual Task & Tap-to-Count Engine
+// ----------------------------------------------------
 function renderInteractiveTask(topicObj) {
   elements.taskPrompt.innerText = topicObj.taskPrompt;
   elements.taskFeedback.innerHTML = '';
+  state.countedTaps = 0;
+  if (elements.countedBadge) {
+    elements.countedBadge.innerText = 'Counted: 0';
+  }
 
-  elements.taskContainer.innerHTML = topicObj.taskItems.map(item => `
-    <div class="px-6 py-4 surface-card rounded-xl text-2xl font-bold tracking-tight shadow-sm flex items-center justify-center min-w-[100px]">
-      ${item}
+  // Render clickable tokens with count slots
+  elements.taskContainer.innerHTML = topicObj.taskItems.map((item, idx) => `
+    <div onclick="handleTokenTap(this, ${idx + 1})" 
+         data-counted="false"
+         class="token-item relative px-5 py-3.5 surface-card rounded-xl text-2xl font-bold tracking-tight shadow-sm flex items-center justify-center min-w-[90px] cursor-pointer select-none transition transform hover:-translate-y-1 hover:border-zinc-400 active:scale-95" 
+         title="Tap to count">
+      <span class="token-val">${item}</span>
+      <span class="tap-badge hidden absolute -top-2 -right-2 w-6 h-6 rounded-full bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 font-bold text-xs flex items-center justify-center shadow-md animate-scale"></span>
     </div>
   `).join('');
 
   elements.taskOptions.innerHTML = topicObj.options.map(opt => `
-    <button onclick="handleAnswerChoice('${opt}')" class="btn-secondary py-3.5 px-6 rounded-xl text-lg font-bold tracking-tight transition transform hover:-translate-y-0.5 active:scale-98">
+    <button onclick="handleAnswerChoice('${opt}')" class="btn-secondary py-3 px-4 rounded-xl text-base sm:text-lg font-bold tracking-tight transition transform hover:-translate-y-0.5 active:scale-98">
       ${opt}
     </button>
   `).join('');
 }
+
+window.handleTokenTap = function(el) {
+  const badge = el.querySelector('.tap-badge');
+  const isCounted = el.getAttribute('data-counted') === 'true';
+
+  if (!isCounted) {
+    state.countedTaps++;
+    el.setAttribute('data-counted', 'true');
+    badge.innerText = state.countedTaps;
+    badge.classList.remove('hidden');
+    el.classList.add('ring-2', 'ring-zinc-900', 'dark:ring-zinc-100');
+
+    if (state.soundEffectsEnabled) {
+      sounds.playTap(state.countedTaps);
+    }
+    speakText(`${state.countedTaps}`);
+  } else {
+    // Untap
+    el.setAttribute('data-counted', 'false');
+    badge.classList.add('hidden');
+    el.classList.remove('ring-2', 'ring-zinc-900', 'dark:ring-zinc-100');
+    state.countedTaps = Math.max(0, state.countedTaps - 1);
+  }
+
+  if (elements.countedBadge) {
+    elements.countedBadge.innerText = `Counted: ${state.countedTaps}`;
+  }
+};
+
+window.resetItemTaps = function() {
+  state.countedTaps = 0;
+  if (elements.countedBadge) {
+    elements.countedBadge.innerText = 'Counted: 0';
+  }
+  document.querySelectorAll('.token-item').forEach(el => {
+    el.setAttribute('data-counted', 'false');
+    const badge = el.querySelector('.tap-badge');
+    if (badge) badge.classList.add('hidden');
+    el.classList.remove('ring-2', 'ring-zinc-900', 'dark:ring-zinc-100');
+  });
+};
 
 function renderGroupGame(topicObj) {
   const g = topicObj.gameChallenge;
@@ -370,7 +445,6 @@ function playConceptClip() {
   state.clipPlaying = true;
   elements.clipPlayIcon.className = 'fa-solid fa-pause';
 
-  // If at the end or starting fresh, begin from step 0
   if (state.clipStepIndex >= topicObj.clipSteps.length) {
     state.clipStepIndex = 0;
   }
@@ -382,33 +456,31 @@ function playStepByIndex(index) {
   const topicObj = getCurrentTopic();
   if (!state.clipPlaying) return;
 
-  // If reached end of steps
   if (index >= topicObj.clipSteps.length) {
     pauseConceptClip();
     state.clipStepIndex = 0;
     elements.clipProgressBar.style.width = '100%';
     elements.clipCaptionDisplay.innerText = 'Lesson complete! Click replay to watch again.';
     elements.clipTimeDisplay.innerText = `Completed`;
+    if (state.soundEffectsEnabled) {
+      sounds.playSuccess();
+    }
     return;
   }
 
   state.clipStepIndex = index;
   const step = topicObj.clipSteps[index];
 
-  // Update visual stage and caption display
   elements.clipVisualStage.innerHTML = step.visualHtml;
   elements.clipCaptionDisplay.innerText = step.caption;
 
-  // Update progress bar
   const pct = Math.round(((index + 1) / topicObj.clipSteps.length) * 100);
   elements.clipProgressBar.style.width = `${pct}%`;
   elements.clipTimeDisplay.innerText = `Step ${index + 1} of ${topicObj.clipSteps.length}`;
 
-  // Speak every single word of the caption completely before advancing
   speakClipStep(step.caption, () => {
     if (!state.clipPlaying) return;
 
-    // Comfortable 1-second educational pause between steps
     state.clipTimeout = setTimeout(() => {
       if (state.clipPlaying) {
         playStepByIndex(index + 1);
@@ -433,7 +505,6 @@ function speakClipStep(text, onComplete) {
     utterance.lang = 'en-US';
   }
 
-  // Clear, articulated pace
   utterance.rate = 0.92;
   utterance.pitch = 1.0;
   utterance.volume = 1.0;
@@ -483,6 +554,9 @@ window.handleAnswerChoice = function(chosen) {
   const isMatch = String(chosen).trim().toLowerCase() === String(topicObj.correctAnswer).trim().toLowerCase();
 
   if (isMatch) {
+    if (state.soundEffectsEnabled) {
+      sounds.playSuccess();
+    }
     elements.taskFeedback.innerHTML = `
       <div class="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-xl surface-card border-l-4 border-l-emerald-500 font-semibold text-base shadow-sm">
         <i class="fa-solid fa-check text-emerald-600"></i>
@@ -491,6 +565,9 @@ window.handleAnswerChoice = function(chosen) {
     `;
     speakText(topicObj.successMessage);
   } else {
+    if (state.soundEffectsEnabled) {
+      sounds.playRetry();
+    }
     elements.taskFeedback.innerHTML = `
       <div class="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-xl surface-card border-l-4 border-l-zinc-500 font-semibold text-base shadow-sm">
         <i class="fa-solid fa-arrow-rotate-right text-zinc-500"></i>
@@ -507,6 +584,10 @@ window.awardTeamPoint = function(team) {
 
   elements.scoreTeamA.innerText = state.scores.teamA;
   elements.scoreTeamB.innerText = state.scores.teamB;
+
+  if (state.soundEffectsEnabled) {
+    sounds.playPoint();
+  }
   speakText(`Point for Team ${team}. Well done!`);
 };
 
@@ -536,14 +617,13 @@ function toggleProjector() {
 function setStageTab(tab) {
   state.activeTab = tab;
 
-  // If leaving video tab, pause clip
   if (tab !== 'video' && state.clipPlaying) {
     pauseConceptClip();
   }
 
   document.querySelectorAll('.stage-tab-btn').forEach(btn => {
     const isTarget = btn.dataset.tab === tab;
-    btn.className = `stage-tab-btn px-4 py-2 rounded-lg text-xs font-semibold tracking-tight transition ${
+    btn.className = `stage-tab-btn px-2 sm:px-4 py-2 rounded-lg text-[11px] sm:text-xs font-semibold tracking-tight transition text-center ${
       isTarget ? 'tab-active' : 'tab-inactive'
     }`;
   });

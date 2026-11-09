@@ -41,6 +41,11 @@
         <!-- Voice Selector -->
         <select id="selVoice" class="btn-secondary text-[10px] sm:text-[11px] font-semibold py-1.5 px-1.5 sm:px-2 rounded-lg border border-zinc-300 dark:border-zinc-700 outline-none w-20 sm:w-28 transition cursor-pointer" title="Select Voice Clarity"></select>
 
+        <!-- Sound Effects Toggle -->
+        <button id="btnSoundToggle" class="btn-secondary px-2 sm:px-2.5 py-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1 transition shadow-sm" title="Toggle Sound Effects">
+          <i id="soundIcon" class="fa-solid fa-bell text-xs sm:text-sm"></i>
+        </button>
+
         <!-- Dyslexia Font -->
         <button id="btnDyslexia" class="btn-secondary px-2 sm:px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1 sm:space-x-1.5 transition shadow-sm" title="Toggle dyslexia-friendly font spacing">
           <i class="fa-solid fa-font text-xs sm:text-sm"></i>
@@ -156,8 +161,20 @@
         </div>
 
         <!-- Dynamic Visual Items Container -->
-        <div id="taskContainer" class="flex flex-wrap items-center justify-center gap-3 sm:gap-4 p-4 sm:p-6 surface-secondary rounded-2xl border border-dashed border-zinc-300 dark:border-zinc-700 w-full max-w-xl mb-5 sm:mb-6 min-h-[120px] sm:min-h-[140px]">
+        <div id="taskContainer" class="flex flex-wrap items-center justify-center gap-3 sm:gap-4 p-4 sm:p-6 surface-secondary rounded-2xl border border-dashed border-zinc-300 dark:border-zinc-700 w-full max-w-xl mb-3 min-h-[120px] sm:min-h-[140px]">
           <!-- Dynamic Items Injected by app.js -->
+        </div>
+
+        <!-- Interactive Tap-to-Count Status Bar -->
+        <div id="countingBar" class="flex items-center justify-between w-full max-w-xl mb-5 px-3 py-1.5 surface-secondary rounded-xl text-[11px] sm:text-xs text-secondary border border-zinc-200 dark:border-zinc-800">
+          <span class="flex items-center gap-1.5 font-medium">
+            <i class="fa-solid fa-hand-pointer text-[10px] opacity-70"></i>
+            <span>Tap items to count along aloud</span>
+          </span>
+          <div class="flex items-center gap-2.5">
+            <span id="countedBadge" class="surface-card px-2 py-0.5 rounded-md font-bold text-[11px] border border-zinc-200 dark:border-zinc-700">Counted: 0</span>
+            <button id="btnResetCount" onclick="resetItemTaps()" class="hover:underline font-semibold text-[11px] opacity-80 cursor-pointer" title="Reset counter">Reset</button>
+          </div>
         </div>
 
         <!-- Dynamic Choices -->
