@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
   <title>EduBridge — Inclusive Classroom Projection Platform</title>
-  
+
   <!-- Favicon using Official Logo -->
   <link rel="icon" type="image/jpeg" href="src/assets/logo.jpg">
 
@@ -20,51 +21,71 @@
   <!-- Custom Project Styles -->
   <link rel="stylesheet" href="src/css/style.css">
 </head>
+
 <body class="light-theme min-h-screen flex flex-col antialiased">
 
   <!-- Top Navbar (Fully Responsive for Mobile & Desktop) -->
   <header id="topNavbar" class="surface-card sticky top-0 z-50 transition-colors">
     <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2">
-      
+
       <!-- Brand & Project Meta -->
       <div class="flex items-center space-x-2 sm:space-x-3 min-w-0">
-        <img src="src/assets/logo.jpg" alt="EduBridge Logo" class="h-8 sm:h-10 w-auto rounded-lg object-contain border border-zinc-200 dark:border-zinc-700 p-0.5 flex-shrink-0">
+        <img src="src/assets/logo.jpg" alt="EduBridge Logo"
+          class="h-8 sm:h-10 w-auto rounded-lg object-contain border border-zinc-200 dark:border-zinc-700 p-0.5 flex-shrink-0">
         <div class="min-w-0">
           <h1 class="text-base sm:text-lg font-bold tracking-tight truncate">EduBridge</h1>
-          <p class="text-[10px] sm:text-[11px] text-secondary truncate hidden xs:block sm:block">Teacher-Led Classroom Projection System</p>
+          <p class="text-[10px] sm:text-[11px] text-secondary truncate hidden xs:block sm:block">Teacher-Led Classroom
+            Projection System</p>
         </div>
       </div>
 
       <!-- Action Toolbar (Mobile-Optimized Touch Controls) -->
-      <div class="navbar-toolbar-bg p-1 sm:p-1.5 rounded-xl flex items-center space-x-1 sm:space-x-1.5 shadow-sm flex-shrink-0">
+      <div
+        class="navbar-toolbar-bg p-1 sm:p-1.5 rounded-xl flex items-center space-x-1 sm:space-x-1.5 shadow-sm flex-shrink-0">
         <!-- Read Aloud -->
-        <button id="btnTts" class="btn-secondary px-2 sm:px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1 sm:space-x-1.5 transition shadow-sm" title="Read task prompt aloud">
+        <button id="btnTts"
+          class="btn-secondary px-2 sm:px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1 sm:space-x-1.5 transition shadow-sm"
+          title="Read task prompt aloud">
           <i class="fa-solid fa-volume-high text-xs sm:text-sm"></i>
           <span class="hidden md:inline">Read Aloud</span>
         </button>
 
+        <!-- Voice Selector -->
+        <select id="selVoice"
+          class="btn-secondary text-[10px] sm:text-[11px] font-semibold py-1.5 px-1.5 sm:px-2 rounded-lg border border-zinc-300 dark:border-zinc-700 outline-none w-20 sm:w-28 transition cursor-pointer"
+          title="Select Voice Clarity"></select>
         <!-- Voice & Language Selector -->
-        <select id="selVoice" class="btn-secondary text-[10px] sm:text-xs font-semibold py-1.5 px-1.5 sm:px-2.5 rounded-lg border border-zinc-300 dark:border-zinc-700 outline-none min-w-[88px] sm:min-w-[130px] transition cursor-pointer" title="Select Voice / Language"></select>
+        <select id="selVoice"
+          class="btn-secondary text-[10px] sm:text-xs font-semibold py-1.5 px-1.5 sm:px-2.5 rounded-lg border border-zinc-300 dark:border-zinc-700 outline-none min-w-[88px] sm:min-w-[130px] transition cursor-pointer"
+          title="Select Voice / Language"></select>
 
         <!-- Sound Effects Toggle -->
-        <button id="btnSoundToggle" class="btn-secondary px-2 sm:px-2.5 py-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1 transition shadow-sm" title="Toggle Sound Effects">
+        <button id="btnSoundToggle"
+          class="btn-secondary px-2 sm:px-2.5 py-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1 transition shadow-sm"
+          title="Toggle Sound Effects">
           <i id="soundIcon" class="fa-solid fa-bell text-xs sm:text-sm"></i>
         </button>
 
         <!-- Dyslexia Font -->
-        <button id="btnDyslexia" class="btn-secondary px-2 sm:px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1 sm:space-x-1.5 transition shadow-sm" title="Toggle dyslexia-friendly font spacing">
+        <button id="btnDyslexia"
+          class="btn-secondary px-2 sm:px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1 sm:space-x-1.5 transition shadow-sm"
+          title="Toggle dyslexia-friendly font spacing">
           <i class="fa-solid fa-font text-xs sm:text-sm"></i>
           <span class="hidden md:inline">Dyslexia</span>
         </button>
 
         <!-- Light / Dark Mode Toggle -->
-        <button id="btnThemeToggle" class="btn-secondary px-2 sm:px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1 sm:space-x-1.5 transition shadow-sm" title="Toggle Light and Dark Mode">
+        <button id="btnThemeToggle"
+          class="btn-secondary px-2 sm:px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1 sm:space-x-1.5 transition shadow-sm"
+          title="Toggle Light and Dark Mode">
           <i id="themeIcon" class="fa-solid fa-moon text-xs sm:text-sm"></i>
           <span id="themeText" class="hidden sm:inline">Dark</span>
         </button>
 
         <!-- Projector Mode -->
-        <button id="btnProjector" class="btn-primary px-2.5 sm:px-3.5 py-1.5 rounded-lg text-xs font-bold flex items-center space-x-1 sm:space-x-1.5 transition shadow-sm" title="Hide teacher setup and project fullscreen">
+        <button id="btnProjector"
+          class="btn-primary px-2.5 sm:px-3.5 py-1.5 rounded-lg text-xs font-bold flex items-center space-x-1 sm:space-x-1.5 transition shadow-sm"
+          title="Hide teacher setup and project fullscreen">
           <i class="fa-solid fa-expand text-xs sm:text-sm"></i>
           <span class="hidden sm:inline">Projector</span>
         </button>
@@ -77,19 +98,24 @@
 
     <!-- Teacher Configuration Panel -->
     <section id="teacherNavigationSection" class="surface-card rounded-xl p-4 sm:p-5 shadow-sm transition-colors">
-      <div class="flex items-center justify-between mb-3 pb-2 border-b border-zinc-200 dark:border-zinc-800 gap-2 flex-wrap">
+      <div
+        class="flex items-center justify-between mb-3 pb-2 border-b border-zinc-200 dark:border-zinc-800 gap-2 flex-wrap">
         <div class="flex items-center space-x-2 font-semibold text-xs tracking-wider uppercase opacity-80">
           <i class="fa-solid fa-sliders"></i>
           <span>Teacher Setup & Curriculum Filter</span>
         </div>
         <div class="flex items-center space-x-2">
           <!-- Quick Custom Activity Builder -->
-          <button id="btnOpenCustomBuilder" class="btn-secondary px-2.5 py-1 rounded-md text-[11px] font-semibold flex items-center space-x-1 transition shadow-sm" title="Create an activity on the fly">
+          <button id="btnOpenCustomBuilder"
+            class="btn-secondary px-2.5 py-1 rounded-md text-[11px] font-semibold flex items-center space-x-1 transition shadow-sm"
+            title="Create an activity on the fly">
             <i class="fa-solid fa-plus text-[10px]"></i>
             <span>Create Activity</span>
           </button>
           <!-- Print Worksheet Button -->
-          <button onclick="window.print()" class="btn-secondary px-2.5 py-1 rounded-md text-[11px] font-semibold flex items-center space-x-1 transition shadow-sm" title="Print classroom student worksheet">
+          <button onclick="window.print()"
+            class="btn-secondary px-2.5 py-1 rounded-md text-[11px] font-semibold flex items-center space-x-1 transition shadow-sm"
+            title="Print classroom student worksheet">
             <i class="fa-solid fa-print text-[10px]"></i>
             <span class="hidden sm:inline">Print Worksheet</span>
           </button>
@@ -99,31 +125,36 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2.5 sm:gap-3">
         <!-- 1. Curriculum -->
         <div>
-          <label class="block text-[10px] sm:text-[11px] font-semibold text-secondary uppercase tracking-wider mb-1">1. Curriculum</label>
+          <label class="block text-[10px] sm:text-[11px] font-semibold text-secondary uppercase tracking-wider mb-1">1.
+            Curriculum</label>
           <select id="selCurriculum" class="w-full text-xs rounded-lg p-2 font-medium transition"></select>
         </div>
 
         <!-- 2. Disability / Support Profile -->
         <div>
-          <label class="block text-[10px] sm:text-[11px] font-semibold text-secondary uppercase tracking-wider mb-1">2. Support Focus</label>
+          <label class="block text-[10px] sm:text-[11px] font-semibold text-secondary uppercase tracking-wider mb-1">2.
+            Support Focus</label>
           <select id="selDisability" class="w-full text-xs rounded-lg p-2 font-medium transition"></select>
         </div>
 
         <!-- 3. Grade -->
         <div>
-          <label class="block text-[10px] sm:text-[11px] font-semibold text-secondary uppercase tracking-wider mb-1">3. Grade Level</label>
+          <label class="block text-[10px] sm:text-[11px] font-semibold text-secondary uppercase tracking-wider mb-1">3.
+            Grade Level</label>
           <select id="selGrade" class="w-full text-xs rounded-lg p-2 font-medium transition"></select>
         </div>
 
         <!-- 4. Subject -->
         <div>
-          <label class="block text-[10px] sm:text-[11px] font-semibold text-secondary uppercase tracking-wider mb-1">4. Subject</label>
+          <label class="block text-[10px] sm:text-[11px] font-semibold text-secondary uppercase tracking-wider mb-1">4.
+            Subject</label>
           <select id="selSubject" class="w-full text-xs rounded-lg p-2 font-medium transition"></select>
         </div>
 
         <!-- 5. Topic -->
         <div>
-          <label class="block text-[10px] sm:text-[11px] font-semibold text-secondary uppercase tracking-wider mb-1">5. Lesson Topic</label>
+          <label class="block text-[10px] sm:text-[11px] font-semibold text-secondary uppercase tracking-wider mb-1">5.
+            Lesson Topic</label>
           <select id="selTopic" class="w-full text-xs rounded-lg p-2 font-semibold transition"></select>
         </div>
       </div>
@@ -139,8 +170,9 @@
     </section>
 
     <!-- Projector Classroom Canvas -->
-    <section id="projectorStage" class="surface-card rounded-2xl p-4 sm:p-6 md:p-8 flex-1 flex flex-col shadow-sm transition-colors">
-      
+    <section id="projectorStage"
+      class="surface-card rounded-2xl p-4 sm:p-6 md:p-8 flex-1 flex flex-col shadow-sm transition-colors">
+
       <!-- Printable Classroom Worksheet Header (Hidden on screen, visible when printed) -->
       <div class="print-worksheet-header mb-6 pb-4 border-b-2 border-black">
         <h2 class="text-xl font-black">EduBridge — Inclusive Classroom Worksheet</h2>
@@ -149,26 +181,34 @@
           <span>Date: ________________</span>
         </div>
       </div>
-      
+
       <!-- Stage Header & Segmented Tabs (Grid on Mobile, Flex on Desktop) -->
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-zinc-200 dark:border-zinc-800 pb-4 sm:pb-5 mb-5 sm:mb-6 gap-3.5 sm:gap-4">
+      <div
+        class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-zinc-200 dark:border-zinc-800 pb-4 sm:pb-5 mb-5 sm:mb-6 gap-3.5 sm:gap-4">
         <div>
-          <div id="currentPathBreadcrumb" class="flex flex-wrap items-center gap-1 text-[11px] sm:text-xs text-secondary mb-1">
+          <div id="currentPathBreadcrumb"
+            class="flex flex-wrap items-center gap-1 text-[11px] sm:text-xs text-secondary mb-1">
             <!-- Dynamic Breadcrumb -->
           </div>
-          <h2 id="stageHeaderTitle" class="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight">Visual Addition & Counting</h2>
-          <p id="stageHeaderSub" class="text-[11px] sm:text-xs text-secondary mt-0.5">Adapted for classroom projection</p>
+          <h2 id="stageHeaderTitle" class="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight">Visual
+            Addition & Counting</h2>
+          <p id="stageHeaderSub" class="text-[11px] sm:text-xs text-secondary mt-0.5">Adapted for classroom projection
+          </p>
         </div>
 
         <!-- Segmented Tab Controls (Full-width 3-columns on phone) -->
-        <div class="surface-secondary p-1 rounded-xl grid grid-cols-3 sm:flex sm:items-center sm:space-x-1 w-full sm:w-auto">
-          <button data-tab="interactive" class="stage-tab-btn px-2 sm:px-4 py-2 rounded-lg text-[11px] sm:text-xs font-semibold tracking-tight transition text-center tab-active">
+        <div
+          class="surface-secondary p-1 rounded-xl grid grid-cols-3 sm:flex sm:items-center sm:space-x-1 w-full sm:w-auto">
+          <button data-tab="interactive"
+            class="stage-tab-btn px-2 sm:px-4 py-2 rounded-lg text-[11px] sm:text-xs font-semibold tracking-tight transition text-center tab-active">
             <i class="fa-solid fa-shapes mr-1 opacity-80"></i><span class="sm:inline hidden">Interactive </span>Task
           </button>
-          <button data-tab="game" class="stage-tab-btn px-2 sm:px-4 py-2 rounded-lg text-[11px] sm:text-xs font-semibold tracking-tight transition text-center tab-inactive">
+          <button data-tab="game"
+            class="stage-tab-btn px-2 sm:px-4 py-2 rounded-lg text-[11px] sm:text-xs font-semibold tracking-tight transition text-center tab-inactive">
             <i class="fa-solid fa-gamepad mr-1 opacity-80"></i><span class="sm:inline hidden">Classroom </span>Game
           </button>
-          <button data-tab="video" class="stage-tab-btn px-2 sm:px-4 py-2 rounded-lg text-[11px] sm:text-xs font-semibold tracking-tight transition text-center tab-inactive">
+          <button data-tab="video"
+            class="stage-tab-btn px-2 sm:px-4 py-2 rounded-lg text-[11px] sm:text-xs font-semibold tracking-tight transition text-center tab-inactive">
             <i class="fa-solid fa-circle-play mr-1 opacity-80"></i>Concept<span class="sm:inline hidden"> Clip</span>
           </button>
         </div>
@@ -186,19 +226,25 @@
         </div>
 
         <!-- Dynamic Visual Items Container -->
-        <div id="taskContainer" class="flex flex-wrap items-center justify-center gap-3 sm:gap-4 p-4 sm:p-6 surface-secondary rounded-2xl border border-dashed border-zinc-300 dark:border-zinc-700 w-full max-w-xl mb-3 min-h-[120px] sm:min-h-[140px]">
+        <div id="taskContainer"
+          class="flex flex-wrap items-center justify-center gap-3 sm:gap-4 p-4 sm:p-6 surface-secondary rounded-2xl border border-dashed border-zinc-300 dark:border-zinc-700 w-full max-w-xl mb-3 min-h-[120px] sm:min-h-[140px]">
           <!-- Dynamic Items Injected by app.js -->
         </div>
 
         <!-- Interactive Tap-to-Count Status Bar -->
-        <div id="countingBar" class="flex items-center justify-between w-full max-w-xl mb-5 px-3 py-1.5 surface-secondary rounded-xl text-[11px] sm:text-xs text-secondary border border-zinc-200 dark:border-zinc-800">
+        <div id="countingBar"
+          class="flex items-center justify-between w-full max-w-xl mb-5 px-3 py-1.5 surface-secondary rounded-xl text-[11px] sm:text-xs text-secondary border border-zinc-200 dark:border-zinc-800">
           <span class="flex items-center gap-1.5 font-medium">
             <i class="fa-solid fa-hand-pointer text-[10px] opacity-70"></i>
             <span>Tap items to count along aloud</span>
           </span>
           <div class="flex items-center gap-2.5">
-            <span id="countedBadge" class="surface-card px-2 py-0.5 rounded-md font-bold text-[11px] border border-zinc-200 dark:border-zinc-700">Counted: 0</span>
-            <button id="btnResetCount" onclick="resetItemTaps()" class="hover:underline font-semibold text-[11px] opacity-80 cursor-pointer" title="Reset counter">Reset</button>
+            <span id="countedBadge"
+              class="surface-card px-2 py-0.5 rounded-md font-bold text-[11px] border border-zinc-200 dark:border-zinc-700">Counted:
+              0</span>
+            <button id="btnResetCount" onclick="resetItemTaps()"
+              class="hover:underline font-semibold text-[11px] opacity-80 cursor-pointer"
+              title="Reset counter">Reset</button>
           </div>
         </div>
 
@@ -207,20 +253,25 @@
           <!-- Dynamic Buttons Injected by app.js -->
         </div>
 
-        <div id="taskFeedback" class="mt-4 sm:mt-5 font-medium min-h-[36px] sm:min-h-[40px] flex items-center justify-center px-2"></div>
+        <div id="taskFeedback"
+          class="mt-4 sm:mt-5 font-medium min-h-[36px] sm:min-h-[40px] flex items-center justify-center px-2"></div>
       </div>
 
       <!-- Tab 2: Whole-Class Group Challenge -->
       <div id="paneGame" class="hidden flex-1 flex flex-col items-center justify-center py-4 sm:py-6 text-center">
-        <div class="w-10 sm:w-12 h-10 sm:h-12 surface-secondary rounded-xl flex items-center justify-center text-lg sm:text-xl mb-2 sm:mb-3 text-secondary">
+        <div
+          class="w-10 sm:w-12 h-10 sm:h-12 surface-secondary rounded-xl flex items-center justify-center text-lg sm:text-xl mb-2 sm:mb-3 text-secondary">
           <i class="fa-solid fa-trophy"></i>
         </div>
-        <h3 id="gameTitle" class="text-lg sm:text-xl font-bold tracking-tight mb-1">Classroom Collaboration Challenge</h3>
-        <p id="gameInstruction" class="text-secondary text-[11px] sm:text-xs max-w-md mb-4 sm:mb-6 px-3">Divide the class into Row A and Row B. Teacher adds points when students shout out the correct answer together.</p>
-        
+        <h3 id="gameTitle" class="text-lg sm:text-xl font-bold tracking-tight mb-1">Classroom Collaboration Challenge
+        </h3>
+        <p id="gameInstruction" class="text-secondary text-[11px] sm:text-xs max-w-md mb-4 sm:mb-6 px-3">Divide the
+          class into Row A and Row B. Teacher adds points when students shout out the correct answer together.</p>
+
         <div class="grid grid-cols-2 gap-3 sm:gap-4 w-full max-w-md mb-5 sm:mb-6 px-2">
           <!-- Team A Card -->
-          <div onclick="awardTeamPoint('A')" class="surface-secondary p-4 sm:p-5 rounded-2xl cursor-pointer hover:border-zinc-400 dark:hover:border-zinc-600 transition transform hover:-translate-y-0.5 active:scale-95">
+          <div onclick="awardTeamPoint('A')"
+            class="surface-secondary p-4 sm:p-5 rounded-2xl cursor-pointer hover:border-zinc-400 dark:hover:border-zinc-600 transition transform hover:-translate-y-0.5 active:scale-95">
             <div class="text-[10px] font-bold uppercase tracking-wider text-secondary">Left Row</div>
             <div class="text-base sm:text-lg font-bold tracking-tight mt-0.5">Team A</div>
             <div id="gameCardLeft" class="text-xs text-secondary font-medium my-1.5 sm:my-2 truncate">Option A</div>
@@ -229,7 +280,8 @@
           </div>
 
           <!-- Team B Card -->
-          <div onclick="awardTeamPoint('B')" class="surface-secondary p-4 sm:p-5 rounded-2xl cursor-pointer hover:border-zinc-400 dark:hover:border-zinc-600 transition transform hover:-translate-y-0.5 active:scale-95">
+          <div onclick="awardTeamPoint('B')"
+            class="surface-secondary p-4 sm:p-5 rounded-2xl cursor-pointer hover:border-zinc-400 dark:hover:border-zinc-600 transition transform hover:-translate-y-0.5 active:scale-95">
             <div class="text-[10px] font-bold uppercase tracking-wider text-secondary">Right Row</div>
             <div class="text-base sm:text-lg font-bold tracking-tight mt-0.5">Team B</div>
             <div id="gameCardRight" class="text-xs text-secondary font-medium my-1.5 sm:my-2 truncate">Option B</div>
@@ -241,55 +293,74 @@
 
       <!-- Tab 3: Interactive Visual Concept Clip Player -->
       <div id="paneVideo" class="hidden flex-1 flex flex-col items-center justify-center py-2 sm:py-4 text-center">
-        <div class="w-full max-w-3xl surface-secondary rounded-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden shadow-sm flex flex-col">
-          
+        <div
+          class="w-full max-w-3xl surface-secondary rounded-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden shadow-sm flex flex-col">
+
           <!-- Concept Clip Video Header -->
-          <div class="p-3 sm:p-4 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between text-left gap-2">
+          <div
+            class="p-3 sm:p-4 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between text-left gap-2">
             <div class="min-w-0">
-              <h4 id="videoTitle" class="text-sm sm:text-base font-bold tracking-tight truncate">Visual Concept Demo</h4>
-              <p id="videoSubtitle" class="text-secondary text-[10px] sm:text-xs truncate">Paced educational delivery with clear closed captions</p>
+              <h4 id="videoTitle" class="text-sm sm:text-base font-bold tracking-tight truncate">Visual Concept Demo
+              </h4>
+              <p id="videoSubtitle" class="text-secondary text-[10px] sm:text-xs truncate">Paced educational delivery
+                with clear closed captions</p>
             </div>
-            <span class="text-[10px] font-bold px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full surface-card border border-zinc-300 dark:border-zinc-700 text-secondary flex-shrink-0">
+            <span
+              class="text-[10px] font-bold px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full surface-card border border-zinc-300 dark:border-zinc-700 text-secondary flex-shrink-0">
               HD Clip
             </span>
           </div>
 
           <!-- Video Stage / Canvas Area -->
-          <div class="relative min-h-[180px] sm:min-h-[240px] flex items-center justify-center p-4 sm:p-6 bg-white dark:bg-zinc-950 transition-colors">
+          <div
+            class="relative min-h-[180px] sm:min-h-[240px] flex items-center justify-center p-4 sm:p-6 bg-white dark:bg-zinc-950 transition-colors">
             <!-- Dynamic Animation Content Area -->
-            <div id="clipVisualStage" class="flex flex-col items-center justify-center w-full min-h-[120px] sm:min-h-[160px]">
+            <div id="clipVisualStage"
+              class="flex flex-col items-center justify-center w-full min-h-[120px] sm:min-h-[160px]">
               <!-- Injected by app.js -->
             </div>
           </div>
 
           <!-- Closed Captions Display Bar -->
-          <div class="px-3 sm:px-5 py-2.5 sm:py-3 surface-secondary border-t border-zinc-200 dark:border-zinc-800 text-left min-h-[44px] sm:min-h-[48px] flex items-center">
+          <div
+            class="px-3 sm:px-5 py-2.5 sm:py-3 surface-secondary border-t border-zinc-200 dark:border-zinc-800 text-left min-h-[44px] sm:min-h-[48px] flex items-center">
             <div class="flex items-center space-x-2 text-xs font-semibold w-full">
-              <span class="px-1.5 py-0.5 rounded text-[9px] sm:text-[10px] font-black uppercase tracking-wider bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 flex-shrink-0">CC</span>
-              <span id="clipCaptionDisplay" class="text-secondary flex-1 font-medium text-[11px] sm:text-xs leading-snug">Click Play to begin step-by-step visual lesson.</span>
+              <span
+                class="px-1.5 py-0.5 rounded text-[9px] sm:text-[10px] font-black uppercase tracking-wider bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 flex-shrink-0">CC</span>
+              <span id="clipCaptionDisplay"
+                class="text-secondary flex-1 font-medium text-[11px] sm:text-xs leading-snug">Click Play to begin
+                step-by-step visual lesson.</span>
             </div>
           </div>
 
           <!-- Player Controls Bar -->
           <div class="p-3 sm:p-4 surface-card border-t border-zinc-200 dark:border-zinc-800 flex flex-col gap-2">
             <!-- Scrub Progress Bar -->
-            <div id="clipProgressTrack" class="w-full bg-zinc-200 dark:bg-zinc-800 h-1.5 rounded-full overflow-hidden cursor-pointer">
-              <div id="clipProgressBar" class="bg-zinc-900 dark:bg-zinc-100 h-full w-0 transition-all duration-300"></div>
+            <div id="clipProgressTrack"
+              class="w-full bg-zinc-200 dark:bg-zinc-800 h-1.5 rounded-full overflow-hidden cursor-pointer">
+              <div id="clipProgressBar" class="bg-zinc-900 dark:bg-zinc-100 h-full w-0 transition-all duration-300">
+              </div>
             </div>
 
             <!-- Buttons & Time Display -->
             <div class="flex items-center justify-between gap-2">
               <div class="flex items-center space-x-2">
                 <!-- Play / Pause Button -->
-                <button id="btnPlayClip" class="btn-primary w-8 h-8 sm:w-9 sm:h-9 rounded-lg flex items-center justify-center text-xs sm:text-sm transition flex-shrink-0" title="Play or Pause Clip">
+                <button id="btnPlayClip"
+                  class="btn-primary w-8 h-8 sm:w-9 sm:h-9 rounded-lg flex items-center justify-center text-xs sm:text-sm transition flex-shrink-0"
+                  title="Play or Pause Clip">
                   <i id="clipPlayIcon" class="fa-solid fa-play ml-0.5"></i>
                 </button>
                 <!-- Reset / Replay Button -->
-                <button id="btnResetClip" class="btn-secondary w-8 h-8 sm:w-9 sm:h-9 rounded-lg flex items-center justify-center text-xs sm:text-sm transition flex-shrink-0" title="Restart Clip">
+                <button id="btnResetClip"
+                  class="btn-secondary w-8 h-8 sm:w-9 sm:h-9 rounded-lg flex items-center justify-center text-xs sm:text-sm transition flex-shrink-0"
+                  title="Restart Clip">
                   <i class="fa-solid fa-rotate-left"></i>
                 </button>
                 <!-- Time Indicator -->
-                <span id="clipTimeDisplay" class="text-[10px] sm:text-xs font-mono text-secondary ml-1 sm:ml-2 whitespace-nowrap">Step 1 of 4</span>
+                <span id="clipTimeDisplay"
+                  class="text-[10px] sm:text-xs font-mono text-secondary ml-1 sm:ml-2 whitespace-nowrap">Step 1 of
+                  4</span>
               </div>
 
               <!-- Narration Indicator -->
@@ -308,19 +379,23 @@
   </main>
 
   <!-- Clean Minimalist Footer -->
-  <footer class="surface-card border-t border-zinc-200 dark:border-zinc-800 py-3.5 px-4 sm:px-6 text-center text-xs text-secondary flex justify-center items-center max-w-7xl mx-auto w-full transition-colors">
+  <footer
+    class="surface-card border-t border-zinc-200 dark:border-zinc-800 py-3.5 px-4 sm:px-6 text-center text-xs text-secondary flex justify-center items-center max-w-7xl mx-auto w-full transition-colors">
     <span>EduBridge — Connecting Minds, Building Futures</span>
   </footer>
 
   <!-- Quick Custom Activity Builder Modal -->
-  <div id="modalCustomBuilder" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
-    <div class="surface-card rounded-2xl border border-zinc-200 dark:border-zinc-800 w-full max-w-lg p-5 sm:p-6 shadow-2xl flex flex-col gap-4">
+  <div id="modalCustomBuilder"
+    class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+    <div
+      class="surface-card rounded-2xl border border-zinc-200 dark:border-zinc-800 w-full max-w-lg p-5 sm:p-6 shadow-2xl flex flex-col gap-4">
       <div class="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 pb-3">
         <div class="flex items-center space-x-2">
           <i class="fa-solid fa-wand-magic-sparkles text-sm"></i>
           <h3 class="font-bold text-base tracking-tight">Create Classroom Activity</h3>
         </div>
-        <button id="btnCloseCustomBuilder" class="w-7 h-7 rounded-lg surface-secondary flex items-center justify-center text-xs hover:opacity-75 transition">
+        <button id="btnCloseCustomBuilder"
+          class="w-7 h-7 rounded-lg surface-secondary flex items-center justify-center text-xs hover:opacity-75 transition">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
@@ -328,13 +403,15 @@
       <div class="flex flex-col gap-3 text-xs">
         <div>
           <label class="block font-semibold uppercase tracking-wider text-secondary mb-1">Prompt Question</label>
-          <input id="customPromptInput" type="text" value="How many stars are in the sky?" class="w-full surface-secondary rounded-lg p-2.5 border border-zinc-300 dark:border-zinc-700 outline-none font-medium">
+          <input id="customPromptInput" type="text" value="How many stars are in the sky?"
+            class="w-full surface-secondary rounded-lg p-2.5 border border-zinc-300 dark:border-zinc-700 outline-none font-medium">
         </div>
 
         <div class="grid grid-cols-2 gap-3">
           <div>
             <label class="block font-semibold uppercase tracking-wider text-secondary mb-1">Visual Token</label>
-            <select id="customTokenSelect" class="w-full surface-secondary rounded-lg p-2 border border-zinc-300 dark:border-zinc-700 outline-none font-medium">
+            <select id="customTokenSelect"
+              class="w-full surface-secondary rounded-lg p-2 border border-zinc-300 dark:border-zinc-700 outline-none font-medium">
               <option value="⭐">⭐ Stars</option>
               <option value="🍎">🍎 Apples</option>
               <option value="✏️">✏️ Pencils</option>
@@ -345,7 +422,8 @@
           </div>
           <div>
             <label class="block font-semibold uppercase tracking-wider text-secondary mb-1">Quantity</label>
-            <select id="customQuantitySelect" class="w-full surface-secondary rounded-lg p-2 border border-zinc-300 dark:border-zinc-700 outline-none font-medium">
+            <select id="customQuantitySelect"
+              class="w-full surface-secondary rounded-lg p-2 border border-zinc-300 dark:border-zinc-700 outline-none font-medium">
               <option value="3">3 items</option>
               <option value="4" selected>4 items</option>
               <option value="5">5 items</option>
@@ -356,19 +434,24 @@
         </div>
 
         <div>
-          <label class="block font-semibold uppercase tracking-wider text-secondary mb-1">Polling Choices (Separated by comma)</label>
-          <input id="customOptionsInput" type="text" value="2, 4, 6" class="w-full surface-secondary rounded-lg p-2.5 border border-zinc-300 dark:border-zinc-700 outline-none font-medium">
+          <label class="block font-semibold uppercase tracking-wider text-secondary mb-1">Polling Choices (Separated by
+            comma)</label>
+          <input id="customOptionsInput" type="text" value="2, 4, 6"
+            class="w-full surface-secondary rounded-lg p-2.5 border border-zinc-300 dark:border-zinc-700 outline-none font-medium">
         </div>
 
         <div>
           <label class="block font-semibold uppercase tracking-wider text-secondary mb-1">Correct Answer</label>
-          <input id="customCorrectInput" type="text" value="4" class="w-full surface-secondary rounded-lg p-2.5 border border-zinc-300 dark:border-zinc-700 outline-none font-medium">
+          <input id="customCorrectInput" type="text" value="4"
+            class="w-full surface-secondary rounded-lg p-2.5 border border-zinc-300 dark:border-zinc-700 outline-none font-medium">
         </div>
       </div>
 
       <div class="flex items-center justify-end space-x-2 pt-2 border-t border-zinc-200 dark:border-zinc-800">
-        <button id="btnCancelCustomBuilder" class="btn-secondary px-4 py-2 rounded-lg text-xs font-semibold">Cancel</button>
-        <button id="btnLaunchCustomBuilder" class="btn-primary px-4 py-2 rounded-lg text-xs font-bold flex items-center space-x-1.5">
+        <button id="btnCancelCustomBuilder"
+          class="btn-secondary px-4 py-2 rounded-lg text-xs font-semibold">Cancel</button>
+        <button id="btnLaunchCustomBuilder"
+          class="btn-primary px-4 py-2 rounded-lg text-xs font-bold flex items-center space-x-1.5">
           <i class="fa-solid fa-play text-xs"></i>
           <span>Launch to Projector</span>
         </button>
@@ -383,9 +466,10 @@
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js').catch(() => {});
+        navigator.serviceWorker.register('./sw.js').catch(() => { });
       });
     }
   </script>
 </body>
+
 </html>
