@@ -1,4 +1,4 @@
-const CACHE_NAME = 'edubridge-v4';
+const CACHE_NAME = 'edubridge-v5';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',

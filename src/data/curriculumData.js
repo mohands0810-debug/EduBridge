@@ -74,7 +74,29 @@ export const SUBJECTS = [
             taskItems: ['🍎', '🍎', '🍎', '🍎', '🍎'],
             options: ['3', '5', '7'],
             correctAnswer: '5',
-            successMessage: 'Correct! There are exactly 5 apples.'
+            successMessage: 'Correct! There are exactly 5 apples.',
+            clipSteps: [
+              {
+                duration: 4,
+                caption: 'Step 1: First, we start with 2 red apples on the table.',
+                visualHtml: '<div class="flex items-center gap-4 text-5xl animate-bounce"><span>🍎</span><span>🍎</span></div>'
+              },
+              {
+                duration: 4,
+                caption: 'Step 2: Now, let us add 3 more green apples beside them.',
+                visualHtml: '<div class="flex items-center gap-3 text-5xl"><span>🍎</span><span>🍎</span><span class="text-3xl text-zinc-400 font-bold">+</span><span>🍏</span><span>🍏</span><span>🍏</span></div>'
+              },
+              {
+                duration: 5,
+                caption: 'Step 3: Let us count all of them together: one, two, three, four, five!',
+                visualHtml: '<div class="flex flex-col items-center gap-2"><div class="flex gap-3 text-5xl"><span>🍎</span><span>🍎</span><span>🍏</span><span>🍏</span><span>🍏</span></div><div class="text-sm font-semibold text-zinc-500">1 ... 2 ... 3 ... 4 ... 5</div></div>'
+              },
+              {
+                duration: 4,
+                caption: 'Summary: Two plus three equals five apples in total!',
+                visualHtml: '<div class="surface-card px-8 py-5 rounded-2xl border border-zinc-300 dark:border-zinc-700 text-3xl font-black tracking-tight">2 + 3 = 5 ⭐</div>'
+              }
+            ]
           },
           {
             taskPrompt: 'How many shiny stars are in the sky? Tap each one to count!',
@@ -83,7 +105,24 @@ export const SUBJECTS = [
             taskItems: ['⭐', '⭐', '⭐'],
             options: ['2', '3', '4'],
             correctAnswer: '3',
-            successMessage: 'Awesome! There are 3 bright stars.'
+            successMessage: 'Awesome! There are 3 bright stars.',
+            clipSteps: [
+              {
+                duration: 4,
+                caption: 'Step 1: Look high up into the evening sky. Here is 1 shining star.',
+                visualHtml: '<div class="text-6xl animate-pulse">⭐</div>'
+              },
+              {
+                duration: 4,
+                caption: 'Step 2: Now 2 more bright stars twinkle next to it!',
+                visualHtml: '<div class="flex items-center gap-4 text-5xl"><span>⭐</span><span class="text-3xl text-zinc-400 font-bold">+</span><span>⭐</span><span>⭐</span></div>'
+              },
+              {
+                duration: 4,
+                caption: 'Step 3: Count them together: 1, 2, 3 twinkling stars in total!',
+                visualHtml: '<div class="surface-card px-8 py-5 rounded-2xl border border-zinc-300 dark:border-zinc-700 text-3xl font-black tracking-tight">⭐ ⭐ ⭐ = 3 Stars!</div>'
+              }
+            ]
           },
           {
             taskPrompt: 'Count the sweet strawberries on the table. How many do you see?',
@@ -92,7 +131,24 @@ export const SUBJECTS = [
             taskItems: ['🍓', '🍓', '🍓', '🍓', '🍓', '🍓'],
             options: ['4', '6', '8'],
             correctAnswer: '6',
-            successMessage: 'Wonderful! Exactly 6 delicious strawberries.'
+            successMessage: 'Wonderful! Exactly 6 delicious strawberries.',
+            clipSteps: [
+              {
+                duration: 4,
+                caption: 'Step 1: Here are 3 sweet red strawberries in a row.',
+                visualHtml: '<div class="flex items-center gap-3 text-5xl animate-bounce"><span>🍓</span><span>🍓</span><span>🍓</span></div>'
+              },
+              {
+                duration: 4,
+                caption: 'Step 2: Let us pick 3 more fresh strawberries from the garden.',
+                visualHtml: '<div class="flex items-center gap-3 text-5xl"><span>🍓</span><span>🍓</span><span>🍓</span><span class="text-2xl text-zinc-400 font-bold">+</span><span>🍓</span><span>🍓</span><span>🍓</span></div>'
+              },
+              {
+                duration: 5,
+                caption: 'Step 3: Three plus three equals six sweet strawberries!',
+                visualHtml: '<div class="surface-card px-8 py-5 rounded-2xl border border-zinc-300 dark:border-zinc-700 text-3xl font-black tracking-tight">3 + 3 = 6 🍓</div>'
+              }
+            ]
           },
           {
             taskPrompt: 'Count the yellow bananas in the fruit bowl. How many are there?',
@@ -101,7 +157,24 @@ export const SUBJECTS = [
             taskItems: ['🍌', '🍌', '🍌', '🍌'],
             options: ['3', '4', '5'],
             correctAnswer: '4',
-            successMessage: 'Spot on! There are 4 bananas.'
+            successMessage: 'Spot on! There are 4 bananas.',
+            clipSteps: [
+              {
+                duration: 4,
+                caption: 'Step 1: We place 2 ripe bananas into the bowl.',
+                visualHtml: '<div class="flex items-center gap-3 text-5xl"><span>🍌</span><span>🍌</span></div>'
+              },
+              {
+                duration: 4,
+                caption: 'Step 2: We add 2 more ripe bananas beside them.',
+                visualHtml: '<div class="flex items-center gap-3 text-5xl"><span>🍌</span><span>🍌</span><span class="text-2xl text-zinc-400 font-bold">+</span><span>🍌</span><span>🍌</span></div>'
+              },
+              {
+                duration: 4,
+                caption: 'Step 3: Two plus two equals four ripe bananas!',
+                visualHtml: '<div class="surface-card px-8 py-5 rounded-2xl border border-zinc-300 dark:border-zinc-700 text-3xl font-black tracking-tight">2 + 2 = 4 🍌</div>'
+              }
+            ]
           }
         ],
         gameChallenge: {
@@ -154,7 +227,19 @@ export const SUBJECTS = [
             taskItems: ['Square', 'Circle', 'Triangle'],
             options: ['Square', 'Circle', 'Triangle'],
             correctAnswer: 'Square',
-            successMessage: 'Correct! A square has 4 equal straight sides.'
+            successMessage: 'Correct! A square has 4 equal straight sides.',
+            clipSteps: [
+              {
+                duration: 4,
+                caption: 'Step 1: Look at the four straight sides: top, right, bottom, and left.',
+                visualHtml: '<div class="w-24 h-24 border-4 border-zinc-900 dark:border-zinc-100 flex items-center justify-center font-bold text-xs uppercase tracking-wider animate-pulse">4 Equal Sides</div>'
+              },
+              {
+                duration: 4,
+                caption: 'Step 2: When all four sides are identical, it is a Square!',
+                visualHtml: '<div class="surface-card px-8 py-5 rounded-2xl border border-zinc-300 dark:border-zinc-700 text-3xl font-black">Square 🟩</div>'
+              }
+            ]
           },
           {
             taskPrompt: 'Which shape is completely round with zero corners?',
@@ -163,7 +248,19 @@ export const SUBJECTS = [
             taskItems: ['Circle', 'Square', 'Triangle'],
             options: ['Circle', 'Square', 'Triangle'],
             correctAnswer: 'Circle',
-            successMessage: 'Great! A circle is completely round like a clock or wheel.'
+            successMessage: 'Great! A circle is completely round like a clock or wheel.',
+            clipSteps: [
+              {
+                duration: 4,
+                caption: 'Step 1: Notice how this line curves all the way around with zero sharp corners.',
+                visualHtml: '<div class="w-24 h-24 rounded-full border-4 border-zinc-900 dark:border-zinc-100 flex items-center justify-center font-bold text-xs uppercase tracking-wider animate-spin" style="animation-duration: 6s;">Circle</div>'
+              },
+              {
+                duration: 4,
+                caption: 'Step 2: A wheel, a coin, and a clock are all Circles!',
+                visualHtml: '<div class="surface-card px-8 py-5 rounded-2xl border border-zinc-300 dark:border-zinc-700 text-3xl font-black">Circle ⚪ 🪙 ⏰</div>'
+              }
+            ]
           },
           {
             taskPrompt: 'Which shape has exactly 3 straight sides and 3 sharp corners?',
@@ -172,7 +269,19 @@ export const SUBJECTS = [
             taskItems: ['Triangle', 'Square', 'Circle'],
             options: ['Triangle', 'Square', 'Circle'],
             correctAnswer: 'Triangle',
-            successMessage: 'Excellent! Triangles have 3 sides, like a slice of pizza.'
+            successMessage: 'Excellent! Triangles have 3 sides, like a slice of pizza.',
+            clipSteps: [
+              {
+                duration: 4,
+                caption: 'Step 1: Count the straight edges: one, two, three!',
+                visualHtml: '<div class="text-7xl font-black animate-bounce">🔺</div>'
+              },
+              {
+                duration: 4,
+                caption: 'Step 2: Exactly 3 sides and 3 corners make a Triangle!',
+                visualHtml: '<div class="surface-card px-8 py-5 rounded-2xl border border-zinc-300 dark:border-zinc-700 text-3xl font-black">Triangle 🔺 🍕</div>'
+              }
+            ]
           }
         ],
         gameChallenge: {
@@ -681,7 +790,19 @@ export const SUBJECTS = [
             taskItems: ['🥭', '🥭', '🥭'],
             options: ['೨ (ಎರಡು)', '೩ (ಮೂರು)', '೪ (ನಾಲ್ಕು)'],
             correctAnswer: '೩ (ಮೂರು)',
-            successMessage: 'ಉತ್ತಮ! ಒಟ್ಟು ೩ (ಮೂರು) ಮಾವಿನ ಹಣ್ಣುಗಳಿವೆ!'
+            successMessage: 'ಉತ್ತಮ! ಒಟ್ಟು ೩ (ಮೂರು) ಮಾವಿನ ಹಣ್ಣುಗಳಿವೆ!',
+            clipSteps: [
+              {
+                duration: 4,
+                caption: 'ಹಂತ ೧: ಪರದೆಯ ಮೇಲಿನ ೩ ಮಾವಿನ ಹಣ್ಣುಗಳನ್ನು ಎಣಿಸೋಣ.',
+                visualHtml: '<div class="flex gap-4 text-6xl justify-center animate-bounce"><span>🥭</span><span>🥭</span><span>🥭</span></div>'
+              },
+              {
+                duration: 4,
+                caption: 'ಹಂತ ೨: ಒಂದು, ಎರಡು, ಮೂರು: ಒಟ್ಟು ೩ ಮಾವಿನ ಹಣ್ಣುಗಳು!',
+                visualHtml: '<div class="surface-card px-8 py-5 rounded-2xl border border-zinc-300 dark:border-zinc-700 text-3xl font-black text-center">೩ (ಮೂರು) 🥭</div>'
+              }
+            ]
           },
           {
             taskPrompt: 'ಪರದೆಯ ಮೇಲಿರುವ ಕೆಂಪು ಸೇಬುಗಳನ್ನು ಎಣಿಸಿ:',
@@ -690,7 +811,19 @@ export const SUBJECTS = [
             taskItems: ['🍎', '🍎'],
             options: ['೧ (ಒಂದು)', '೨ (ಎರಡು)', '೩ (ಮೂರು)'],
             correctAnswer: '೨ (ಎರಡು)',
-            successMessage: 'ಸರಿಯಾಗಿದೆ! ೨ (ಎರಡು) ಸೇಬುಗಳು 🍎🍎.'
+            successMessage: 'ಸರಿಯಾಗಿದೆ! ೨ (ಎರಡು) ಸೇಬುಗಳು 🍎🍎.',
+            clipSteps: [
+              {
+                duration: 4,
+                caption: 'ಹಂತ ೧: ಮೇಜಿನ ಮೇಲಿರುವ ೨ ಕೆಂಪು ಸೇಬುಗಳು.',
+                visualHtml: '<div class="flex gap-4 text-6xl justify-center"><span>🍎</span><span>🍎</span></div>'
+              },
+              {
+                duration: 4,
+                caption: 'ಹಂತ ೨: ಒಂದು ಮತ್ತು ಎರಡು: ಒಟ್ಟು ೨ ಸೇಬುಗಳು!',
+                visualHtml: '<div class="surface-card px-8 py-5 rounded-2xl border border-zinc-300 dark:border-zinc-700 text-3xl font-black text-center">೨ (ಎರಡು) 🍎</div>'
+              }
+            ]
           },
           {
             taskPrompt: 'ಪರದೆಯ ಮೇಲಿರುವ ಹಳದಿ ಬಾಳೆಹಣ್ಣುಗಳನ್ನು ಎಣಿಸಿ:',
@@ -699,7 +832,19 @@ export const SUBJECTS = [
             taskItems: ['🍌', '🍌', '🍌', '🍌'],
             options: ['೩ (ಮೂರು)', '೪ (ನಾಲ್ಕು)', '೫ (ಐದು)'],
             correctAnswer: '೪ (ನಾಲ್ಕು)',
-            successMessage: 'ಅತ್ಯುತ್ತಮ! ೪ (ನಾಲ್ಕು) ಬಾಳೆಹಣ್ಣುಗಳು 🍌🍌🍌🍌.'
+            successMessage: 'ಅತ್ಯುತ್ತಮ! ೪ (ನಾಲ್ಕು) ಬಾಳೆಹಣ್ಣುಗಳು 🍌🍌🍌🍌.',
+            clipSteps: [
+              {
+                duration: 4,
+                caption: 'ಹಂತ ೧: ಹಣ್ಣಿನ ಬುಟ್ಟಿಯಲ್ಲಿರುವ ೪ ಹಳದಿ ಬಾಳೆಹಣ್ಣುಗಳು.',
+                visualHtml: '<div class="flex gap-3 text-5xl justify-center animate-pulse"><span>🍌</span><span>🍌</span><span>🍌</span><span>🍌</span></div>'
+              },
+              {
+                duration: 4,
+                caption: 'ಹಂತ ೨: ಒಂದು, ಎರಡು, ಮೂರು, ನಾಲ್ಕು: ಒಟ್ಟು ೪ ಬಾಳೆಹಣ್ಣುಗಳು!',
+                visualHtml: '<div class="surface-card px-8 py-5 rounded-2xl border border-zinc-300 dark:border-zinc-700 text-3xl font-black text-center">೪ (ನಾಲ್ಕು) 🍌</div>'
+              }
+            ]
           },
           {
             taskPrompt: 'ಆಕಾಶದಲ್ಲಿ ಬೆಳಗುವ ಪ್ರಕಾಶಮಾನ ಸೂರ್ಯ ಎಷ್ಟು ಜನರಿದ್ದಾರೆ?',
@@ -708,7 +853,19 @@ export const SUBJECTS = [
             taskItems: ['☀️'],
             options: ['೧ (ಒಂದು)', '೨ (ಎರಡು)', '೪ (ನಾಲ್ಕು)'],
             correctAnswer: '೧ (ಒಂದು)',
-            successMessage: 'ಭೇಷ್! ೧ (ಒಂದು) ಪ್ರಕಾಶಮಾನ ಸೂರ್ಯ ☀️.'
+            successMessage: 'ಭೇಷ್! ೧ (ಒಂದು) ಪ್ರಕಾಶಮಾನ ಸೂರ್ಯ ☀️.',
+            clipSteps: [
+              {
+                duration: 4,
+                caption: 'ಹಂತ ೧: ಆಕಾಶದಲ್ಲಿ ಹೊಳೆಯುವ ಒಂದು ಪ್ರಕಾಶಮಾನ ಸೂರ್ಯ.',
+                visualHtml: '<div class="text-7xl animate-spin text-center" style="animation-duration: 10s;">☀️</div>'
+              },
+              {
+                duration: 4,
+                caption: 'ಹಂತ ೨: ಕೇವಲ ೧ ಪ್ರಕಾಶಮಾನ ಸೂರ್ಯ!',
+                visualHtml: '<div class="surface-card px-8 py-5 rounded-2xl border border-zinc-300 dark:border-zinc-700 text-3xl font-black text-center">೧ (ಒಂದು) ☀️</div>'
+              }
+            ]
           }
         ],
         gameChallenge: {

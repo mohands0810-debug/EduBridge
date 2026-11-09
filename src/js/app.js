@@ -612,6 +612,7 @@ window.nextQuestion = function() {
     state.currentQuestionIndex = 0; // Wrap around to question 1
   }
   renderInteractiveTask(topicObj);
+  resetConceptClip();
   if (state.soundEffectsEnabled) {
     sounds.playTap(1);
   }
@@ -626,6 +627,7 @@ window.prevQuestion = function() {
     state.currentQuestionIndex = questions.length - 1;
   }
   renderInteractiveTask(topicObj);
+  resetConceptClip();
   if (state.soundEffectsEnabled) {
     sounds.playTap(1);
   }
@@ -635,6 +637,7 @@ window.goToQuestion = function(idx) {
   const topicObj = getCurrentTopic();
   state.currentQuestionIndex = idx;
   renderInteractiveTask(topicObj);
+  resetConceptClip();
   if (state.soundEffectsEnabled) {
     sounds.playTap(1);
   }
@@ -759,16 +762,65 @@ function getCurrentTopic() {
   return subjObj.topics.find(t => t.id === state.topic) || subjObj.topics[0];
 }
 
+/**
+ * Returns the clip steps for the CURRENT question:
+ *   1. q.clipSteps  (per-question override)  — most specific
+ *   2. If question 0, topicObj.clipSteps
+ *   3. For Q2, Q3, etc.: auto-generate tailored multi-step clip for that specific question!
+ */
+function getActiveClipSteps(topicObj) {
+  const q = getCurrentQuestion(topicObj);
+  // 1. Explicit per-question clipSteps take absolute priority
+  if (q && q.clipSteps && q.clipSteps.length > 0) return q.clipSteps;
+
+  // 2. If this is question 0 (or only 1 question exists in topic), use topic-level clipSteps
+  const totalQuestions = (topicObj.questions && topicObj.questions.length > 0) ? topicObj.questions.length : 1;
+  if (state.currentQuestionIndex === 0 && topicObj.clipSteps && topicObj.clipSteps.length > 0) {
+    return topicObj.clipSteps;
+  }
+
+  // 3. For any subsequent question without explicit clipSteps, auto-generate tailored steps
+  if (q) {
+    const itemsHtml = q.taskItems
+      ? q.taskItems.map(i => `<span class="transform hover:scale-110 transition inline-block">${i}</span>`).join(' ')
+      : '';
+    const promptText = q.taskPrompt || topicObj.videoSubtitle;
+    const answerText = q.correctAnswer;
+    const successMsg = q.successMessage || `The correct answer is ${answerText}!`;
+
+    return [
+      {
+        duration: 4,
+        caption: `Question ${state.currentQuestionIndex + 1}: ${promptText}`,
+        visualHtml: `<div class="text-4xl sm:text-5xl flex flex-wrap gap-4 justify-center items-center py-4 animate-pulse">${itemsHtml}</div>`
+      },
+      {
+        duration: 4,
+        caption: `Solution: ${successMsg}`,
+        visualHtml: `<div class="surface-card px-8 py-5 rounded-2xl border border-zinc-300 dark:border-zinc-700 text-3xl font-black text-center shadow-md"><span>${itemsHtml}</span><div class="mt-3 text-2xl font-bold">${answerText} ✅</div></div>`
+      }
+    ];
+  }
+
+  if (topicObj.clipSteps && topicObj.clipSteps.length > 0) return topicObj.clipSteps;
+  return [];
+}
+
 function renderConceptClipInitial(topicObj) {
   elements.videoTitle.innerText = topicObj.videoTitle;
-  elements.videoSubtitle.innerText = topicObj.videoSubtitle;
-  
+
+  // Show the current question prompt as the subtitle so the clip matches the active question
+  const q = getCurrentQuestion(topicObj);
+  elements.videoSubtitle.innerText = (q && q.taskPrompt) ? q.taskPrompt : topicObj.videoSubtitle;
+
+  const clipSteps = getActiveClipSteps(topicObj);
+
   if (!state.clipPlaying) {
-    const firstStep = topicObj.clipSteps ? topicObj.clipSteps[0] : null;
+    const firstStep = clipSteps.length > 0 ? clipSteps[0] : null;
     if (firstStep) {
       elements.clipVisualStage.innerHTML = firstStep.visualHtml;
       elements.clipCaptionDisplay.innerText = firstStep.caption;
-      elements.clipTimeDisplay.innerText = `Step 1 of ${topicObj.clipSteps.length}`;
+      elements.clipTimeDisplay.innerText = `Step 1 of ${clipSteps.length}`;
       elements.clipProgressBar.style.width = '0%';
     }
   }
@@ -784,12 +836,13 @@ function togglePlayConceptClip() {
 
 function playConceptClip() {
   const topicObj = getCurrentTopic();
-  if (!topicObj.clipSteps || topicObj.clipSteps.length === 0) return;
+  const clipSteps = getActiveClipSteps(topicObj);
+  if (!clipSteps || clipSteps.length === 0) return;
 
   state.clipPlaying = true;
   elements.clipPlayIcon.className = 'fa-solid fa-pause';
 
-  if (state.clipStepIndex >= topicObj.clipSteps.length) {
+  if (state.clipStepIndex >= clipSteps.length) {
     state.clipStepIndex = 0;
   }
 
@@ -798,9 +851,10 @@ function playConceptClip() {
 
 function playStepByIndex(index) {
   const topicObj = getCurrentTopic();
+  const clipSteps = getActiveClipSteps(topicObj);
   if (!state.clipPlaying) return;
 
-  if (index >= topicObj.clipSteps.length) {
+  if (index >= clipSteps.length) {
     pauseConceptClip();
     state.clipStepIndex = 0;
     elements.clipProgressBar.style.width = '100%';
@@ -813,14 +867,14 @@ function playStepByIndex(index) {
   }
 
   state.clipStepIndex = index;
-  const step = topicObj.clipSteps[index];
+  const step = clipSteps[index];
 
   elements.clipVisualStage.innerHTML = step.visualHtml;
   elements.clipCaptionDisplay.innerText = step.caption;
 
-  const pct = Math.round(((index + 1) / topicObj.clipSteps.length) * 100);
+  const pct = Math.round(((index + 1) / clipSteps.length) * 100);
   elements.clipProgressBar.style.width = `${pct}%`;
-  elements.clipTimeDisplay.innerText = `Step ${index + 1} of ${topicObj.clipSteps.length}`;
+  elements.clipTimeDisplay.innerText = `Step ${index + 1} of ${clipSteps.length}`;
 
   speakClipStep(step.caption, () => {
     if (!state.clipPlaying) return;
@@ -878,6 +932,7 @@ window.handleAnswerChoice = function(chosen) {
       setTimeout(() => {
         state.currentQuestionIndex++;
         renderInteractiveTask(topicObj);
+        resetConceptClip();
         elements.taskFeedback.innerHTML = '';
       }, 2200);
     }
